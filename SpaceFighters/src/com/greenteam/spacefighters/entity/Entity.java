@@ -2,6 +2,7 @@ package com.greenteam.spacefighters.entity;
 
 import com.greenteam.spacefighters.common.Vec2;
 import com.greenteam.spacefighters.renderable.Renderable;
+import com.greenteam.spacefighters.stage.Stage;
 import com.greenteem.spacefighters.GUI.Window;
 
 public class Entity implements Renderable{
@@ -9,6 +10,7 @@ public class Entity implements Renderable{
 	private Vec2 velocity;
 	private Vec2 acceleration;
 	private Vec2 orientation;
+	protected Stage stage;
 	
 	public void render() {
 		
