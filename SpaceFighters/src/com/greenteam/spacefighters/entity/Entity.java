@@ -23,4 +23,8 @@ public class Entity implements Renderable{
 			orientation = velocity.normalize();
 	}
 	
+	public void remove() {
+		stage.remove(this);
+	}
+	
 }

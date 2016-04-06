@@ -11,7 +11,7 @@ public class EntityLiving extends Entity {
 			super.update();
 	    }
 	    else {
-	        stage.remove(this);
+	        this.remove();
 	    }
 	}
 	
