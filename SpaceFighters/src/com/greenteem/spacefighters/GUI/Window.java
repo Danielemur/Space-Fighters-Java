@@ -10,7 +10,7 @@ import com.greenteam.spacefighters.entity.entityliving.starship.player.Player;
 public class Window extends JFrame implements WindowListener {
 	public static final double FPS = 60;
 	private Player player;
- 
+	
     public static void main(String[] args) {
     }
 
