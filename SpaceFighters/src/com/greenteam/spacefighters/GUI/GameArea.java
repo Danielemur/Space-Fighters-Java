@@ -1,9 +1,10 @@
-package com.greenteem.spacefighters.GUI;
+package com.greenteam.spacefighters.GUI;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
@@ -16,21 +17,28 @@ public class GameArea extends JPanel implements ActionListener {
 
 	private ArrayList<Entity> entities;
 	private Timer timer;
+	private int width;
+	private int height;
 	
-	GameArea() {
+	GameArea(int width, int height) {
 		this.entities = new ArrayList<Entity>();
-		this.setPreferredSize(new Dimension(320, 600));
-		this.setSize(new Dimension(320, 600));
+		this.width = width;
+		this.height = height;
+		this.setPreferredSize(new Dimension(width, height));
+		this.setSize(new Dimension(width, height));
 		timer = new Timer((int)(1000/Window.FPS), this);
+		System.out.println((int)(1000/Window.FPS));
 		timer.start();
 	}
 	
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		BufferedImage image = new BufferedImage(this.getSize().width, this.getSize().height, BufferedImage.TYPE_INT_ARGB);
 		for (Entity e : entities) {
-			e.render(g);
+			e.render(image.getGraphics());
 		}
+		g.drawImage(image, 0, 0, this.getSize().width, this.getSize().height, null);
 	}
 	
 	public ArrayList<Entity> getEntities() {return entities;}
