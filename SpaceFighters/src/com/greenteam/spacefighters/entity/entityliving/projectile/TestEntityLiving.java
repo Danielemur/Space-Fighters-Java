@@ -17,7 +17,7 @@ public class TestEntityLiving extends EntityLiving {
 	public TestEntityLiving(int graphicsWidth, int graphicsHeight, int width, int height) {
 		super();
 		this.setPosition(new Vec2(100,400));
-		//this.setAcceleration(new Vec2(40,10));
+		this.setAcceleration(new Vec2(400,100));
 		this.setVelocity(new Vec2(-160,-120));
 		this.graphicsWidth = graphicsWidth;
 		this.graphicsHeight = graphicsHeight;
@@ -37,11 +37,9 @@ public class TestEntityLiving extends EntityLiving {
 		super.update(ms);
 		if ((this.getPosition().getX() + width > graphicsWidth) || (this.getPosition().getX() < 0)) {
 			this.getVelocity().setX(this.getVelocity().getX()*-1);
-			System.out.println(this.getVelocity());
 		}
-		if ((this.getPosition().getY() + height > graphicsHeight) || (this.getPosition().getY() < 0)) {
+		if ((this.getPosition().getY() + height  - 1 > graphicsHeight) || (this.getPosition().getY() < 0)) {
 			this.getVelocity().setY(this.getVelocity().getY()*-1);
-			System.out.println(this.getVelocity());
 		}
 	}
 }
