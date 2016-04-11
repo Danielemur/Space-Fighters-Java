@@ -3,7 +3,6 @@ package com.greenteam.spacefighters.entity;
 import java.awt.Graphics;
 
 import com.greenteam.spacefighters.common.Vec2;
-import com.greenteam.spacefighters.renderable.Renderable;
 import com.greenteam.spacefighters.stage.Stage;
 import com.greenteem.spacefighters.GUI.Window;
 

@@ -10,13 +10,6 @@ public class EntityLiving extends Entity {
 	}
 
 	@Override
-	public void update() {
-	    if (health > 0) {
-			super.update();
-	    }
-	    else {
-	        this.remove();
-	    }
 	public void update(int ms) {
 		super.update(ms);
 		if (health <= 0) {
