@@ -4,7 +4,6 @@ import java.awt.Graphics;
 
 import com.greenteam.spacefighters.common.Vec2;
 import com.greenteam.spacefighters.stage.Stage;
-import com.greenteam.spacefighters.GUI.Window;
 
 public class Entity {
 	private Vec2 position;

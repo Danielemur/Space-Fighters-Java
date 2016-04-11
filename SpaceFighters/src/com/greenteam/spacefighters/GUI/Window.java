@@ -10,7 +10,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 import com.greenteam.spacefighters.entity.entityliving.projectile.TestEntityLiving;
+import com.greenteam.spacefighters.entity.entityliving.starship.enemy.TestEnemy;
 import com.greenteam.spacefighters.entity.entityliving.starship.player.Player;
+import com.greenteam.spacefighters.stage.Stage;
 
 public class Window extends JFrame implements WindowListener {
 	private static final long serialVersionUID = 8514984102701282740L;
@@ -20,17 +22,20 @@ public class Window extends JFrame implements WindowListener {
 	
 	Window() {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		GameArea gamearea = new GameArea(320, 600);
+		Stage gamearea = new Stage(320, 600);
 		this.setLayout(new BorderLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
 		gbc.weightx = 1;
 		gbc.weighty = 1;
 		this.add(gamearea, BorderLayout.CENTER);
+		
 		gamearea.getEntities().add(new TestEntityLiving(320, 600, 100, 200));
+		gamearea.getEntities().add(new TestEnemy(320, 600, 20, 60));
+		
 		this.pack();
 		this.setTitle("Window!");
-		this.setIconImage(new ImageIcon(this.getClass().getResource("../../../../com/greenteam/spacefighters/assets/Pershing_Icon.png")).getImage());
+		this.setIconImage(new ImageIcon(this.getClass().getResource("../assets/Pershing_Icon.png")).getImage());
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
