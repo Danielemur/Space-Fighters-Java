@@ -1,6 +1,7 @@
 package com.greenteam.spacefighters.entity;
 
 import java.awt.Graphics;
+import java.awt.Image;
 
 import com.greenteam.spacefighters.common.Vec2;
 import com.greenteam.spacefighters.stage.Stage;
@@ -11,19 +12,23 @@ public class Entity {
 	private Vec2 velocity;
 	private Vec2 acceleration;
 	private Vec2 orientation;
+	protected Image texture;
 	protected Stage stage;
 	
-	public Entity() {
-		position = new Vec2(0,0);
-		velocity = new Vec2(0,0);
-		acceleration = new Vec2(0,0);
-		orientation = new Vec2(0,0);
+	public Entity(Stage s) {
+		position = new Vec2(0, 0);
+		velocity = new Vec2(0, 0);
+		acceleration = new Vec2(0, 0);
+		orientation = new Vec2(0, 1);
+		texture = null;
+		stage = s
 	}
 	
 	public void render(Graphics g) {
-		
+		if (texture != null) {
+			
+		}
 	}
-	
 	public void update(int ms) {
 		velocity = velocity.add(acceleration.scale(((double)ms)/1000));
 		position = position.add(velocity.scale(((double)ms)/1000));
