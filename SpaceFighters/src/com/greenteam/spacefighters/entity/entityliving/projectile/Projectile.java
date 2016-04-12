@@ -50,6 +50,12 @@ public class Projectile extends EntityLiving {
 				this.setHealth(this.getHealth() - ((EntityLiving)e).getDamage());
 			}
 		}
+		if ((this.getPosition().getX() > stage.getWidth()) ||
+				(this.getPosition().getX() < 0) ||
+				(this.getPosition().getY() > stage.getHeight()) ||
+				(this.getPosition().getY() < 0)) {
+			stage.remove(this);
+		}
 	}
 	
 	@Override

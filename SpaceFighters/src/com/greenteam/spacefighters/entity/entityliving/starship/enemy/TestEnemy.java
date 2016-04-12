@@ -16,18 +16,14 @@ import com.greenteam.spacefighters.entity.entityliving.EntityLiving;
 import com.greenteam.spacefighters.stage.Stage;
 
 public class TestEnemy extends Enemy {
-	private int graphicsWidth;
-	private int graphicsHeight;
 	private int width;
 	private int height;
 	private boolean couldLoadImage;
 	
-	public TestEnemy(Stage s, int graphicsWidth, int graphicsHeight, int width, int height) {
+	public TestEnemy(Stage s, int width, int height) {
 		super(s, 1, 0, 0);
 		this.setPosition(new Vec2(0,0));
 		this.setVelocity(new Vec2(-440,200));
-		this.graphicsWidth = graphicsWidth;
-		this.graphicsHeight = graphicsHeight;
 		try {
 			this.setTexture(ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/spaceship-1.png")));
 			this.width = this.getTexture().getWidth(null);
@@ -68,10 +64,10 @@ public class TestEnemy extends Enemy {
 	public void update(int ms) {
 		super.update(ms);
 		this.setOrientation(this.getOrientation().rotate(new Vec2(0,0), null, 0.1));
-		if ((this.getPosition().getX() + width*2 > graphicsWidth) || (this.getPosition().getX() < 0)) {
+		if ((this.getPosition().getX() + width*2 > stage.getWidth()) || (this.getPosition().getX() < 0)) {
 			this.getVelocity().setX(this.getVelocity().getX()*-1);
 		}
-		if (this.getPosition().getY() - 1 > graphicsHeight) {
+		if (this.getPosition().getY() - 1 > stage.getHeight()) {
 			this.remove();
 		}
 	}

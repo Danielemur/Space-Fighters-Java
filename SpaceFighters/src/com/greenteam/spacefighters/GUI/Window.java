@@ -39,7 +39,7 @@ public class Window extends JFrame implements WindowListener {
 		this.add(stage, BorderLayout.CENTER);
 		this.setBounds(new Rectangle(Window.WIDTH, Window.HEIGHT));
 		
-		loader = new TestLevelLoader(stage, null, Window.WIDTH, Window.HEIGHT);
+		loader = new TestLevelLoader(stage, null);
 		
 		this.setTitle("Window!");
 		this.setIconImage(new ImageIcon(this.getClass().getResource("/com/greenteam/spacefighters/assets/Pershing_Icon.png")).getImage());

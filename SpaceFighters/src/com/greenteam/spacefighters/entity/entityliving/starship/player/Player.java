@@ -28,16 +28,12 @@ public class Player extends Starship {
 	public static final int MOVEMENT_SPEED = 300;
 	private static final int PLAYER_PROJECTILE_SPEED = 600;
 	private static int chargeLevel;
-	private int graphicsWidth;
-	private int graphicsHeight;
 	private int width;
 	private int height;
 	private boolean couldLoadImage;
 
-	public Player(Stage s, int health, int graphicsWidth, int graphicsHeight) {
+	public Player(Stage s, int health) {
 		super(s, health, DEFAULTARMORLEVEL, DEFAULTWEAPONRYLEVEL);
-		this.graphicsWidth = graphicsWidth;
-		this.graphicsHeight = graphicsHeight;
 		try {
 			this.setTexture(ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/spaceship-3.png")));
 			this.width = this.getTexture().getWidth(null);
@@ -84,14 +80,14 @@ public class Player extends Starship {
 				this.setHealth(this.getHealth() - ((EntityLiving)e).getDamage());
 			}
 		}
-		if (this.getPosition().getX() > graphicsWidth) {
-			this.getPosition().setX(graphicsWidth);
+		if (this.getPosition().getX() > stage.getWidth()) {
+			this.getPosition().setX(stage.getWidth());
 		}
 		if (this.getPosition().getX() < 0) {
 			this.getPosition().setX(0);
 		}
-		if (this.getPosition().getY() > graphicsHeight) {
-			this.getPosition().setY(graphicsHeight);
+		if (this.getPosition().getY() > stage.getHeight()) {
+			this.getPosition().setY(stage.getHeight());
 		}
 		if (this.getPosition().getY() < 0) {
 			this.getPosition().setY(0);

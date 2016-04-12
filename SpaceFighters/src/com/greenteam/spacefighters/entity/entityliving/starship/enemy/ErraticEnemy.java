@@ -16,20 +16,16 @@ import com.greenteam.spacefighters.entity.entityliving.EntityLiving;
 import com.greenteam.spacefighters.stage.Stage;
 
 public class ErraticEnemy extends Enemy {
-	private int graphicsWidth;
-	private int graphicsHeight;
 	private int width;
 	private int height;
 	private boolean couldLoadImage;
 	private int time;
 	
-	public ErraticEnemy(Stage s, int graphicsWidth, int graphicsHeight, int width, int height) {
+	public ErraticEnemy(Stage s, int width, int height) {
 		super(s, 1, 0, 0);
 		time = 0;
-		this.setPosition(new Vec2((graphicsWidth-40)*Math.random(),0));
+		this.setPosition(new Vec2((stage.getWidth()-40)*Math.random(),0));
 		this.setVelocity(new Vec2(1000*Math.random()-500,200));
-		this.graphicsWidth = graphicsWidth;
-		this.graphicsHeight = graphicsHeight;
 		try {
 			this.setTexture(ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/spaceship-2.png")));
 			this.width = this.getTexture().getWidth(null);
@@ -72,7 +68,7 @@ public class ErraticEnemy extends Enemy {
 		time += ms;
 		//this.setOrientation(this.getOrientation().rotate(new Vec2(0,0), null, 0.1));
 		this.setOrientation(new Vec2(0,1).rotate(new Vec2(0,0), null, this.getVelocity().angle()+Math.PI));
-		if ((this.getPosition().getX() + width*2 > graphicsWidth) || (this.getPosition().getX() < 0)) {
+		if ((this.getPosition().getX() + width*2 > stage.getWidth()) || (this.getPosition().getX() < 0)) {
 			this.getVelocity().setX(this.getVelocity().getX()*-1);
 		}
 		else {
@@ -81,7 +77,7 @@ public class ErraticEnemy extends Enemy {
 				time = 0;
 			}
 		}
-		if (this.getPosition().getY() - 1 > graphicsHeight) {
+		if (this.getPosition().getY() - 1 > stage.getHeight()) {
 			this.remove();
 		}
 	}
