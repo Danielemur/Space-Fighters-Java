@@ -26,14 +26,16 @@ public class TestEnemy extends Enemy {
 		super(s, 1);
 		this.setPosition(new Vec2(0,0));
 		this.setVelocity(new Vec2(-440,200));
+		this.graphicsWidth = graphicsWidth;
+		this.graphicsHeight = graphicsHeight;
 		try {
-			this.setTexture(ImageIO.read(TestEnemy.class.getResource("../../../../assets/spaceship-1.png")));
+			this.setTexture(ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/spaceship-1.png")));
+			this.width = this.getTexture().getWidth(null);
+			this.height = this.getTexture().getHeight(null);
 			couldLoadImage = true;
 		} catch (IOException e) {
 			couldLoadImage = false;
 		}
-		this.graphicsWidth = graphicsWidth;
-		this.graphicsHeight = graphicsHeight;
 		this.width = width;
 		this.height = height;
 	}
@@ -47,7 +49,7 @@ public class TestEnemy extends Enemy {
 			double imagemidy = this.getTexture().getHeight(null)/2;
 			AffineTransform tf = AffineTransform.getRotateInstance(angle, imagemidx, imagemidy);
 			AffineTransformOp op = new AffineTransformOp(tf, AffineTransformOp.TYPE_BILINEAR);
-			g.drawImage(op.filter((BufferedImage)this.getTexture(), null), (int)(pos.getX()), (int)(pos.getY()), this.getTexture().getWidth(null), this.getTexture().getHeight(null), null);
+			g.drawImage(op.filter((BufferedImage)this.getTexture(), null), (int)(pos.getX()), (int)(pos.getY()),  null);
 		}
 		else {
 			g.setColor(Color.BLACK);
@@ -59,10 +61,10 @@ public class TestEnemy extends Enemy {
 	public void update(int ms) {
 		super.update(ms);
 		this.setOrientation(this.getOrientation().rotate(new Vec2(0,0), null, 0.1));
-		if ((this.getPosition().getX() + width > graphicsWidth) || (this.getPosition().getX() < 0)) {
+		if ((this.getPosition().getX() + width*2 > graphicsWidth) || (this.getPosition().getX() < 0)) {
 			this.getVelocity().setX(this.getVelocity().getX()*-1);
 		}
-		if (this.getPosition().getY() + height - 1 > graphicsHeight) {
+		if (this.getPosition().getY() - 1 > graphicsHeight) {
 			this.remove();
 		}
 	}

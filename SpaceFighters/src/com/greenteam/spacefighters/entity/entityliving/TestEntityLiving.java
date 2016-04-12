@@ -1,4 +1,4 @@
-package com.greenteam.spacefighters.entity.entityliving.projectile;
+package com.greenteam.spacefighters.entity.entityliving;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -6,7 +6,6 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 import com.greenteam.spacefighters.common.Vec2;
-import com.greenteam.spacefighters.entity.entityliving.EntityLiving;
 import com.greenteam.spacefighters.stage.Stage;
 
 public class TestEntityLiving extends EntityLiving {
@@ -17,7 +16,7 @@ public class TestEntityLiving extends EntityLiving {
 	
 	public TestEntityLiving(Stage s, int graphicsWidth, int graphicsHeight, int width, int height) {
 		super(s, 1);
-		this.setPosition(new Vec2(100,400));
+		this.setPosition(new Vec2(100,100));
 		this.setAcceleration(new Vec2(400,100));
 		this.setVelocity(new Vec2(-160,-120));
 		this.graphicsWidth = graphicsWidth;
@@ -29,7 +28,7 @@ public class TestEntityLiving extends EntityLiving {
 	@Override
 	public void render(Graphics g) {
 		Vec2 pos = this.getPosition();
-		g.setColor(Color.BLACK);
+		g.setColor(Color.MAGENTA);
 		g.fillRect((int)pos.getX(), (int)pos.getY(), width, height);
 	}
 	
@@ -39,7 +38,7 @@ public class TestEntityLiving extends EntityLiving {
 		if ((this.getPosition().getX() + width > graphicsWidth) || (this.getPosition().getX() < 0)) {
 			this.getVelocity().setX(this.getVelocity().getX()*-1);
 		}
-		if ((this.getPosition().getY() + height  - 1 > graphicsHeight) || (this.getPosition().getY() < 0)) {
+		if ((this.getPosition().getY() + height + 1 > graphicsHeight) || (this.getPosition().getY() < 0)) {
 			this.getVelocity().setY(this.getVelocity().getY()*-1);
 		}
 	}
