@@ -30,8 +30,8 @@ public class Window extends JFrame implements WindowListener {
 		gbc.weighty = 1;
 		this.add(gamearea, BorderLayout.CENTER);
 		
-		gamearea.getEntities().add(new TestEntityLiving(320, 600, 100, 200));
-		gamearea.getEntities().add(new TestEnemy(320, 600, 20, 60));
+		gamearea.getEntities().add(new TestEntityLiving(gamearea, 320, 600, 100, 200));
+		gamearea.getEntities().add(new TestEnemy(gamearea, 320, 600, 20, 60));
 		
 		this.pack();
 		this.setTitle("Window!");

@@ -7,6 +7,7 @@ import java.awt.Rectangle;
 
 import com.greenteam.spacefighters.common.Vec2;
 import com.greenteam.spacefighters.entity.entityliving.EntityLiving;
+import com.greenteam.spacefighters.stage.Stage;
 
 public class TestEntityLiving extends EntityLiving {
 	private int graphicsWidth;
@@ -14,8 +15,8 @@ public class TestEntityLiving extends EntityLiving {
 	private int width;
 	private int height;
 	
-	public TestEntityLiving(int graphicsWidth, int graphicsHeight, int width, int height) {
-		super();
+	public TestEntityLiving(Stage s, int graphicsWidth, int graphicsHeight, int width, int height) {
+		super(s, 1);
 		this.setPosition(new Vec2(100,400));
 		this.setAcceleration(new Vec2(400,100));
 		this.setVelocity(new Vec2(-160,-120));

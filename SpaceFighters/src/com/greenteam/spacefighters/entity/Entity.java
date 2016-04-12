@@ -20,7 +20,7 @@ public class Entity {
 		acceleration = new Vec2(0, 0);
 		orientation = new Vec2(0, 1);
 		texture = null;
-		stage = s
+		stage = s;
 	}
 	
 	public void render(Graphics g) {
@@ -69,5 +69,13 @@ public class Entity {
 
 	public void setVelocity(Vec2 velocity) {
 		this.velocity = velocity;
+	}
+
+	public Stage getStage() {
+		return stage;
+	}
+
+	public void setStage(Stage stage) {
+		this.stage = stage;
 	}
 }

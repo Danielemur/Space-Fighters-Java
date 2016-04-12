@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -16,13 +18,13 @@ import com.greenteam.spacefighters.entity.Entity;
 public class Stage extends JPanel implements ActionListener {
 	private static final long serialVersionUID = -2937557151448523567L;
 
-	private ArrayList<Entity> entities;
+	private CopyOnWriteArrayList<Entity> entities;
 	private Timer timer;
 	private int width;
 	private int height;
 	
 	public Stage(int width, int height) {
-		this.entities = new ArrayList<Entity>();
+		this.entities = new CopyOnWriteArrayList<Entity>();
 		this.width = width;
 		this.height = height;
 		this.setPreferredSize(new Dimension(width, height));
@@ -42,7 +44,7 @@ public class Stage extends JPanel implements ActionListener {
 		g.drawImage(image, 0, 0, this.getSize().width, this.getSize().height, null);
 	}
 	
-	public ArrayList<Entity> getEntities() {return entities;}
+	public List<Entity> getEntities() {return entities;}
 
 	@Override
 	public void actionPerformed(ActionEvent ev) {

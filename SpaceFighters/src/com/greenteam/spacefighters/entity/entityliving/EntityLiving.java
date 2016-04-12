@@ -1,12 +1,13 @@
 package com.greenteam.spacefighters.entity.entityliving;
 
 import com.greenteam.spacefighters.entity.Entity;
+import com.greenteam.spacefighters.stage.Stage;
 
 public class EntityLiving extends Entity {
 	private int health;
 
-	public EntityLiving(int health) {
-		super();
+	public EntityLiving(Stage s, int health) {
+		super(s);
 		this.health = health;
 	}
 
