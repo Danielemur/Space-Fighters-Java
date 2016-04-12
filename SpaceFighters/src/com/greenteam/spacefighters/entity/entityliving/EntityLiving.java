@@ -3,7 +3,7 @@ package com.greenteam.spacefighters.entity.entityliving;
 import com.greenteam.spacefighters.entity.Entity;
 import com.greenteam.spacefighters.stage.Stage;
 
-public class EntityLiving extends Entity {
+public abstract class EntityLiving extends Entity {
 	private int health;
 
 	public EntityLiving(Stage s, int health) {

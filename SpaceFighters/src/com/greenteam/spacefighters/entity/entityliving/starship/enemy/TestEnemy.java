@@ -60,7 +60,7 @@ public class TestEnemy extends Enemy {
 	}
 	
 	@Override
-	public double getCollisionRadius() {
+	public double getRadius() {
 		return 25;
 	}
 	

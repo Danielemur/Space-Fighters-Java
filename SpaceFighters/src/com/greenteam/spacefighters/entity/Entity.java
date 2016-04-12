@@ -6,11 +6,12 @@ import java.awt.Image;
 import com.greenteam.spacefighters.common.Vec2;
 import com.greenteam.spacefighters.stage.Stage;
 
-public class Entity {
+public abstract class Entity {
 	private Vec2 position;
 	private Vec2 velocity;
 	private Vec2 acceleration;
 	private Vec2 orientation;
+	private double radius;
 	protected Image texture;
 	protected Stage stage;
 	
@@ -19,15 +20,13 @@ public class Entity {
 		velocity = new Vec2(0, 0);
 		acceleration = new Vec2(0, 0);
 		orientation = new Vec2(0, 1);
+		radius = 5;
 		texture = null;
 		stage = s;
 	}
 	
-	public void render(Graphics g) {
-		if (texture != null) {
-			
-		}
-	}
+	public abstract void render(Graphics g);
+	
 	public void update(int ms) {
 		velocity = velocity.add(acceleration.scale(((double)ms)/1000));
 		position = position.add(velocity.scale(((double)ms)/1000));
@@ -87,7 +86,11 @@ public class Entity {
 		this.texture = texture;
 	}
 	
-	public double getCollisionRadius() {
-		return 5; //is only a default, override if you want something else
+	public double getRadius() {
+		return 5;
+	}
+	
+	public void setRadius(double r) {
+		radius = r;
 	}
 }
