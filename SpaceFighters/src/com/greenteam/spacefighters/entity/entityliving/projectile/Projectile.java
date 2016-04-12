@@ -3,6 +3,7 @@ package com.greenteam.spacefighters.entity.entityliving.projectile;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import com.greenteam.spacefighters.common.Vec2;
 import com.greenteam.spacefighters.entity.Entity;
 import com.greenteam.spacefighters.entity.entityliving.EntityLiving;
 import com.greenteam.spacefighters.entity.entityliving.obstacle.Obstacle;
@@ -18,6 +19,13 @@ public class Projectile extends EntityLiving {
 		super(s, health);
 		this.damage = damage;
 		this.source = source;
+	}
+	
+	public Projectile(Stage s, int health, int damage, Vec2 velocity, Class<?> source) {
+		super(s, health);
+		this.damage = damage;
+		this.source = source;
+		this.setVelocity(velocity);
 	}
 	
 	private boolean isOppositeFaction(Entity e) {
