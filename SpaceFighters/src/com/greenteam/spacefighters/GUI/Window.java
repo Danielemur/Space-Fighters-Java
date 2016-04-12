@@ -12,26 +12,33 @@ import javax.swing.JFrame;
 import com.greenteam.spacefighters.entity.entityliving.projectile.TestEntityLiving;
 import com.greenteam.spacefighters.entity.entityliving.starship.enemy.TestEnemy;
 import com.greenteam.spacefighters.entity.entityliving.starship.player.Player;
+import com.greenteam.spacefighters.stage.LevelLoader;
 import com.greenteam.spacefighters.stage.Stage;
+import com.greenteam.spacefighters.stage.TestLevelLoader;
 
 public class Window extends JFrame implements WindowListener {
 	private static final long serialVersionUID = 8514984102701282740L;
 	
 	public static final double FPS = 60;
+	
 	private Player player;
+	private Stage stage;
+	private LevelLoader loader;
 	
 	Window() {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		Stage gamearea = new Stage(320, 600);
+		stage = new Stage(320, 600);
 		this.setLayout(new BorderLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.BOTH;
 		gbc.weightx = 1;
 		gbc.weighty = 1;
-		this.add(gamearea, BorderLayout.CENTER);
+		this.add(stage, BorderLayout.CENTER);
 		
-		gamearea.getEntities().add(new TestEntityLiving(gamearea, 320, 600, 100, 200));
-		gamearea.getEntities().add(new TestEnemy(gamearea, 320, 600, 20, 60));
+		stage.getEntities().add(new TestEntityLiving(stage, 320, 600, 100, 200));
+		stage.getEntities().add(new TestEnemy(stage, 320, 600, 20, 60));
+		
+		loader = new TestLevelLoader(stage, null);
 		
 		this.pack();
 		this.setTitle("Window!");

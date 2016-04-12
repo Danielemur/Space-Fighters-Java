@@ -59,4 +59,8 @@ public class Stage extends JPanel implements ActionListener {
 	public void remove(Entity entity) {
 		entities.remove(entity);
 	}
+	
+	public void add(Entity entity) {
+		entities.add(entity);
+	}
 }

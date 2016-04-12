@@ -31,8 +31,8 @@ public class Entity {
 	public void update(int ms) {
 		velocity = velocity.add(acceleration.scale(((double)ms)/1000));
 		position = position.add(velocity.scale(((double)ms)/1000));
-		if (velocity.magnitude2() > 0)
-			setOrientation(velocity.normalize());
+		//if (velocity.magnitude2() > 0)
+		//	setOrientation(velocity.normalize());
 	}
 
 	public Vec2 getOrientation() {
@@ -77,5 +77,13 @@ public class Entity {
 
 	public void setStage(Stage stage) {
 		this.stage = stage;
+	}
+	
+	protected Image getTexture() {
+		return texture;
+	}
+
+	protected void setTexture(Image texture) {
+		this.texture = texture;
 	}
 }

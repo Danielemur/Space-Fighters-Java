@@ -117,6 +117,10 @@ public class Vec2 {
 	public double angle(Vec2 v) {
 		return Math.acos(this.normalize().dotProduct(v.normalize()));
 	}
+	
+	public double angle() {
+		return Math.atan2(x, y);
+	}
 
 	public Vec2 reflect(Vec2 v) {
 		return this.subtract(v.scale(2 * this.dotProduct(v)));
