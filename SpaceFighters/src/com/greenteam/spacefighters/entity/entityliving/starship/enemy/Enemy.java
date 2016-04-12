@@ -2,7 +2,7 @@ package com.greenteam.spacefighters.entity.entityliving.starship.enemy;
 
 import com.greenteam.spacefighters.entity.Entity;
 import com.greenteam.spacefighters.entity.entityliving.EntityLiving;
-import com.greenteam.spacefighters.entity.entityliving.projectile.PlayerProjectile;
+import com.greenteam.spacefighters.entity.entityliving.obstacle.Obstacle;
 import com.greenteam.spacefighters.entity.entityliving.starship.Starship;
 import com.greenteam.spacefighters.entity.entityliving.starship.player.Player;
 import com.greenteam.spacefighters.stage.Stage;
@@ -19,7 +19,7 @@ public abstract class Enemy extends Starship {
 		for (Entity e : this.getStage().getEntities()) {
 			if (e == this) continue;
 			if ((e.getPosition().distance(this.getPosition()) < this.getRadius() + e.getRadius()) &&
-					((e instanceof PlayerProjectile) || (e instanceof Player))) {
+					((Obstacle.class.isAssignableFrom(e.getSource())) || ((Player.class.isAssignableFrom(e.getSource()))))) {
 				this.setHealth(this.getHealth() - ((EntityLiving)e).getDamage());
 			}
 		}

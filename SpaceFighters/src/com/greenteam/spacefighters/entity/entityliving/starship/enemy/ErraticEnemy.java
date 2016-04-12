@@ -85,4 +85,9 @@ public class ErraticEnemy extends Enemy {
 			this.remove();
 		}
 	}
+
+	@Override
+	public Class<?> getSource() {
+		return Enemy.class;
+	}
 }

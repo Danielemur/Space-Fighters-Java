@@ -22,4 +22,9 @@ public class Player extends Starship {
 		
 	}
 
+	@Override
+	public Class<?> getSource() {
+		return this.getClass();
+	}
+
 }

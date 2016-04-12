@@ -3,6 +3,8 @@ package com.greenteam.spacefighters.entity.entityliving.asteroid;
 import java.awt.Graphics;
 
 import com.greenteam.spacefighters.entity.entityliving.EntityLiving;
+import com.greenteam.spacefighters.entity.entityliving.obstacle.Obstacle;
+import com.greenteam.spacefighters.entity.entityliving.starship.enemy.Enemy;
 import com.greenteam.spacefighters.stage.Stage;
 
 public class Asteroid extends EntityLiving {
@@ -16,6 +18,11 @@ public class Asteroid extends EntityLiving {
 	public void render(Graphics g) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public Class<?> getSource() {
+		return Obstacle.class;
 	}
 	
 }

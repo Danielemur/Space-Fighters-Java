@@ -93,4 +93,6 @@ public abstract class Entity {
 	public void setRadius(double r) {
 		radius = r;
 	}
+	
+	public abstract Class<?> getSource();
 }

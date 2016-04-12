@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 import com.greenteam.spacefighters.common.Vec2;
+import com.greenteam.spacefighters.entity.entityliving.starship.enemy.Enemy;
 import com.greenteam.spacefighters.stage.Stage;
 
 public class TestEntityLiving extends EntityLiving {
@@ -41,5 +42,10 @@ public class TestEntityLiving extends EntityLiving {
 		if ((this.getPosition().getY() + height - 1 > graphicsHeight) || (this.getPosition().getY() < 0)) {
 			this.getVelocity().setY(this.getVelocity().getY()*-1);
 		}
+	}
+
+	@Override
+	public Class<?> getSource() {
+		return Enemy.class;
 	}
 }
