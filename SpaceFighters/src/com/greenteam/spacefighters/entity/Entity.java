@@ -86,4 +86,8 @@ public class Entity {
 	protected void setTexture(Image texture) {
 		this.texture = texture;
 	}
+	
+	public double getCollisionRadius() {
+		return 5; //is only a default, override if you want something else
+	}
 }

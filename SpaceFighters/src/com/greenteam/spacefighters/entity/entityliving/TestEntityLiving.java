@@ -35,10 +35,10 @@ public class TestEntityLiving extends EntityLiving {
 	@Override
 	public void update(int ms) {
 		super.update(ms);
-		if ((this.getPosition().getX() + width > graphicsWidth) || (this.getPosition().getX() < 0)) {
+		if ((this.getPosition().getX() + width - 1 > graphicsWidth) || (this.getPosition().getX() < 0)) {
 			this.getVelocity().setX(this.getVelocity().getX()*-1);
 		}
-		if ((this.getPosition().getY() + height + 1 > graphicsHeight) || (this.getPosition().getY() < 0)) {
+		if ((this.getPosition().getY() + height - 1 > graphicsHeight) || (this.getPosition().getY() < 0)) {
 			this.getVelocity().setY(this.getVelocity().getY()*-1);
 		}
 	}
