@@ -11,8 +11,12 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import com.greenteam.spacefighters.common.Vec2;
+import com.greenteam.spacefighters.entity.Entity;
+import com.greenteam.spacefighters.entity.entityliving.EntityLiving;
+import com.greenteam.spacefighters.entity.entityliving.obstacle.Obstacle;
 import com.greenteam.spacefighters.entity.entityliving.projectile.Projectile;
 import com.greenteam.spacefighters.entity.entityliving.starship.Starship;
+import com.greenteam.spacefighters.entity.entityliving.starship.enemy.Enemy;
 import com.greenteam.spacefighters.stage.Stage;
 
 public class Player extends Starship {
@@ -21,8 +25,8 @@ public class Player extends Starship {
 	private static final int DEFAULTWEAPONRYHEALTH = 1;
 	private static final int FIREDRAIN = 20;
 	private static final int FULLCHARGE = 100;
-	public static final int MOVEMENT_SPEED = 200;
-	private static final int PLAYER_PROJECTILE_SPEED = 400;
+	public static final int MOVEMENT_SPEED = 300;
+	private static final int PLAYER_PROJECTILE_SPEED = 600;
 	private static int chargeLevel;
 	private int graphicsWidth;
 	private int graphicsHeight;
@@ -73,6 +77,13 @@ public class Player extends Starship {
 	@Override
 	public void update(int ms) {
 		super.update(ms);
+		for (Entity e : this.getStage().getEntities()) {
+			if (e == this) continue;
+			if ((e.getPosition().distance(this.getPosition()) < this.getRadius() + e.getRadius()) &&
+					((Obstacle.class.isAssignableFrom(e.getSource())) || ((Enemy.class.isAssignableFrom(e.getSource()))))) {
+				this.setHealth(this.getHealth() - ((EntityLiving)e).getDamage());
+			}
+		}
 		if (this.getPosition().getX() > graphicsWidth) {
 			this.getPosition().setX(graphicsWidth);
 		}
@@ -107,5 +118,4 @@ public class Player extends Starship {
 			chargeLevel -= FIREDRAIN;
 		}
 	}
-
 }

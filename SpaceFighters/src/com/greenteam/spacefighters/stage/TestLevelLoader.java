@@ -15,7 +15,6 @@ import com.greenteam.spacefighters.entity.entityliving.starship.player.Player;
 public class TestLevelLoader extends LevelLoader implements ActionListener {
 	private Timer testEnemyTimer;
 	private Timer erraticEnemyTimer;
-	private Timer playerProjectileTimer;
 	private Stage stage;
 	private int width;
 	private int height;
@@ -27,7 +26,6 @@ public class TestLevelLoader extends LevelLoader implements ActionListener {
 		this.height = height;
 		testEnemyTimer = new Timer(550, this);
 		erraticEnemyTimer = new Timer(750, this);
-		//playerProjectileTimer = new Timer(500, this);
 		
 		Player player = new Player(stage, 100, width, height);
 		player.setPosition(new Vec2(width/2, height*3/4));
@@ -35,7 +33,6 @@ public class TestLevelLoader extends LevelLoader implements ActionListener {
 		stage.setPlayer(player);
 		testEnemyTimer.start();
 		erraticEnemyTimer.start();
-		//playerProjectileTimer.start();
 	}
 
 	@Override
