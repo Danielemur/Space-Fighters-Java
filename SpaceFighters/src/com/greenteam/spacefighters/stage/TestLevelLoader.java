@@ -42,7 +42,7 @@ public class TestLevelLoader extends LevelLoader implements ActionListener {
 			stage.add(new ErraticEnemy(stage, width, height, 20, 60));
 		}
 		else if (ev.getSource() == playerProjectileTimer) {
-			Projectile proj = new Projectile(stage, 1, Player.class);
+			Projectile proj = new Projectile(stage, 1, 1, Player.class);
 			proj.setVelocity(new Vec2(0, -500));
 			proj.setPosition(new Vec2(160, 600));
 			stage.add(proj);

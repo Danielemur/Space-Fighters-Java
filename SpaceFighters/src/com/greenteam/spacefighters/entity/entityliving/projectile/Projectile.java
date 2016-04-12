@@ -12,9 +12,11 @@ import com.greenteam.spacefighters.stage.Stage;
 
 public class Projectile extends EntityLiving {
 	private Class<?> source;
+	private int damage;
 	
-	public Projectile(Stage s, int health, Class<?> source) {
+	public Projectile(Stage s, int health, int damage, Class<?> source) {
 		super(s, health);
+		this.damage = damage;
 		this.source = source;
 	}
 	
@@ -48,6 +50,11 @@ public class Projectile extends EntityLiving {
 		g.fillRect((int)(this.getPosition().getX()), (int)(this.getPosition().getY()), 5, 12);
 	}
 
+	@Override
+	public int getDamage() {
+		return damage;
+	}
+	
 	@Override
 	public Class<?> getSource() {
 		return source;
