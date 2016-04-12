@@ -27,10 +27,15 @@ public class TestLevelLoader extends LevelLoader implements ActionListener {
 		this.height = height;
 		testEnemyTimer = new Timer(550, this);
 		erraticEnemyTimer = new Timer(750, this);
-		playerProjectileTimer = new Timer(500, this);
+		//playerProjectileTimer = new Timer(500, this);
+		
+		Player player = new Player(stage, 100, width, height);
+		player.setPosition(new Vec2(width/2, height*3/4));
+		stage.add(player);
+		stage.setPlayer(player);
 		testEnemyTimer.start();
 		erraticEnemyTimer.start();
-		playerProjectileTimer.start();
+		//playerProjectileTimer.start();
 	}
 
 	@Override
@@ -41,12 +46,12 @@ public class TestLevelLoader extends LevelLoader implements ActionListener {
 		else if (ev.getSource() == erraticEnemyTimer) {
 			stage.add(new ErraticEnemy(stage, width, height, 20, 60));
 		}
-		else if (ev.getSource() == playerProjectileTimer) {
-			Projectile proj = new Projectile(stage, 1, 1, Player.class);
-			proj.setVelocity(new Vec2(0, -500));
-			proj.setPosition(new Vec2(160, 600));
-			stage.add(proj);
-		}
+//		else if (ev.getSource() == playerProjectileTimer) {
+//			Projectile proj = new Projectile(stage, 1, 1, Player.class);
+//			proj.setVelocity(new Vec2(0, -500));
+//			proj.setPosition(new Vec2(160, 600));
+//			stage.add(proj);
+//		}
 	}
 
 }

@@ -24,7 +24,7 @@ public class ErraticEnemy extends Enemy {
 	private int time;
 	
 	public ErraticEnemy(Stage s, int graphicsWidth, int graphicsHeight, int width, int height) {
-		super(s, 1);
+		super(s, 1, 0, 0);
 		time = 0;
 		this.setPosition(new Vec2((graphicsWidth-40)*Math.random(),0));
 		this.setVelocity(new Vec2(1000*Math.random()-500,200));
@@ -90,4 +90,7 @@ public class ErraticEnemy extends Enemy {
 	public Class<?> getSource() {
 		return Enemy.class;
 	}
+
+	@Override
+	public void fire() {}
 }

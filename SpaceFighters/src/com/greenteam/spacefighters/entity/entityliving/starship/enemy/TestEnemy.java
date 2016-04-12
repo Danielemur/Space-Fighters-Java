@@ -23,7 +23,7 @@ public class TestEnemy extends Enemy {
 	private boolean couldLoadImage;
 	
 	public TestEnemy(Stage s, int graphicsWidth, int graphicsHeight, int width, int height) {
-		super(s, 1);
+		super(s, 1, 0, 0);
 		this.setPosition(new Vec2(0,0));
 		this.setVelocity(new Vec2(-440,200));
 		this.graphicsWidth = graphicsWidth;
@@ -54,7 +54,7 @@ public class TestEnemy extends Enemy {
 			g.fillRect((int)(pos.getX()), (int)(pos.getY()), 3, 3);
 		}
 		else {
-			g.setColor(Color.BLACK);
+			g.setColor(Color.WHITE);
 			g.fillRect((int)pos.getX(), (int)pos.getY(), width, height);
 		}
 	}
@@ -80,4 +80,7 @@ public class TestEnemy extends Enemy {
 	public Class<?> getSource() {
 		return Enemy.class;
 	}
+
+	@Override
+	public void fire() {}
 }

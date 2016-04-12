@@ -1,7 +1,16 @@
 package com.greenteam.spacefighters.entity.entityliving.starship.player;
 
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.KeyListener;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
+
+import com.greenteam.spacefighters.common.Vec2;
 import com.greenteam.spacefighters.entity.entityliving.projectile.Projectile;
 import com.greenteam.spacefighters.entity.entityliving.starship.Starship;
 import com.greenteam.spacefighters.stage.Stage;
@@ -12,10 +21,29 @@ public class Player extends Starship {
 	private static final int DEFAULTWEAPONRYHEALTH = 1;
 	private static final int FIREDRAIN = 20;
 	private static final int FULLCHARGE = 100;
+	public static final int MOVEMENT_SPEED = 200;
+	private static final int PLAYER_PROJECTILE_SPEED = 400;
 	private static int chargeLevel;
-	
-	public Player(Stage s, int health) {
+	private int graphicsWidth;
+	private int graphicsHeight;
+	private int width;
+	private int height;
+	private boolean couldLoadImage;
+
+	public Player(Stage s, int health, int graphicsWidth, int graphicsHeight) {
 		super(s, health, DEFAULTARMORLEVEL, DEFAULTWEAPONRYLEVEL);
+		this.graphicsWidth = graphicsWidth;
+		this.graphicsHeight = graphicsHeight;
+		try {
+			this.setTexture(ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/spaceship-3.png")));
+			this.width = this.getTexture().getWidth(null);
+			this.height = this.getTexture().getHeight(null);
+			couldLoadImage = true;
+		} catch (IOException e) {
+			couldLoadImage = false;
+			this.width = 20;
+			this.height = 30;
+		}
 	}
 
 	@Override
@@ -25,22 +53,59 @@ public class Player extends Starship {
 
 	@Override
 	public void render(Graphics g) {
-		// TODO Auto-generated method stub
-		
+		Vec2 pos = this.getPosition();
+		if (couldLoadImage) {
+			double angle = this.getOrientation().angle();
+			double imagemidx = this.getTexture().getWidth(null)/2;
+			double imagemidy = this.getTexture().getHeight(null)/2;
+			AffineTransform tf = AffineTransform.getRotateInstance(angle, imagemidx, imagemidy);
+			AffineTransformOp op = new AffineTransformOp(tf, AffineTransformOp.TYPE_BILINEAR);
+			g.drawImage(op.filter((BufferedImage)this.getTexture(), null), (int)(pos.getX()-imagemidx), (int)(pos.getY()-imagemidy), null);
+			g.setColor(Color.WHITE);
+			g.fillRect((int)(pos.getX()), (int)(pos.getY()), 3, 3);
+		}
+		else {
+			g.setColor(Color.GREEN);
+			g.fillRect((int)pos.getX(), (int)pos.getY(), width, height);
+		}
+	}
+	
+	@Override
+	public void update(int ms) {
+		super.update(ms);
+		if (this.getPosition().getX() > graphicsWidth) {
+			this.getPosition().setX(graphicsWidth);
+		}
+		if (this.getPosition().getX() < 0) {
+			this.getPosition().setX(0);
+		}
+		if (this.getPosition().getY() > graphicsHeight) {
+			this.getPosition().setY(graphicsHeight);
+		}
+		if (this.getPosition().getY() < 0) {
+			this.getPosition().setY(0);
+		}
+		chargeLevel += ms;
+		if (chargeLevel > Player.FULLCHARGE) {
+			chargeLevel = Player.FULLCHARGE;
+		}
 	}
 
 	@Override
 	public Class<?> getSource() {
 		return this.getClass();
 	}
-	
+
 	@Override
 	public void fire() {
-	    if (chargeLevel > FIREDRAIN) {
-	        int damage = 10 * (getWeaponryMultiplier() + 1);
-	        stage.add(new Projectile(stage, DEFAULTWEAPONRYHEALTH, damage, getSource()));
-	        chargeLevel -= FIREDRAIN;
-	    }
+		if (chargeLevel > FIREDRAIN) {
+			int damage = 10 * (getWeaponryMultiplier() + 1);
+			Projectile proj = new Projectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getSource());
+			proj.setVelocity(new Vec2(0, -PLAYER_PROJECTILE_SPEED));
+			proj.setPosition(this.getPosition());
+			stage.add(proj);
+			chargeLevel -= FIREDRAIN;
+		}
 	}
 
 }

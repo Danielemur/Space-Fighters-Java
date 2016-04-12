@@ -9,8 +9,8 @@ import com.greenteam.spacefighters.stage.Stage;
 
 public abstract class Enemy extends Starship {
 
-	public Enemy(Stage s, int health) {
-		super(s, health);
+	public Enemy(Stage s, int health, int armorMultiplier, int weaponryMultiplier) {
+		super(s, health, armorMultiplier, weaponryMultiplier);
 	}
 
 	@Override

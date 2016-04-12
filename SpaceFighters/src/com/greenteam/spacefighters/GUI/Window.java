@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Rectangle;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
@@ -32,15 +33,11 @@ public class Window extends JFrame implements WindowListener {
 	
 	Window() {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		stage = new Stage(Window.WIDTH, Window.HEIGHT);
+		stage = new Stage(Window.WIDTH, Window.HEIGHT, null);
 		this.setLayout(new BorderLayout(0,0));
 		stage.setBorder(BorderFactory.createEmptyBorder());
 		this.add(stage, BorderLayout.CENTER);
 		this.setBounds(new Rectangle(Window.WIDTH, Window.HEIGHT));
-		//this.pack();
-		
-		stage.getEntities().add(new TestEntityLiving(stage, Window.WIDTH, Window.HEIGHT, 100, 200));
-		stage.getEntities().add(new TestEnemy(stage, Window.WIDTH, Window.HEIGHT, 20, 60));
 		
 		loader = new TestLevelLoader(stage, null, Window.WIDTH, Window.HEIGHT);
 		
@@ -48,6 +45,11 @@ public class Window extends JFrame implements WindowListener {
 		this.setIconImage(new ImageIcon(this.getClass().getResource("/com/greenteam/spacefighters/assets/Pershing_Icon.png")).getImage());
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
+		this.addWindowFocusListener(new WindowAdapter() {
+			public void windowGainedFocus(WindowEvent ev) {
+				stage.requestFocusInWindow();
+			}
+		});
 		this.setVisible(true);
 	}
 	
