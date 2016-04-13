@@ -20,11 +20,11 @@ public class HUD {
 		g.setFont(f);
 		g.drawString(String.format("Score: %d", stage.getScore()), 10, 30);
 		Player p = stage.getPlayer();
-		g.setColor(new Color(0,180,0));
+		g.setColor(new Color(0f,.8f,0f,.5f));
 		g.fillRect(150, 5, (int)(200*(double)p.getHealth()/p.getMaxHealth()), 30);
-		g.setColor(new Color(160,50,0));
+		g.setColor(new Color(.7f,.2f,0f,.5f));
 		g.fillRect(150+(int)(200*p.getHealth()/p.getMaxHealth()), 5, (int)(200*(1-(double)p.getHealth()/p.getMaxHealth())), 30);
 		g.setColor(Color.WHITE);
-		g.drawString(String.format("%d/%d", p.getHealth(), p.getMaxHealth()), 220, 30);
+		g.drawString(String.format("%d/%d", p.getHealth(), p.getMaxHealth()), 220, 27);
 	}
 }
