@@ -6,6 +6,7 @@ import java.io.File;
 
 import javax.swing.Timer;
 
+import com.greenteam.spacefighters.GUI.HUD;
 import com.greenteam.spacefighters.common.Vec2;
 import com.greenteam.spacefighters.entity.entityliving.projectile.Projectile;
 import com.greenteam.spacefighters.entity.entityliving.starship.enemy.ErraticEnemy;
@@ -27,6 +28,7 @@ public class TestLevelLoader extends LevelLoader implements ActionListener {
 		player.setPosition(new Vec2(stage.getWidth()/2, stage.getHeight()*3/4));
 		stage.add(player);
 		stage.setPlayer(player);
+		stage.setHUD(new HUD(stage));
 		testEnemyTimer.start();
 		erraticEnemyTimer.start();
 	}

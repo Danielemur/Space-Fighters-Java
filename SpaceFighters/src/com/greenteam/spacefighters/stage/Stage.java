@@ -18,6 +18,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import com.greenteam.spacefighters.GUI.HUD;
 import com.greenteam.spacefighters.GUI.Window;
 import com.greenteam.spacefighters.entity.Entity;
 import com.greenteam.spacefighters.entity.entityliving.starship.player.Player;
@@ -32,12 +33,16 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 	private int height;
 	private Player player;
 	private Image background;
+	private int score;
+	private HUD hud;
 	
 	public Stage(int width, int height, Player player) {
 		this.entities = new CopyOnWriteArrayList<Entity>();
 		this.width = width;
 		this.height = height;
 		this.player = player;
+		this.score = 0;
+		this.hud = null;
 		/*
 		try {
 			background = ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/space.png"));
@@ -71,6 +76,9 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 			e.render(image.getGraphics());
 		}
 		g.drawImage(image, 0, 0, null);
+		if (hud != null) {
+			hud.render(g);
+		}
 	}
 	
 	public List<Entity> getEntities() {return entities;}
@@ -136,8 +144,7 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 
 	@Override
 	public void keyTyped(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-		
+		//do nothing
 	}
 
 	public Player getPlayer() {
@@ -146,5 +153,17 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 
 	public void setPlayer(Player player) {
 		this.player = player;
+	}
+	
+	public int getScore() {
+		return score;
+	}
+	
+	public void setScore(int score) {
+		this.score = score;
+	}
+	
+	public void setHUD(HUD hud) {
+		this.hud = hud;
 	}
 }

@@ -95,4 +95,8 @@ public abstract class Entity {
 	}
 	
 	public abstract Class<?> getSource();
+	
+	public int getPointValue() {
+		return 100; //default
+	}
 }

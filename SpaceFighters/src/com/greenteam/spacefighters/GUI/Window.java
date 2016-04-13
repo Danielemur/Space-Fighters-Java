@@ -1,9 +1,6 @@
 package com.greenteam.spacefighters.GUI;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Rectangle;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -13,9 +10,6 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
-import com.greenteam.spacefighters.entity.entityliving.TestEntityLiving;
-import com.greenteam.spacefighters.entity.entityliving.starship.enemy.TestEnemy;
-import com.greenteam.spacefighters.entity.entityliving.starship.player.Player;
 import com.greenteam.spacefighters.stage.LevelLoader;
 import com.greenteam.spacefighters.stage.Stage;
 import com.greenteam.spacefighters.stage.TestLevelLoader;
@@ -27,7 +21,6 @@ public class Window extends JFrame implements WindowListener {
 	
 	public static final double FPS = 60;
 	
-	private Player player;
 	private Stage stage;
 	private LevelLoader loader;
 	

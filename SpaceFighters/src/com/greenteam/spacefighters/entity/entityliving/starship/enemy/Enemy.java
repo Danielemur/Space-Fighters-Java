@@ -16,6 +16,9 @@ public abstract class Enemy extends Starship {
 	@Override
 	public void update(int ms) {
 		super.update(ms);
+		if (this.getHealth() <= 0) {
+			stage.setScore(stage.getScore() + this.getPointValue());
+		}
 		for (Entity e : this.getStage().getEntities()) {
 			if (e == this) continue;
 			if ((e.getPosition().distance(this.getPosition()) < this.getRadius() + e.getRadius()) &&
