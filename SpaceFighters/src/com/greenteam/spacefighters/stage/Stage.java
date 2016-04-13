@@ -103,7 +103,6 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 				e.update((int)(1000/Window.FPS));
 			}
 			this.repaint();
-			System.out.println(entities.size());
 		}
 		else if (ev.getSource() == firePrimaryTimer) {
 			player.fire(0);
