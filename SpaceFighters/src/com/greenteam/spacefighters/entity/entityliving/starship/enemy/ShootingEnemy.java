@@ -13,18 +13,27 @@ import javax.imageio.ImageIO;
 
 import com.greenteam.spacefighters.common.Vec2;
 import com.greenteam.spacefighters.entity.entityliving.EntityLiving;
+import com.greenteam.spacefighters.entity.entityliving.projectile.Projectile;
 import com.greenteam.spacefighters.stage.Stage;
 
 public class ShootingEnemy extends Enemy {
+	private static final int SHOOTING_INTERVAL = 800;
+	private static final int PROJECTILE_SPEED = 600;
+	
+	private int width;
+	private int height;
 	private boolean couldLoadImage;
 	private int time;
 	private Vec2 randpos;
 	
-	public ShootingEnemy(Stage s) {
+	public ShootingEnemy(Stage s, int width, int height) {
 		super(s, 1, 0, 0);
 		time = 0;
 		this.setPosition(new Vec2((stage.getWidth()-40)*Math.random(),0));
-		this.setVelocity(new Vec2(1000*Math.random()-500,200));
+		this.setOrientation(new Vec2(0,-1));
+		
+		randpos = new Vec2((stage.getWidth()-40)*Math.random(), stage.getHeight()/3*Math.random());
+		
 		try {
 			this.setTexture(ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/spaceship-4.png")));
 			this.width = this.getTexture().getWidth(null);
@@ -33,6 +42,8 @@ public class ShootingEnemy extends Enemy {
 		} catch (IOException e) {
 			couldLoadImage = false;
 		}
+		this.width = width;
+		this.height = height;
 	}
 
 	@Override
@@ -63,7 +74,14 @@ public class ShootingEnemy extends Enemy {
 	public void update(int ms) {
 		super.update(ms);
 		time += ms;
-		this.setVelocity(velocity)
+		if (time > SHOOTING_INTERVAL) {
+			time = 0;
+			Vec2 vectorToTarget = stage.getPlayer().getPosition().subtract(this.getPosition()).normalize().scale(PROJECTILE_SPEED);
+			Projectile proj = new Projectile(stage, 1, 3, vectorToTarget, Enemy.class);
+			proj.setPosition(this.getPosition());
+			stage.add(proj);
+		}
+		this.setVelocity(randpos.subtract(this.getPosition()));
 	}
 
 	@Override
@@ -73,4 +91,9 @@ public class ShootingEnemy extends Enemy {
 
 	@Override
 	public void fire() {}
+	
+	@Override
+	public int getPointValue() {
+		return 100;
+	}
 }

@@ -79,4 +79,9 @@ public class TestEnemy extends Enemy {
 
 	@Override
 	public void fire() {}
+	
+	@Override
+	public int getPointValue() {
+		return 25;
+	}
 }

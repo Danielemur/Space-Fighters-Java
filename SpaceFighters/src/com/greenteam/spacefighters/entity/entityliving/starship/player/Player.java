@@ -27,15 +27,18 @@ public class Player extends Starship {
 	private static final int FULLCHARGE = 100;
 	public static final int MOVEMENT_SPEED = 300;
 	private static final int PLAYER_PROJECTILE_SPEED = 1200;
+	private static final int HEALTH_REGEN_TIME = 500;
 	private static int chargeLevel;
 	private int width;
 	private int height;
 	private boolean couldLoadImage;
 	private int maxhealth;
+	private int time;
 
 	public Player(Stage s, int health) {
 		super(s, health, DEFAULTARMORLEVEL, DEFAULTWEAPONRYLEVEL);
 		maxhealth = health;
+		time = 0;
 		try {
 			this.setTexture(ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/spaceship-3.png")));
 			this.width = this.getTexture().getWidth(null);
@@ -75,6 +78,13 @@ public class Player extends Starship {
 	@Override
 	public void update(int ms) {
 		super.update(ms);
+		time += ms;
+		if (time > HEALTH_REGEN_TIME) {
+			if (this.getHealth() < this.getMaxHealth()) {
+				this.setHealth(this.getHealth()+1);
+			}
+			time = 0;
+		}
 		for (Entity e : this.getStage().getEntities()) {
 			if (e == this) continue;
 			if ((e.getPosition().distance(this.getPosition()) < this.getRadius() + e.getRadius()) &&

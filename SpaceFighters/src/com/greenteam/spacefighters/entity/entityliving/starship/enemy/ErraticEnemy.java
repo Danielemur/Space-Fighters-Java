@@ -89,4 +89,9 @@ public class ErraticEnemy extends Enemy {
 
 	@Override
 	public void fire() {}
+	
+	@Override
+	public int getPointValue() {
+		return 50;
+	}
 }
