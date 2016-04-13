@@ -26,6 +26,8 @@ import com.greenteam.spacefighters.entity.entityliving.starship.player.Player;
 public class Stage extends JPanel implements ActionListener, KeyListener {
 	private static final long serialVersionUID = -2937557151448523567L;
 	private static final int NUM_STARS = 40;
+	private static final int BACKGROUND_SCROLL_SPEED = 2;
+	private static final int BACKGROUND_OVERSIZE_RATIO = 5;
 
 	private CopyOnWriteArrayList<Entity> entities;
 	private Timer timer;
@@ -35,6 +37,8 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 	private Image background;
 	private int score;
 	private HUD hud;
+	private Timer fireTimer;
+	private int backgroundOffset;
 	
 	public Stage(int width, int height, Player player) {
 		this.entities = new CopyOnWriteArrayList<Entity>();
@@ -43,6 +47,7 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 		this.player = player;
 		this.score = 0;
 		this.hud = null;
+		this.backgroundOffset = 0;
 		/*
 		try {
 			background = ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/space.png"));
@@ -50,17 +55,18 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 			background = null;
 		}
 		*/
-		background = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		background = new BufferedImage(width, height*Stage.BACKGROUND_OVERSIZE_RATIO, BufferedImage.TYPE_INT_ARGB);
 		Graphics g = background.getGraphics();
 		g.setColor(Color.BLACK);
-		g.fillRect(0, 0, width, height);
+		g.fillRect(0, 0, width, height*Stage.BACKGROUND_OVERSIZE_RATIO);
 		g.setColor(Color.WHITE);
-		for (int i = 0; i < Stage.NUM_STARS; ++i) {
-			g.fillRect((int)(width*Math.random()), (int)(height*Math.random()), 1, 1);
+		for (int i = 0; i < Stage.NUM_STARS*Stage.BACKGROUND_OVERSIZE_RATIO; ++i) {
+			g.fillRect((int)(width*Math.random()), (int)(height*Stage.BACKGROUND_OVERSIZE_RATIO*Math.random()), 1, 1);
 		}
 		this.setPreferredSize(new Dimension(width, height));
 		this.setSize(new Dimension(width, height));
 		this.addKeyListener(this);
+		fireTimer = new Timer((int)(500/Window.FPS), this);
 		timer = new Timer((int)(1000/Window.FPS), this);
 		timer.start();
 	}
@@ -70,7 +76,8 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 		super.paintComponent(g);
 		BufferedImage image = new BufferedImage(this.getSize().width, this.getSize().height, BufferedImage.TYPE_INT_ARGB);
 		if (background != null) {
-			image.getGraphics().drawImage(background, 0, 0, null);
+			image.getGraphics().drawImage(background, 0, backgroundOffset, null);
+			image.getGraphics().drawImage(background, 0, backgroundOffset - background.getHeight(null), null);
 		}
 		for (Entity e : entities) {
 			e.render(image.getGraphics());
@@ -86,10 +93,17 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 	@Override
 	public void actionPerformed(ActionEvent ev) {
 		if (ev.getSource() == timer) {
+			backgroundOffset += Stage.BACKGROUND_SCROLL_SPEED;
+			if (backgroundOffset > Stage.BACKGROUND_OVERSIZE_RATIO*this.getHeight()) {
+				backgroundOffset = 0;
+			}
 			for (Entity e : entities) {
 				e.update((int)(1000/Window.FPS));
 			}
 			this.repaint();
+		}
+		else if (ev.getSource() == fireTimer) {
+			player.fire();
 		}
 	}
 
@@ -118,7 +132,7 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 				player.getVelocity().setY(Player.MOVEMENT_SPEED);
 				break;
 			case KeyEvent.VK_SPACE:
-				player.fire();
+				fireTimer.start();
 				break;
 			default: break;
 			}
@@ -136,6 +150,9 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 			case KeyEvent.VK_UP:
 			case KeyEvent.VK_DOWN:
 				player.getVelocity().setY(0);
+				break;
+			case KeyEvent.VK_SPACE:
+				fireTimer.stop();
 				break;
 			default: break;
 			}

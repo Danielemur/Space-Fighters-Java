@@ -26,14 +26,16 @@ public class Player extends Starship {
 	private static final int FIREDRAIN = 20;
 	private static final int FULLCHARGE = 100;
 	public static final int MOVEMENT_SPEED = 300;
-	private static final int PLAYER_PROJECTILE_SPEED = 600;
+	private static final int PLAYER_PROJECTILE_SPEED = 1200;
 	private static int chargeLevel;
 	private int width;
 	private int height;
 	private boolean couldLoadImage;
+	private int maxhealth;
 
 	public Player(Stage s, int health) {
 		super(s, health, DEFAULTARMORLEVEL, DEFAULTWEAPONRYLEVEL);
+		maxhealth = health;
 		try {
 			this.setTexture(ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/spaceship-3.png")));
 			this.width = this.getTexture().getWidth(null);
@@ -92,7 +94,7 @@ public class Player extends Starship {
 		if (this.getPosition().getY() < 0) {
 			this.getPosition().setY(0);
 		}
-		chargeLevel += ms;
+		chargeLevel += ms/5;
 		if (chargeLevel > Player.FULLCHARGE) {
 			chargeLevel = Player.FULLCHARGE;
 		}
@@ -105,7 +107,7 @@ public class Player extends Starship {
 
 	@Override
 	public void fire() {
-		if (chargeLevel > FIREDRAIN) {
+		if (chargeLevel >= FIREDRAIN) {
 			int damage = 10 * (getWeaponryMultiplier() + 1);
 			Projectile proj = new Projectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getSource());
 			proj.setVelocity(new Vec2(0, -PLAYER_PROJECTILE_SPEED));
@@ -113,5 +115,13 @@ public class Player extends Starship {
 			stage.add(proj);
 			chargeLevel -= FIREDRAIN;
 		}
+	}
+	
+	public void setMaxHealth(int max) {
+		this.maxhealth = max;
+	}
+	
+	public int getMaxHealth() {
+		return maxhealth;
 	}
 }
