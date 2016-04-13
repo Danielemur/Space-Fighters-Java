@@ -48,13 +48,6 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 		this.score = 0;
 		this.hud = null;
 		this.backgroundOffset = 0;
-		/*
-		try {
-			background = ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/space.png"));
-		} catch (IOException e) {
-			background = null;
-		}
-		*/
 		background = new BufferedImage(width, height*Stage.BACKGROUND_OVERSIZE_RATIO, BufferedImage.TYPE_INT_ARGB);
 		Graphics g = background.getGraphics();
 		g.setColor(Color.BLACK);
@@ -187,4 +180,35 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 	public void pause() {
 		timer.stop();
 	}
+	
+	public Entity getNearestEntity(Entity entity) {
+	    double bestDistance = Double.POSITIVE_INFINITY;
+	    Entity nearestEntity = null;
+	    for (Entity testEntity : entities) {
+	    	if (testEntity != entity) {
+	    		double distance = entity.getPosition().distance(testEntity.getPosition()); 
+	    		if (distance < bestDistance) {
+	                nearestEntity = testEntity;
+	                bestDistance = distance;
+	            }	
+	    	}
+	    }
+	    return nearestEntity;
+	}
+	
+	public Entity getNearestEntity(Entity entity, Class<?> cl) {
+	    double bestDistance = Double.POSITIVE_INFINITY;
+	    Entity nearestEntity = null;
+	    for (Entity testEntity : entities) {
+	    	if (testEntity != entity && cl.isInstance(testEntity)) {
+	    		double distance = entity.getPosition().distance(testEntity.getPosition()); 
+	    		if (distance < bestDistance) {
+	                nearestEntity = testEntity;
+	                bestDistance = distance;
+	            }	
+	    	}
+	    }
+	    return nearestEntity;
+	}
+	
 }
