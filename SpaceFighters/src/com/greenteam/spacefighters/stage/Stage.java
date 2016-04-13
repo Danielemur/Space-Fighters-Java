@@ -183,4 +183,8 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 	public void setHUD(HUD hud) {
 		this.hud = hud;
 	}
+	
+	public void pause() {
+		timer.stop();
+	}
 }

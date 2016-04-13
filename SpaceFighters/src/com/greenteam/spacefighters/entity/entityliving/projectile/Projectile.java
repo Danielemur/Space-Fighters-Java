@@ -28,7 +28,7 @@ public class Projectile extends EntityLiving {
 		this.setVelocity(velocity);
 	}
 	
-	private boolean isOppositeFaction(Entity e) {
+	protected boolean isOppositeFaction(Entity e) {
 		if (this.getSource() == Enemy.class) {
 			if (!(e instanceof Projectile)) {
 				if (Player.class.isAssignableFrom(e.getSource())|| Obstacle.class.isAssignableFrom(e.getSource())) return true;

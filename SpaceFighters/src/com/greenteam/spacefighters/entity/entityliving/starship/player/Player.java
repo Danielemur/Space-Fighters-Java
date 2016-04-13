@@ -78,6 +78,9 @@ public class Player extends Starship {
 	@Override
 	public void update(int ms) {
 		super.update(ms);
+		if (this.getHealth() <= 0) {
+			stage.pause();
+		}
 		time += ms;
 		if (time > HEALTH_REGEN_TIME) {
 			if (this.getHealth() < this.getMaxHealth()) {
