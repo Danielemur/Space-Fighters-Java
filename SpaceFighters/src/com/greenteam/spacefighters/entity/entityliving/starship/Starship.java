@@ -11,7 +11,7 @@ public abstract class Starship extends EntityLiving {
 		super(s, health);
 	}	
 	
-	public abstract void fire();
+	public abstract void fire(int type);
 
 	public int getArmorMultiplier() {
 		return armorMultiplier;

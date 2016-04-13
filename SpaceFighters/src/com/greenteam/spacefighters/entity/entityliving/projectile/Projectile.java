@@ -21,11 +21,12 @@ public class Projectile extends EntityLiving {
 		this.source = source;
 	}
 	
-	public Projectile(Stage s, int health, int damage, Vec2 velocity, Class<?> source) {
+	public Projectile(Stage s, int health, int damage, Vec2 position, Vec2 velocity, Class<?> source) {
 		super(s, health);
 		this.damage = damage;
 		this.source = source;
 		this.setVelocity(velocity);
+		this.setPosition(position);
 	}
 	
 	protected boolean isOppositeFaction(Entity e) {

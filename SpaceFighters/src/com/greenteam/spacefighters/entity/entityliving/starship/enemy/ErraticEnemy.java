@@ -27,7 +27,7 @@ public class ErraticEnemy extends Enemy {
 		this.setPosition(new Vec2((stage.getWidth()-40)*Math.random(),0));
 		this.setVelocity(new Vec2(1000*Math.random()-500,200));
 		try {
-			this.setTexture(ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/spaceship-2.png")));
+			this.setTexture(ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/enemy-1.png")));
 			this.width = this.getTexture().getWidth(null);
 			this.height = this.getTexture().getHeight(null);
 			couldLoadImage = true;
@@ -88,7 +88,7 @@ public class ErraticEnemy extends Enemy {
 	}
 
 	@Override
-	public void fire() {}
+	public void fire(int type) {}
 	
 	@Override
 	public int getPointValue() {

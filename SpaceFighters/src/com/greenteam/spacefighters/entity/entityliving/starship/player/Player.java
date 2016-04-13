@@ -14,6 +14,7 @@ import com.greenteam.spacefighters.common.Vec2;
 import com.greenteam.spacefighters.entity.Entity;
 import com.greenteam.spacefighters.entity.entityliving.EntityLiving;
 import com.greenteam.spacefighters.entity.entityliving.obstacle.Obstacle;
+import com.greenteam.spacefighters.entity.entityliving.projectile.HomingProjectile;
 import com.greenteam.spacefighters.entity.entityliving.projectile.Projectile;
 import com.greenteam.spacefighters.entity.entityliving.starship.Starship;
 import com.greenteam.spacefighters.entity.entityliving.starship.enemy.Enemy;
@@ -119,14 +120,20 @@ public class Player extends Starship {
 	}
 
 	@Override
-	public void fire() {
+	public void fire(int type) {
 		if (chargeLevel >= FIREDRAIN) {
 			int damage = 10 * (getWeaponryMultiplier() + 1);
-			Projectile proj = new Projectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getSource());
-			proj.setVelocity(new Vec2(0, -PLAYER_PROJECTILE_SPEED));
-			proj.setPosition(this.getPosition());
-			stage.add(proj);
-			chargeLevel -= FIREDRAIN;
+			//Projectile proj = new Projectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getSource());
+			if (type == 0) {
+				Projectile proj = new Projectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getPosition(), new Vec2(0, -PLAYER_PROJECTILE_SPEED), this.getSource());
+				stage.add(proj);
+				chargeLevel -= FIREDRAIN;
+			}
+			if (type == 1) {
+				Projectile proj = new HomingProjectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getPosition(), new Vec2(0, -PLAYER_PROJECTILE_SPEED/2), this.getSource());
+				stage.add(proj);
+				chargeLevel -= FIREDRAIN*2;
+			}
 		}
 	}
 	

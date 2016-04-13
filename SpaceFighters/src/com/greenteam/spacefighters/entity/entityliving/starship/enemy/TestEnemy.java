@@ -25,7 +25,7 @@ public class TestEnemy extends Enemy {
 		this.setPosition(new Vec2(0,0));
 		this.setVelocity(new Vec2(-440,200));
 		try {
-			this.setTexture(ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/spaceship-1.png")));
+			this.setTexture(ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/enemy-0.png")));
 			this.width = this.getTexture().getWidth(null);
 			this.height = this.getTexture().getHeight(null);
 			couldLoadImage = true;
@@ -78,7 +78,7 @@ public class TestEnemy extends Enemy {
 	}
 
 	@Override
-	public void fire() {}
+	public void fire(int type) {}
 	
 	@Override
 	public int getPointValue() {

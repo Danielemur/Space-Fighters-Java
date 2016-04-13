@@ -35,7 +35,7 @@ public class ShootingEnemy extends Enemy {
 		randpos = new Vec2((stage.getWidth()-40)*Math.random(), stage.getHeight()/3*Math.random());
 		
 		try {
-			this.setTexture(ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/spaceship-4.png")));
+			this.setTexture(ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/enemy-2.png")));
 			this.width = this.getTexture().getWidth(null);
 			this.height = this.getTexture().getHeight(null);
 			couldLoadImage = true;
@@ -77,8 +77,7 @@ public class ShootingEnemy extends Enemy {
 		if (time > SHOOTING_INTERVAL) {
 			time = 0;
 			Vec2 vectorToTarget = stage.getPlayer().getPosition().subtract(this.getPosition()).normalize().scale(PROJECTILE_SPEED);
-			Projectile proj = new Projectile(stage, 1, 3, vectorToTarget, Enemy.class);
-			proj.setPosition(this.getPosition());
+			Projectile proj = new Projectile(stage, 1, 3, this.getPosition(), vectorToTarget, Enemy.class);
 			stage.add(proj);
 		}
 		this.setVelocity(randpos.subtract(this.getPosition()));
@@ -90,7 +89,7 @@ public class ShootingEnemy extends Enemy {
 	}
 
 	@Override
-	public void fire() {}
+	public void fire(int type) {}
 	
 	@Override
 	public int getPointValue() {

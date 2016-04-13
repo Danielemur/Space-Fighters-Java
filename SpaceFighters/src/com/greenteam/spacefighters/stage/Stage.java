@@ -37,7 +37,8 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 	private Image background;
 	private int score;
 	private HUD hud;
-	private Timer fireTimer;
+	private Timer firePrimaryTimer;
+	private Timer fireSecondaryTimer;
 	private int backgroundOffset;
 	
 	public Stage(int width, int height, Player player) {
@@ -66,7 +67,8 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 		this.setPreferredSize(new Dimension(width, height));
 		this.setSize(new Dimension(width, height));
 		this.addKeyListener(this);
-		fireTimer = new Timer((int)(500/Window.FPS), this);
+		firePrimaryTimer = new Timer((int)(500/Window.FPS), this);
+		fireSecondaryTimer = new Timer((int)(500/Window.FPS), this);
 		timer = new Timer((int)(1000/Window.FPS), this);
 		timer.start();
 	}
@@ -101,9 +103,13 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 				e.update((int)(1000/Window.FPS));
 			}
 			this.repaint();
+			System.out.println(entities.size());
 		}
-		else if (ev.getSource() == fireTimer) {
-			player.fire();
+		else if (ev.getSource() == firePrimaryTimer) {
+			player.fire(0);
+		}
+		else if (ev.getSource() == fireSecondaryTimer) {
+			player.fire(1);
 		}
 	}
 
@@ -131,8 +137,11 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 			case KeyEvent.VK_DOWN:
 				player.getVelocity().setY(Player.MOVEMENT_SPEED);
 				break;
-			case KeyEvent.VK_SPACE:
-				fireTimer.start();
+			case KeyEvent.VK_Z:
+				firePrimaryTimer.start();
+				break;
+			case KeyEvent.VK_X:
+				fireSecondaryTimer.start();
 				break;
 			default: break;
 			}
@@ -151,8 +160,11 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 			case KeyEvent.VK_DOWN:
 				player.getVelocity().setY(0);
 				break;
-			case KeyEvent.VK_SPACE:
-				fireTimer.stop();
+			case KeyEvent.VK_Z:
+				firePrimaryTimer.stop();
+				break;
+			case KeyEvent.VK_X:
+				fireSecondaryTimer.stop();
 				break;
 			default: break;
 			}
