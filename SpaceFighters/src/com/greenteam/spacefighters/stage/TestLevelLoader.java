@@ -12,12 +12,14 @@ import com.greenteam.spacefighters.entity.entityliving.projectile.Projectile;
 import com.greenteam.spacefighters.entity.entityliving.starship.enemy.ErraticEnemy;
 import com.greenteam.spacefighters.entity.entityliving.starship.enemy.ShootingEnemy;
 import com.greenteam.spacefighters.entity.entityliving.starship.enemy.TestEnemy;
+import com.greenteam.spacefighters.entity.entityliving.starship.enemy.TrackerEnemy;
 import com.greenteam.spacefighters.entity.entityliving.starship.player.Player;
 
 public class TestLevelLoader extends LevelLoader implements ActionListener {
 	private Timer testEnemyTimer;
 	private Timer erraticEnemyTimer;
 	private Timer shootingEnemyTimer;
+	private Timer trackerEnemyTimer;
 	private Stage stage;
 	
 	public TestLevelLoader(Stage s, File f) {
@@ -26,6 +28,7 @@ public class TestLevelLoader extends LevelLoader implements ActionListener {
 		testEnemyTimer = new Timer(550, this);
 		erraticEnemyTimer = new Timer(750, this);
 		shootingEnemyTimer = new Timer(2500, this);
+		trackerEnemyTimer = new Timer(1000, this);
 		
 		Player player = new Player(stage, 100);
 		player.setPosition(new Vec2(stage.getWidth()/2, stage.getHeight()*3/4));
@@ -35,6 +38,7 @@ public class TestLevelLoader extends LevelLoader implements ActionListener {
 		testEnemyTimer.start();
 		erraticEnemyTimer.start();
 		shootingEnemyTimer.start();
+		trackerEnemyTimer.start();
 	}
 
 	@Override
@@ -47,6 +51,9 @@ public class TestLevelLoader extends LevelLoader implements ActionListener {
 		}
 		else if (ev.getSource() == shootingEnemyTimer) {
 			stage.add(new ShootingEnemy(stage, 20, 60));
+		}
+		else if (ev.getSource() == trackerEnemyTimer) {
+			stage.add(new TrackerEnemy(stage, 5, 0, 0));
 		}
 //		else if (ev.getSource() == playerProjectileTimer) {
 //			Projectile proj = new Projectile(stage, 1, 1, Player.class);
