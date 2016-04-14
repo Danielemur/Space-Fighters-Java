@@ -48,8 +48,6 @@ public class ErraticEnemy extends Enemy {
 			AffineTransform tf = AffineTransform.getRotateInstance(angle, imagemidx, imagemidy);
 			AffineTransformOp op = new AffineTransformOp(tf, AffineTransformOp.TYPE_BILINEAR);
 			g.drawImage(op.filter((BufferedImage)this.getTexture(), null), (int)(pos.getX()-imagemidx), (int)(pos.getY()-imagemidy), null);
-			g.setColor(Color.WHITE);
-			g.fillRect((int)(pos.getX()), (int)(pos.getY()), 3, 3);
 		}
 		else {
 			g.setColor(Color.BLACK);

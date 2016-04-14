@@ -2,6 +2,9 @@ package com.greenteam.spacefighters.entity.entityliving.projectile;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import com.greenteam.spacefighters.common.Vec2;
 import com.greenteam.spacefighters.entity.Entity;
@@ -14,12 +17,6 @@ import com.greenteam.spacefighters.stage.Stage;
 public class Projectile extends EntityLiving {
 	private Class<?> source;
 	private int damage;
-	
-	public Projectile(Stage s, int health, int damage, Class<?> source) {
-		super(s, health);
-		this.damage = damage;
-		this.source = source;
-	}
 	
 	public Projectile(Stage s, int health, int damage, Vec2 position, Vec2 velocity, Class<?> source) {
 		super(s, health);
