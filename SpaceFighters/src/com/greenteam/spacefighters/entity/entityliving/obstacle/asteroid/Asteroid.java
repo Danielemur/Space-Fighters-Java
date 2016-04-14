@@ -2,9 +2,7 @@ package com.greenteam.spacefighters.entity.entityliving.obstacle.asteroid;
 
 import java.awt.Graphics;
 
-import com.greenteam.spacefighters.entity.entityliving.EntityLiving;
 import com.greenteam.spacefighters.entity.entityliving.obstacle.Obstacle;
-import com.greenteam.spacefighters.entity.entityliving.starship.enemy.Enemy;
 import com.greenteam.spacefighters.stage.Stage;
 
 public class Asteroid extends Obstacle {

@@ -1,7 +1,5 @@
 package com.greenteam.spacefighters.entity.entityliving.obstacle;
 
-import java.awt.Graphics;
-
 import com.greenteam.spacefighters.entity.entityliving.EntityLiving;
 import com.greenteam.spacefighters.stage.Stage;
 

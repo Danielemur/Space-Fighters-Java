@@ -2,7 +2,6 @@ package com.greenteam.spacefighters.entity.entityliving.starship.player;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.event.KeyListener;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;

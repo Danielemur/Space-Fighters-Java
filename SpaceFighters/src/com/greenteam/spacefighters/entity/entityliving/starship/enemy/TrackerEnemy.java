@@ -1,6 +1,5 @@
 package com.greenteam.spacefighters.entity.entityliving.starship.enemy;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;

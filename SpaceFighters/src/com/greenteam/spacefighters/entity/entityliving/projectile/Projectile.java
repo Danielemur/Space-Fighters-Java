@@ -1,6 +1,5 @@
 package com.greenteam.spacefighters.entity.entityliving.projectile;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.io.IOException;
 
@@ -8,7 +7,6 @@ import javax.imageio.ImageIO;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 import com.greenteam.spacefighters.common.Vec2;
 import com.greenteam.spacefighters.entity.Entity;

@@ -2,8 +2,6 @@ package com.greenteam.spacefighters.entity.entityliving.starship.enemy;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
@@ -12,7 +10,6 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import com.greenteam.spacefighters.common.Vec2;
-import com.greenteam.spacefighters.entity.entityliving.EntityLiving;
 import com.greenteam.spacefighters.stage.Stage;
 
 public class TestEnemy extends Enemy {

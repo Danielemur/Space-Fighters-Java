@@ -2,8 +2,6 @@ package com.greenteam.spacefighters.entity.entityliving;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
 
 import com.greenteam.spacefighters.common.Vec2;
 import com.greenteam.spacefighters.entity.entityliving.starship.enemy.Enemy;

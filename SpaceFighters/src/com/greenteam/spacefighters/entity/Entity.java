@@ -11,7 +11,6 @@ public abstract class Entity {
 	private Vec2 velocity;
 	private Vec2 acceleration;
 	private Vec2 orientation;
-	private double radius;
 	protected Image texture;
 	protected Stage stage;
 	
@@ -20,7 +19,6 @@ public abstract class Entity {
 		velocity = new Vec2(0, 0);
 		acceleration = new Vec2(0, 0);
 		orientation = new Vec2(0, 1);
-		radius = 5;
 		texture = null;
 		stage = s;
 	}
@@ -88,10 +86,6 @@ public abstract class Entity {
 	
 	public double getRadius() {
 		return 5;
-	}
-	
-	public void setRadius(double r) {
-		radius = r;
 	}
 	
 	public abstract Class<?> getSource();
