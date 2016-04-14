@@ -20,8 +20,8 @@ public class TrackerEnemy extends Enemy {
 	private static final int DEFAULTARMORLEVEL = 0;
 	private static final int DEFAULTWEAPONRYLEVEL= 0;
 	private static final int DEFAULTWEAPONRYHEALTH = 1;
-	private static final int FIREDRAIN = 200;
-	private static final int FULLCHARGE = 1000;
+	private static final int FIREDRAIN = 1000;
+	private static final int FULLCHARGE = 5000;
 	private static final int PROJECTILESPEED = 1200;
 	private static int chargeLevel;
 	
@@ -42,14 +42,14 @@ public class TrackerEnemy extends Enemy {
 		if (target != null) {
 			double dist = getPosition().distance(target.getPosition()); 
 	  	
-			if (dist < 1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000.0D)
-				fire();
+			if (dist < 10000.0D)
+				fire(0);
 			double speed = getVelocity().magnitude();
 			double drag = speed * speed * DRAG;
 			Vec2 direction = target.getPosition().subtract(getPosition()).normalize();
 			setAcceleration(direction.scale(ACCELERATION).subtract(getVelocity().scale(drag)));
 			this.setOrientation(direction);
-			System.out.println("" + target.getPosition().subtract(getPosition()).normalize().scale(ACCELERATION).subtract(getVelocity().scale(drag)));
+			//System.out.println("" + target.getPosition().subtract(getPosition()).normalize().scale(ACCELERATION).subtract(getVelocity().scale(drag)));
 		} else {
 			double speed = getVelocity().magnitude();
 			double drag = speed * speed * DRAG;
@@ -60,13 +60,11 @@ public class TrackerEnemy extends Enemy {
 	}
 
 	@Override
-	public void fire() {
+	public void fire(int mode) {
 		if (chargeLevel >= FIREDRAIN) {
-			System.out.println("hi");
+			//System.out.println("hi");
 			int damage = 10 * (getWeaponryMultiplier() + 1);
-			Projectile proj = new Projectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getSource());
-			proj.setVelocity(this.getOrientation().scale(PROJECTILESPEED));
-			proj.setPosition(this.getPosition());
+			Projectile proj = new Projectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getPosition(), this.getOrientation().scale(PROJECTILESPEED), this.getSource());
 			stage.add(proj);
 			chargeLevel -= FIREDRAIN;
 		}
