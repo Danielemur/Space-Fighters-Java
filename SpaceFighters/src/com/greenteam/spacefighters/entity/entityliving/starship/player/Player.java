@@ -29,7 +29,8 @@ public class Player extends Starship {
 	public static final int MOVEMENT_SPEED = 500;
 	private static final int PLAYER_PROJECTILE_SPEED = 1200;
 	private static final int HEALTH_REGEN_TIME = 500;
-	private static int chargeLevel;
+	
+	private int chargeLevel;
 	private int width;
 	private int height;
 	private boolean couldLoadImage;

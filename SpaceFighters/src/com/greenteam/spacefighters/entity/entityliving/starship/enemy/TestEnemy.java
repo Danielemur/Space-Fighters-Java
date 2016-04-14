@@ -54,7 +54,7 @@ public class TestEnemy extends Enemy {
 	
 	@Override
 	public double getRadius() {
-		return 25;
+		return 32;
 	}
 	
 	@Override

@@ -54,7 +54,7 @@ public class ErraticEnemy extends Enemy {
 	
 	@Override
 	public double getRadius() {
-		return 25;
+		return 32;
 	}
 	
 	@Override

@@ -25,8 +25,8 @@ import com.greenteam.spacefighters.entity.entityliving.starship.player.Player;
 
 public class Stage extends JPanel implements ActionListener, KeyListener {
 	private static final long serialVersionUID = -2937557151448523567L;
-	private static final int NUM_STARS = 40;
-	private static final int BACKGROUND_SCROLL_SPEED = 2;
+	private static final int NUM_STARS = 12;
+	private static final double BACKGROUND_SCROLL_SPEED = 2.5;
 	private static final int BACKGROUND_OVERSIZE_RATIO = 5;
 	private static final int STARFIELD_LAYERS = 3;
 
