@@ -28,18 +28,19 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 	private static final int NUM_STARS = 40;
 	private static final int BACKGROUND_SCROLL_SPEED = 2;
 	private static final int BACKGROUND_OVERSIZE_RATIO = 5;
+	private static final int STARFIELD_LAYERS = 3;
 
 	private CopyOnWriteArrayList<Entity> entities;
 	private Timer timer;
 	private int width;
 	private int height;
 	private Player player;
-	private Image background;
 	private int score;
 	private HUD hud;
 	private Timer firePrimaryTimer;
 	private Timer fireSecondaryTimer;
-	private int backgroundOffset;
+	private Image[] starfields;
+	private double[] backgroundOffsets;
 	
 	public Stage(int width, int height, Player player) {
 		this.entities = new CopyOnWriteArrayList<Entity>();
@@ -48,14 +49,15 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 		this.player = player;
 		this.score = 0;
 		this.hud = null;
-		this.backgroundOffset = 0;
-		background = new BufferedImage(width, height*Stage.BACKGROUND_OVERSIZE_RATIO, BufferedImage.TYPE_INT_ARGB);
-		Graphics g = background.getGraphics();
-		g.setColor(Color.BLACK);
-		g.fillRect(0, 0, width, height*Stage.BACKGROUND_OVERSIZE_RATIO);
-		g.setColor(Color.WHITE);
-		for (int i = 0; i < Stage.NUM_STARS*Stage.BACKGROUND_OVERSIZE_RATIO; ++i) {
-			g.fillRect((int)(width*Math.random()), (int)(height*Stage.BACKGROUND_OVERSIZE_RATIO*Math.random()), 1, 1);
+		this.backgroundOffsets = new double[STARFIELD_LAYERS];
+		this.starfields = new BufferedImage[STARFIELD_LAYERS];
+		for (int i = 0; i < STARFIELD_LAYERS; ++i) {
+			starfields[i] = new BufferedImage(width, height*Stage.BACKGROUND_OVERSIZE_RATIO, BufferedImage.TYPE_INT_ARGB);
+			Graphics g = starfields[i].getGraphics();
+			g.setColor(Color.WHITE);
+			for (int j = 0; j < Stage.NUM_STARS*Stage.BACKGROUND_OVERSIZE_RATIO; ++j) {
+				g.fillRect((int)(width*Math.random()), (int)(height*Stage.BACKGROUND_OVERSIZE_RATIO*Math.random()), 1, 1);
+			}
 		}
 		this.setPreferredSize(new Dimension(width, height));
 		this.setSize(new Dimension(width, height));
@@ -69,10 +71,14 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		g.setColor(Color.BLACK);
+		g.fillRect(0, 0, this.getWidth(), this.getHeight());
 		BufferedImage image = new BufferedImage(this.getSize().width, this.getSize().height, BufferedImage.TYPE_INT_ARGB);
-		if (background != null) {
-			image.getGraphics().drawImage(background, 0, backgroundOffset, null);
-			image.getGraphics().drawImage(background, 0, backgroundOffset - background.getHeight(null), null);
+		for (int i = 0; i < STARFIELD_LAYERS; ++i) {
+			if (starfields[i] != null) {
+				image.getGraphics().drawImage(starfields[i], 0, (int)backgroundOffsets[i], null);
+				image.getGraphics().drawImage(starfields[i], 0, (int)(backgroundOffsets[i] - starfields[i].getHeight(null)), null);
+			}
 		}
 		for (Entity e : entities) {
 			e.render(image.getGraphics());
@@ -88,9 +94,11 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 	@Override
 	public void actionPerformed(ActionEvent ev) {
 		if (ev.getSource() == timer) {
-			backgroundOffset += Stage.BACKGROUND_SCROLL_SPEED;
-			if (backgroundOffset > Stage.BACKGROUND_OVERSIZE_RATIO*this.getHeight()) {
-				backgroundOffset = 0;
+			for (int i = 0; i < STARFIELD_LAYERS; ++i) {
+				backgroundOffsets[i] += (double)Stage.BACKGROUND_SCROLL_SPEED/Math.pow((i+1),0.5);
+				if (backgroundOffsets[i] > Stage.BACKGROUND_OVERSIZE_RATIO*this.getHeight()) {
+					backgroundOffsets[i] = 0;
+				}
 			}
 			for (Entity e : entities) {
 				e.update((int)(1000/Window.FPS));

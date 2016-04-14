@@ -24,9 +24,10 @@ public class Player extends Starship {
 	private static final int DEFAULTARMORLEVEL = 0;
 	private static final int DEFAULTWEAPONRYLEVEL= 0;
 	private static final int DEFAULTWEAPONRYHEALTH = 1;
-	private static final int FIREDRAIN = 20;
-	private static final int FULLCHARGE = 100;
-	public static final int MOVEMENT_SPEED = 300;
+	private static final int FIREDRAIN = 15;
+	private static final int MISSILEDRAIN = 40;
+	private static final int FULLCHARGE = 500;
+	public static final int MOVEMENT_SPEED = 500;
 	private static final int PLAYER_PROJECTILE_SPEED = 1200;
 	private static final int HEALTH_REGEN_TIME = 500;
 	private static int chargeLevel;
@@ -132,7 +133,7 @@ public class Player extends Starship {
 			if (type == 1) {
 				Projectile proj = new HomingProjectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getPosition(), new Vec2(0, -PLAYER_PROJECTILE_SPEED/2), this.getSource());
 				stage.add(proj);
-				chargeLevel -= FIREDRAIN*2;
+				chargeLevel -= MISSILEDRAIN;
 			}
 		}
 	}

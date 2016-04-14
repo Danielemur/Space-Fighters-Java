@@ -18,7 +18,7 @@ import com.greenteam.spacefighters.stage.Stage;
 
 public class ShootingEnemy extends Enemy {
 	private static final int SHOOTING_INTERVAL = 800;
-	private static final int PROJECTILE_SPEED = 600;
+	private static final int PROJECTILE_SPEED = 550;
 	
 	private int width;
 	private int height;

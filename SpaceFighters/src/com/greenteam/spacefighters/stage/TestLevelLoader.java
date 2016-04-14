@@ -53,14 +53,8 @@ public class TestLevelLoader extends LevelLoader implements ActionListener {
 			stage.add(new ShootingEnemy(stage, 20, 60));
 		}
 		else if (ev.getSource() == trackerEnemyTimer) {
-			stage.add(new TrackerEnemy(stage, 5, 0, 0));
+			stage.add(new TrackerEnemy(stage, 1, 0, 0));
 		}
-//		else if (ev.getSource() == playerProjectileTimer) {
-//			Projectile proj = new Projectile(stage, 1, 1, Player.class);
-//			proj.setVelocity(new Vec2(0, -500));
-//			proj.setPosition(new Vec2(160, 600));
-//			stage.add(proj);
-//		}
 	}
 
 }

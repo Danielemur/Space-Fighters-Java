@@ -16,7 +16,7 @@ import com.greenteam.spacefighters.entity.entityliving.EntityLiving;
 import com.greenteam.spacefighters.stage.Stage;
 
 public class HomingProjectile extends Projectile {
-	private static final double IMAGE_RATIO = 0.1;
+	private static final double IMAGE_RATIO = 0.05;
 	
 	private double speed;
 	private Entity target;
@@ -40,6 +40,7 @@ public class HomingProjectile extends Projectile {
 		for (Entity e : stage.getEntities()) {
 			if (isOppositeFaction(e)) {
 				if (e.getPosition().distance(this.getPosition()) < shortestDistance) {
+					shortestDistance = e.getPosition().distance(this.getPosition());
 					shortest = e;
 				}
 			}
@@ -51,14 +52,15 @@ public class HomingProjectile extends Projectile {
 	public void render(Graphics g) {
 		if (couldLoadImage) {
 			Vec2 pos = this.getPosition();
-			double angle = this.getVelocity().angle()+3*Math.PI/2;
-			double imagemidx = this.getTexture().getWidth(null)/2*IMAGE_RATIO;
-			double imagemidy = this.getTexture().getHeight(null)/2*IMAGE_RATIO;
-			AffineTransform tf = AffineTransform.getScaleInstance(IMAGE_RATIO, IMAGE_RATIO);
+			double angle = this.getVelocity().multiply(new Vec2(-1,1)).angle()+Math.PI/2;
+			double imagemidx = this.getTexture().getWidth(null)/2;
+			double imagemidy = this.getTexture().getHeight(null)/2;
+			AffineTransform tf = new AffineTransform();
 			//AffineTransform scale = AffineTransform.getScaleInstance(.1, .1);
+			tf.scale(IMAGE_RATIO, IMAGE_RATIO);
 			tf.rotate(angle, imagemidx, imagemidy);
 			AffineTransformOp op = new AffineTransformOp(tf, AffineTransformOp.TYPE_BILINEAR);
-			g.drawImage(op.filter((BufferedImage)this.getTexture(), null), (int)(pos.getX()-imagemidx), (int)(pos.getY()-imagemidy), null);
+			g.drawImage(op.filter((BufferedImage)this.getTexture(), null), (int)(pos.getX()-imagemidx*IMAGE_RATIO), (int)(pos.getY()-imagemidy*IMAGE_RATIO), null);
 		}
 		else {
 			g.setColor(Color.GREEN);

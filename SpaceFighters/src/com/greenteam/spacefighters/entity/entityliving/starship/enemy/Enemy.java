@@ -27,4 +27,9 @@ public abstract class Enemy extends Starship {
 			}
 		}
 	}
+	
+	@Override
+	public Class<?> getSource() {
+		return Enemy.class;
+	}
 }
