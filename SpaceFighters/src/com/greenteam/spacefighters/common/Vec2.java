@@ -162,8 +162,11 @@ public class Vec2 {
 		return this.min(max).max(min);
 	}
 	
-	public static Vec2 fromAngle(Vec2 x, Vec2 y, double angle)
-	{
+	public Vec2 multiply(Vec2 vec) {
+		return new Vec2(x * vec.x, y * vec.y);
+	}
+	
+	public static Vec2 fromAngle(Vec2 x, Vec2 y, double angle) {
 	    return new Vec2(Math.cos(angle), Math.sin(angle));
 	}
 }
