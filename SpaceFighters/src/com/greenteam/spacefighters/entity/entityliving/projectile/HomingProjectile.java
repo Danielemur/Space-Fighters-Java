@@ -79,5 +79,8 @@ public class HomingProjectile extends Projectile {
 			Vec2 vectorToTarget = target.getPosition().subtract(this.getPosition()).normalize().scale(speed);
 			this.setVelocity(vectorToTarget);
 		}
+		if (target == null) {
+			target = closestEntity();
+		}
 	}
 }

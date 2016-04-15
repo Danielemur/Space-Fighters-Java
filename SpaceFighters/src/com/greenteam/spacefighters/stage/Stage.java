@@ -143,6 +143,14 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 			case KeyEvent.VK_X:
 				fireSecondaryTimer.start();
 				break;
+			case KeyEvent.VK_SPACE:
+				if (this.isPaused()) {
+					this.resume();
+				}
+				else {
+					this.pause();
+				}
+				break;
 			default: break;
 			}
 		}
@@ -198,6 +206,18 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 	
 	public void pause() {
 		timer.stop();
+	}
+	
+	public void resume() {
+		timer.start();
+	}
+	
+	public boolean isPaused() {
+		return !timer.isRunning();
+	}
+	
+	public Timer getTimer() {
+		return timer;
 	}
 	
 	public Entity getNearestEntity(Entity entity) {

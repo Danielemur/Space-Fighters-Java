@@ -34,7 +34,7 @@ public class Window extends JFrame implements WindowListener {
 		
 		loader = new TestLevelLoader(stage, null);
 		
-		this.setTitle("Window!");
+		this.setTitle("Very Speedy");
 		this.setIconImage(new ImageIcon(this.getClass().getResource("/com/greenteam/spacefighters/assets/Pershing_Icon.png")).getImage());
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);

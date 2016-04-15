@@ -16,45 +16,44 @@ import com.greenteam.spacefighters.entity.entityliving.starship.enemy.TrackerEne
 import com.greenteam.spacefighters.entity.entityliving.starship.player.Player;
 
 public class TestLevelLoader extends LevelLoader implements ActionListener {
-	private Timer testEnemyTimer;
-	private Timer erraticEnemyTimer;
-	private Timer shootingEnemyTimer;
-	private Timer trackerEnemyTimer;
+	private static final int TESTENEMY_SPAWNINTERVAL = 400;
+	private static final int ERRATICENEMY_SPAWNINTERVAL = 520;
+	private static final int SHOOTINGENEMY_SPAWNINTERVAL = 540;
+	private static final int TRACKERENEMY_SPAWNINTERVAL = 1200;
+	
 	private Stage stage;
+	private Timer timer;
+	private int time;
 	
 	public TestLevelLoader(Stage s, File f) {
 		super(s, f);
 		stage = s;
-		testEnemyTimer = new Timer(550, this);
-		erraticEnemyTimer = new Timer(750, this);
-		shootingEnemyTimer = new Timer(2500, this);
-		trackerEnemyTimer = new Timer(1000, this);
+		timer = stage.getTimer();
+		timer.addActionListener(this);
 		
 		Player player = new Player(stage, 100);
 		player.setPosition(new Vec2(stage.getWidth()/2, stage.getHeight()*3/4));
 		stage.add(player);
 		stage.setPlayer(player);
 		stage.setHUD(new HUD(stage));
-		testEnemyTimer.start();
-		erraticEnemyTimer.start();
-		shootingEnemyTimer.start();
-		trackerEnemyTimer.start();
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent ev) {
-		if (ev.getSource() == testEnemyTimer) {
-			stage.add(new TestEnemy(stage, 20, 60));
-		}
-		else if (ev.getSource() == erraticEnemyTimer) {
-			stage.add(new ErraticEnemy(stage, 20, 60));
-		}
-		else if (ev.getSource() == shootingEnemyTimer) {
-			stage.add(new ShootingEnemy(stage, 20, 60));
-		}
-		else if (ev.getSource() == trackerEnemyTimer) {
-			stage.add(new TrackerEnemy(stage, 1, 0, 0));
+		if (ev.getSource() == timer) {
+			time += timer.getDelay();
+			if ((time % TESTENEMY_SPAWNINTERVAL)==0) {
+				stage.add(new TestEnemy(stage, 20, 60));
+			}
+			if ((time % ERRATICENEMY_SPAWNINTERVAL)==0) {
+				stage.add(new ErraticEnemy(stage, 20, 60));
+			}
+			if ((time % SHOOTINGENEMY_SPAWNINTERVAL)==0) {
+				stage.add(new ShootingEnemy(stage, 20, 60));
+			}
+			if ((time % TRACKERENEMY_SPAWNINTERVAL)==0) {
+				stage.add(new TrackerEnemy(stage, 40, 0, 0));
+			}
 		}
 	}
-
 }
