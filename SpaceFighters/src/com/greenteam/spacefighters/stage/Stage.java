@@ -9,14 +9,23 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+
 
 import com.greenteam.spacefighters.GUI.HUD;
 import com.greenteam.spacefighters.GUI.Window;
@@ -61,6 +70,45 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 		}
 		this.setPreferredSize(new Dimension(width, height));
 		this.setSize(new Dimension(width, height));
+
+		//sound stuff
+		/*
+		AudioInputStream inputStream;
+		try {
+			inputStream = AudioSystem.getAudioInputStream(this.getClass().getResource("/com/greenteam/spacefighters/sounds/bgm4.mp3"));
+			//inputStream = new AACAudioFileReader().getAudioInputStream(this.getClass().getResource("/com/greenteam/spacefighters/sounds/bgm2.m4a"));
+			Clip clip = AudioSystem.getClip();
+			clip.open(inputStream);
+			FloatControl control = (FloatControl)clip.getControl(FloatControl.Type.MASTER_GAIN);
+			control.setValue(-16f);
+			clip.loop(Clip.LOOP_CONTINUOUSLY);
+		}
+		catch (UnsupportedAudioFileException e) {
+			e.printStackTrace();
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		catch (LineUnavailableException e) {
+			e.printStackTrace();
+		}
+		*/
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					FileInputStream fis = new FileInputStream(this.getClass().getResource("/com/greenteam/spacefighters/sounds/bgm4.mp3").getFile());
+					javazoom.jl.player.Player playMP3 = new javazoom.jl.player.Player(fis);
+					playMP3.play();
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		
+		t.start();
+		
 		this.addKeyListener(this);
 		firePrimaryTimer = new Timer((int)(500/Window.FPS), this);
 		fireSecondaryTimer = new Timer((int)(500/Window.FPS), this);

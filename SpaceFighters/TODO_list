@@ -1,1 +1,9 @@
-Fix issue with frame size--it doesn't match for some reason
+Pause screen
+Title screen
+Game Over screen
+Bosses
+Weapons upgrades
+Hull upgrades
+Scoreboard for high scores
+2D scrolling for Stage
+Updating Player (or making a PlayerFreeform) to support arbitrary directions

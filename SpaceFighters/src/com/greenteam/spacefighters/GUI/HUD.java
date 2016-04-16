@@ -19,9 +19,9 @@ public class HUD {
 		
 		int charge = p.getCharge();
 		int fullcharge = p.getMaxCharge();
-		g.setColor(new Color(0f,.8f,0f,.5f));
+		g.setColor(new Color(.8f,.7f,.0f,.7f));
 		g.fillRect(150, 40, (int)(200*(double)charge/fullcharge), 10);
-		g.setColor(new Color(.7f,.2f,0f,.5f));
+		g.setColor(new Color(.6f,.3f,.2f,.4f));
 		g.fillRect(150+(int)(200*charge/fullcharge), 40, (int)(200*(1-(double)charge/fullcharge)), 10);
 		
 		g.setColor(Color.WHITE);
@@ -32,9 +32,9 @@ public class HUD {
 		
 		int health = p.getHealth();
 		if (health < 0) health = 0;
-		g.setColor(new Color(0f,.8f,0f,.5f));
+		g.setColor(new Color(0f,.8f,0f,.7f));
 		g.fillRect(150, 5, (int)(200*(double)health/p.getMaxHealth()), 25);
-		g.setColor(new Color(.7f,.2f,0f,.5f));
+		g.setColor(new Color(.7f,.2f,0f,.4f));
 		g.fillRect(150+(int)(200*health/p.getMaxHealth()), 5, (int)(200*(1-(double)health/p.getMaxHealth())), 25);
 		g.setColor(Color.WHITE);
 		g.drawString(String.format("%d/%d", health, p.getMaxHealth()), 215, 23);
