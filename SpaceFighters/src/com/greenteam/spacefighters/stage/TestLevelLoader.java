@@ -8,6 +8,7 @@ import javax.swing.Timer;
 
 import com.greenteam.spacefighters.GUI.HUD;
 import com.greenteam.spacefighters.common.Vec2;
+import com.greenteam.spacefighters.entity.entityliving.powerup.HealthRestorePowerup;
 import com.greenteam.spacefighters.entity.entityliving.projectile.Projectile;
 import com.greenteam.spacefighters.entity.entityliving.starship.enemy.ErraticEnemy;
 import com.greenteam.spacefighters.entity.entityliving.starship.enemy.ShootingEnemy;
@@ -20,6 +21,7 @@ public class TestLevelLoader extends LevelLoader implements ActionListener {
 	private static final int ERRATICENEMY_SPAWNINTERVAL = 520;
 	private static final int SHOOTINGENEMY_SPAWNINTERVAL = 540;
 	private static final int TRACKERENEMY_SPAWNINTERVAL = 1200;
+	private static final int POWERUP_SPAWNINTERVAL = 5000; //remove this after implementing powerup spawning in Enemy
 	
 	private Stage stage;
 	private Timer timer;
@@ -53,6 +55,9 @@ public class TestLevelLoader extends LevelLoader implements ActionListener {
 			}
 			if ((time % TRACKERENEMY_SPAWNINTERVAL)==0) {
 				stage.add(new TrackerEnemy(stage, 40, 0, 0));
+			}
+			if ((time % POWERUP_SPAWNINTERVAL)==0) {
+				stage.add(new HealthRestorePowerup(stage));
 			}
 		}
 	}

@@ -13,6 +13,7 @@ import com.greenteam.spacefighters.common.Vec2;
 import com.greenteam.spacefighters.entity.Entity;
 import com.greenteam.spacefighters.entity.entityliving.EntityLiving;
 import com.greenteam.spacefighters.entity.entityliving.obstacle.Obstacle;
+import com.greenteam.spacefighters.entity.entityliving.powerup.Powerup;
 import com.greenteam.spacefighters.entity.entityliving.projectile.HomingProjectile;
 import com.greenteam.spacefighters.entity.entityliving.projectile.Projectile;
 import com.greenteam.spacefighters.entity.entityliving.starship.Starship;
@@ -97,8 +98,11 @@ public class Player extends Starship {
 		for (Entity e : this.getStage().getEntities()) {
 			if (e == this) continue;
 			if ((e.getPosition().distance(this.getPosition()) < this.getRadius() + e.getRadius()) &&
-					((Obstacle.class.isAssignableFrom(e.getSource())) || ((Enemy.class.isAssignableFrom(e.getSource()))))) {
+					((Obstacle.class.isAssignableFrom(e.getSource())) || ((Enemy.class.isAssignableFrom(e.getSource()) || (Powerup.class.isAssignableFrom(e.getSource())))))) {
 				this.setHealth(this.getHealth() - ((EntityLiving)e).getDamage());
+				if (this.getHealth() > this.getMaxHealth()) {
+					this.setHealth(this.getMaxHealth());
+				}
 			}
 		}
 		if (this.getPosition().getX() > stage.getWidth()) {

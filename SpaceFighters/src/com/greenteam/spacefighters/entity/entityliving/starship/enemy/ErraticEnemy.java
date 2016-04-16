@@ -47,7 +47,7 @@ public class ErraticEnemy extends Enemy {
 			g.drawImage(op.filter((BufferedImage)this.getTexture(), null), (int)(pos.getX()-imagemidx), (int)(pos.getY()-imagemidy), null);
 		}
 		else {
-			g.setColor(Color.BLACK);
+			g.setColor(Color.WHITE);
 			g.fillRect((int)pos.getX(), (int)pos.getY(), width, height);
 		}
 	}

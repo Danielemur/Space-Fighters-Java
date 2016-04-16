@@ -18,6 +18,7 @@ public abstract class Powerup extends EntityLiving {
 
 	@Override
 	public void update(int ms) {
+		super.update(ms);
 		//TODO make it do something
 	}
 	
