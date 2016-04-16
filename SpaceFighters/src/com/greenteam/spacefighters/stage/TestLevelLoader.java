@@ -9,7 +9,6 @@ import javax.swing.Timer;
 import com.greenteam.spacefighters.GUI.HUD;
 import com.greenteam.spacefighters.common.Vec2;
 import com.greenteam.spacefighters.entity.entityliving.powerup.HealthRestorePowerup;
-import com.greenteam.spacefighters.entity.entityliving.projectile.Projectile;
 import com.greenteam.spacefighters.entity.entityliving.starship.enemy.ErraticEnemy;
 import com.greenteam.spacefighters.entity.entityliving.starship.enemy.ShootingEnemy;
 import com.greenteam.spacefighters.entity.entityliving.starship.enemy.TestEnemy;
