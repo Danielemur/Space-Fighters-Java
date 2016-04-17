@@ -20,20 +20,21 @@ import javax.swing.Timer;
 
 import com.greenteam.spacefighters.GUI.HUD;
 import com.greenteam.spacefighters.GUI.Window;
+import com.greenteam.spacefighters.common.Vec2;
 import com.greenteam.spacefighters.entity.Entity;
 import com.greenteam.spacefighters.entity.entityliving.starship.player.Player;
 
 public class Stage extends JPanel implements ActionListener, KeyListener {
+	public static final int WIDTH = 2400;
+	public static final int HEIGHT= 2400;
 	private static final long serialVersionUID = -2937557151448523567L;
-	private static final int NUM_STARS = 12;
+	private static final int NUM_STARS = 120;
 	private static final double BACKGROUND_SCROLL_SPEED = 2.5;
 	private static final int BACKGROUND_OVERSIZE_RATIO = 5;
 	private static final int STARFIELD_LAYERS = 3;
 
 	private CopyOnWriteArrayList<Entity> entities;
 	private Timer timer;
-	private int width;
-	private int height;
 	private Player player;
 	private int score;
 	private HUD hud;
@@ -45,19 +46,17 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 	
 	public Stage(int width, int height, Player player) {
 		this.entities = new CopyOnWriteArrayList<Entity>();
-		this.width = width;
-		this.height = height;
 		this.player = player;
 		this.score = 0;
 		this.hud = null;
 		this.backgroundOffsets = new double[STARFIELD_LAYERS];
 		this.starfields = new BufferedImage[STARFIELD_LAYERS];
 		for (int i = 0; i < STARFIELD_LAYERS; ++i) {
-			starfields[i] = new BufferedImage(width, height*Stage.BACKGROUND_OVERSIZE_RATIO, BufferedImage.TYPE_INT_ARGB);
+			starfields[i] = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
 			Graphics g = starfields[i].getGraphics();
 			g.setColor(Color.WHITE);
-			for (int j = 0; j < Stage.NUM_STARS*Stage.BACKGROUND_OVERSIZE_RATIO; ++j) {
-				g.fillRect((int)(width*Math.random()), (int)(height*Stage.BACKGROUND_OVERSIZE_RATIO*Math.random()), 1, 1);
+			for (int j = 0; j < Stage.NUM_STARS; ++j) {
+				g.fillRect((int)(WIDTH * Math.random()), (int)(HEIGHT * Math.random()), 1, 1);
 			}
 		}
 		this.setPreferredSize(new Dimension(width, height));
@@ -75,16 +74,32 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 		super.paintComponent(g);
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
-		BufferedImage image = new BufferedImage(this.getSize().width, this.getSize().height, BufferedImage.TYPE_INT_ARGB);
+		BufferedImage image = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_ARGB);
+		
+		Vec2 offsetMax = new Vec2(WIDTH - this.getWidth(), HEIGHT - this.getHeight());
+		Vec2 offsetMin = Vec2.ZERO;
+		
+		Vec2 offset = new Vec2(player.getPosition().getX() - this.getWidth() / 2,
+							   player.getPosition().getY() - this.getHeight() / 2);
+		
+		offset = offset.min(offsetMax).max(offsetMin);
+		System.out.println(offset);
+		//g.setClip((int)offset.getX(), (int)offset.getY(), viewWidth, viewHeight);
+		//g.translate((int)offset.getX(), (int)offset.getY());
+		player.render(image.getGraphics());
+		
 		for (int i = 0; i < STARFIELD_LAYERS; ++i) {
 			if (starfields[i] != null) {
-				image.getGraphics().drawImage(starfields[i], 0, (int)backgroundOffsets[i], null);
-				image.getGraphics().drawImage(starfields[i], 0, (int)(backgroundOffsets[i] - starfields[i].getHeight(null)), null);
+				image.getGraphics().drawImage(starfields[i], 0, 0/*(int)backgroundOffsets[i]*/, null);
+				image.getGraphics().drawImage(starfields[i], 0, 0/*(int)(backgroundOffsets[i] - starfields[i].getHeight(null))*/, null);
 			}
 		}
 		for (Entity e : entities) {
-			e.render(image.getGraphics());
+			if (e != player) {
+				e.render(image.getGraphics());
+			}
 		}
+		//g.translate(-(int)offset.getX(), -(int)offset.getY());
 		g.drawImage(image, 0, 0, null);
 		if (hud != null) {
 			hud.render(g);
@@ -131,16 +146,21 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 		if (player != null) {
 			switch (ev.getKeyCode()) {
 			case KeyEvent.VK_LEFT:
-				player.getVelocity().setX(-Player.MOVEMENT_SPEED);
+			{
+				player.setOrientation(player.getOrientation().rotate(Vec2.ZERO, 0.5));
+			}
 				break;
 			case KeyEvent.VK_RIGHT:
-				player.getVelocity().setX(Player.MOVEMENT_SPEED);
+			{
+				player.setOrientation(player.getOrientation().rotate(Vec2.ZERO, -0.5));
+			}
 				break;
 			case KeyEvent.VK_UP:
-				player.getVelocity().setY(-Player.MOVEMENT_SPEED);
+				Vec2 orientation = player.getOrientation();
+				player.setVelocity(orientation.scale(Player.MOVEMENT_SPEED).multiply(new Vec2(1, -1)));
 				break;
 			case KeyEvent.VK_DOWN:
-				player.getVelocity().setY(Player.MOVEMENT_SPEED);
+				//player.getVelocity().setY(Player.MOVEMENT_SPEED);
 				break;
 			case KeyEvent.VK_Z:
 				firePrimaryTimer.start();
@@ -200,6 +220,7 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 	}
 
 	public void setPlayer(Player player) {
+		this.add(player);
 		this.player = player;
 	}
 	
@@ -229,6 +250,11 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 	
 	public Timer getTimer() {
 		return timer;
+	}
+	
+	public static boolean inStage(Vec2 pos) {
+		return (pos.getX() > 0 && pos.getX() < Stage.WIDTH &&
+				pos.getY() > 0 && pos.getY() < Stage.HEIGHT);
 	}
 	
 	public Entity getNearestEntity(Entity entity) {

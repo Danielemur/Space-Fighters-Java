@@ -16,21 +16,22 @@ public class TestEnemy extends Enemy {
 	private int width;
 	private int height;
 	private boolean couldLoadImage;
+	private static final double SPAWNDIST = 400.0D;
 	
-	public TestEnemy(Stage s, int width, int height) {
+	public TestEnemy(Stage s) {
 		super(s, 1, 0, 0);
-		this.setPosition(new Vec2(0,0));
+		this.setPosition(randSpawnPos(SPAWNDIST));
 		this.setVelocity(new Vec2(-440,200));
 		try {
 			this.setTexture(ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/enemy-0.png")));
+			couldLoadImage = true;
 			this.width = this.getTexture().getWidth(null);
 			this.height = this.getTexture().getHeight(null);
-			couldLoadImage = true;
 		} catch (IOException e) {
 			couldLoadImage = false;
+			this.width = 20;
+			this.height = 60;
 		}
-		this.width = width;
-		this.height = height;
 	}
 
 	@Override
@@ -58,12 +59,12 @@ public class TestEnemy extends Enemy {
 	@Override
 	public void update(int ms) {
 		super.update(ms);
-		this.setOrientation(this.getOrientation().rotate(new Vec2(0,0), null, 0.1));
-		if ((this.getPosition().getX() + width*2 > stage.getWidth()) || (this.getPosition().getX() < 0)) {
+		this.setOrientation(this.getOrientation().rotate(new Vec2(0,0), 0.1));
+		if ((this.getPosition().getX() + width * 2 > Stage.WIDTH) || (this.getPosition().getX() < 0)) {
 			this.getVelocity().setX(this.getVelocity().getX()*-1);
 		}
-		if (this.getPosition().getY() - 1 > stage.getHeight()) {
-			this.remove();
+		if ((this.getPosition().getY() + height * 2 > Stage.HEIGHT) || (this.getPosition().getY() < 0)) {
+			this.getVelocity().setY(this.getVelocity().getY() * -1);
 		}
 	}
 

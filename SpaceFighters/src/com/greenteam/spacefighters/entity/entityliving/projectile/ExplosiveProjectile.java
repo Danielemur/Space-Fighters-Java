@@ -49,7 +49,7 @@ public class ExplosiveProjectile extends Projectile {
 		return hitRadius;
 	}
 	
-	static public int getEnergyCost() {
+	public static int getEnergyCost() {
 		return 300;
 	}
 	
@@ -78,8 +78,8 @@ public class ExplosiveProjectile extends Projectile {
 	
 	@Override
 	public void update(int ms) {
-		countdown -= ms;
 		super.update(ms);
+		countdown -= ms;
 		if (countdown <= 0) {
 			if (!isExploding) {
 				isExploding = true;
@@ -92,13 +92,6 @@ public class ExplosiveProjectile extends Projectile {
 		
 		if (isExploding) {
 			hitRadius = PROJECTILERADIUS + (BLASTRADIUS - PROJECTILERADIUS) * (1 - (countdown / (float)EXPLOSIONDURATION));
-		}
-		
-		if ((this.getPosition().getX() > stage.getWidth()) ||
-				(this.getPosition().getX() < 0) ||
-				(this.getPosition().getY() > stage.getHeight()) ||
-				(this.getPosition().getY() < 0)) {
-			stage.remove(this);
 		}
 	}
 	

@@ -23,12 +23,13 @@ public class TrackerEnemy extends Enemy {
 	private static final int FIREDRAIN = 1500;
 	private static final int FULLCHARGE = 5000;
 	private static final int PROJECTILESPEED = 550;
+	private static final double SPAWNDIST = 400.0D;
 	
 	private int chargeLevel;
 	
-	public TrackerEnemy(Stage s, int health, int armorMultiplier, int weaponryMultiplier) {
-		super(s, health, armorMultiplier, weaponryMultiplier);
-		this.setPosition(new Vec2((stage.getWidth()-40)*Math.random(),0));
+	public TrackerEnemy(Stage s) {
+		super(s, 40, DEFAULTARMORLEVEL, DEFAULTWEAPONRYLEVEL);
+		this.setPosition(randSpawnPos(SPAWNDIST));
 		this.setVelocity(new Vec2(1000*Math.random()-500,200));
 		this.setOrientation(new Vec2(0, -1));
 		try {
@@ -57,14 +58,14 @@ public class TrackerEnemy extends Enemy {
 			double drag = speed * speed * DRAG;
 			setAcceleration(new Vec2(0, -1).scale(ACCELERATION).subtract(getVelocity().scale(drag)));
 		}
-		if (this.getPosition().getX() > stage.getWidth()) {
-			this.getPosition().setX(stage.getWidth());
+		if (this.getPosition().getX() > stage.WIDTH) {
+			this.getPosition().setX(stage.WIDTH);
 		}
 		if (this.getPosition().getX() < 0) {
 			this.getPosition().setX(0);
 		}
-		if (this.getPosition().getY() > stage.getHeight()) {
-			this.getPosition().setY(stage.getHeight());
+		if (this.getPosition().getY() > stage.HEIGHT) {
+			this.getPosition().setY(stage.HEIGHT);
 		}
 		if (this.getPosition().getY() < 0) {
 			this.getPosition().setY(0);
@@ -78,9 +79,9 @@ public class TrackerEnemy extends Enemy {
 			int damage = 10 * (getWeaponryMultiplier() + 1);
 			Projectile proj = new LinearProjectile(stage, DEFAULTWEAPONRYHEALTH, damage/2, this.getPosition(), this.getOrientation().scale(PROJECTILESPEED), this.getSource());
 			stage.add(proj);
-			proj = new LinearProjectile(stage, DEFAULTWEAPONRYHEALTH, damage/2, this.getPosition(), this.getOrientation().scale(PROJECTILESPEED).rotate(new Vec2(0,0), null, -0.04), this.getSource());
+			proj = new LinearProjectile(stage, DEFAULTWEAPONRYHEALTH, damage/2, this.getPosition(), this.getOrientation().scale(PROJECTILESPEED).rotate(new Vec2(0,0), -0.04), this.getSource());
 			stage.add(proj);
-			proj = new LinearProjectile(stage, DEFAULTWEAPONRYHEALTH, damage/2, this.getPosition(), this.getOrientation().scale(PROJECTILESPEED).rotate(new Vec2(0,0), null, 0.04), this.getSource());
+			proj = new LinearProjectile(stage, DEFAULTWEAPONRYHEALTH, damage/2, this.getPosition(), this.getOrientation().scale(PROJECTILESPEED).rotate(new Vec2(0,0), 0.04), this.getSource());
 			stage.add(proj);
 			chargeLevel -= FIREDRAIN;
 		}

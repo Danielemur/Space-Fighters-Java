@@ -12,9 +12,6 @@ import javax.imageio.ImageIO;
 import com.greenteam.spacefighters.common.Vec2;
 import com.greenteam.spacefighters.entity.Entity;
 import com.greenteam.spacefighters.entity.entityliving.EntityLiving;
-import com.greenteam.spacefighters.entity.entityliving.obstacle.Obstacle;
-import com.greenteam.spacefighters.entity.entityliving.projectile.Projectile;
-import com.greenteam.spacefighters.entity.entityliving.starship.enemy.Enemy;
 import com.greenteam.spacefighters.entity.entityliving.starship.player.Player;
 import com.greenteam.spacefighters.stage.Stage;
 
@@ -24,15 +21,16 @@ public class HealthRestorePowerup extends Powerup {
 	private boolean couldLoadImage;
 	private Vec2 randpos;
 	private int time;
+	private static final double SPAWNDIST = 400.0D;
 
 	public HealthRestorePowerup(Stage s) {
 		super(s);
 		time = SELECT_NEW_POSITION_INTERVAL;
 		
-		this.setPosition(new Vec2((stage.getWidth()-40)*Math.random(),0));
+		this.setPosition(this.randSpawnPos(SPAWNDIST));
 		this.setOrientation(new Vec2(0,-1));
 		
-		randpos = new Vec2((stage.getWidth()-40)*Math.random(), stage.getHeight()*2/3*Math.random()+70);
+		randpos = new Vec2(Stage.WIDTH * Math.random(), stage.HEIGHT * Math.random());
 		
 		try {
 			this.setTexture(ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/powerup-0.png")));
@@ -45,7 +43,6 @@ public class HealthRestorePowerup extends Powerup {
 	@Override
 	public void render(Graphics g) {
 		Vec2 pos = this.getPosition();
-		this.setVelocity(randpos.subtract(this.getPosition()));
 		if (couldLoadImage) {
 			double angle = this.getOrientation().angle();
 			double imagemidx = this.getTexture().getWidth(null)/2;
@@ -66,8 +63,9 @@ public class HealthRestorePowerup extends Powerup {
 		time -= ms;
 		if (time <= 0) {
 			time = SELECT_NEW_POSITION_INTERVAL;
-			randpos = new Vec2((stage.getWidth()-40)*Math.random(), stage.getHeight()/3*Math.random()+70);
+			randpos = new Vec2(Stage.WIDTH * Math.random(), stage.HEIGHT * Math.random());
 		}
+		this.setVelocity(randpos.subtract(this.getPosition()));
 		if (this.getHealth() <= 0) {
 			stage.setScore(stage.getScore() + this.getPointValue());
 		}

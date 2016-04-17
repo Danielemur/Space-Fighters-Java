@@ -16,11 +16,11 @@ import com.greenteam.spacefighters.entity.entityliving.starship.enemy.TrackerEne
 import com.greenteam.spacefighters.entity.entityliving.starship.player.Player;
 
 public class TestLevelLoader extends LevelLoader implements ActionListener {
-	private static final int TESTENEMY_SPAWNINTERVAL = 400;
-	private static final int ERRATICENEMY_SPAWNINTERVAL = 520;
-	private static final int SHOOTINGENEMY_SPAWNINTERVAL = 540;
-	private static final int TRACKERENEMY_SPAWNINTERVAL = 1200;
-	private static final int POWERUP_SPAWNINTERVAL = 5000; //remove this after implementing powerup spawning in Enemy
+	private static final int TESTENEMY_SPAWNINTERVAL = 200;
+	private static final int ERRATICENEMY_SPAWNINTERVAL = 260;
+	private static final int SHOOTINGENEMY_SPAWNINTERVAL = 270;
+	private static final int TRACKERENEMY_SPAWNINTERVAL = 600;
+	private static final int POWERUP_SPAWNINTERVAL = 2500; //remove this after implementing powerup spawning in Enemy
 	
 	private Stage stage;
 	private Timer timer;
@@ -33,8 +33,7 @@ public class TestLevelLoader extends LevelLoader implements ActionListener {
 		timer.addActionListener(this);
 		
 		Player player = new Player(stage, 100);
-		player.setPosition(new Vec2(stage.getWidth()/2, stage.getHeight()*3/4));
-		stage.add(player);
+		player.setPosition(new Vec2(0,0));//Stage.WIDTH / 2 , Stage.HEIGHT / 2));
 		stage.setPlayer(player);
 		stage.setHUD(new HUD(stage));
 	}
@@ -44,16 +43,16 @@ public class TestLevelLoader extends LevelLoader implements ActionListener {
 		if (ev.getSource() == timer) {
 			time += timer.getDelay();
 			if ((time % TESTENEMY_SPAWNINTERVAL)==0) {
-				stage.add(new TestEnemy(stage, 20, 60));
+				stage.add(new TestEnemy(stage));
 			}
 			if ((time % ERRATICENEMY_SPAWNINTERVAL)==0) {
-				stage.add(new ErraticEnemy(stage, 20, 60));
+				stage.add(new ErraticEnemy(stage));
 			}
 			if ((time % SHOOTINGENEMY_SPAWNINTERVAL)==0) {
-				stage.add(new ShootingEnemy(stage, 20, 60));
+				stage.add(new ShootingEnemy(stage));
 			}
 			if ((time % TRACKERENEMY_SPAWNINTERVAL)==0) {
-				stage.add(new TrackerEnemy(stage, 40, 0, 0));
+				stage.add(new TrackerEnemy(stage));
 			}
 			if ((time % POWERUP_SPAWNINTERVAL)==0) {
 				stage.add(new HealthRestorePowerup(stage));
