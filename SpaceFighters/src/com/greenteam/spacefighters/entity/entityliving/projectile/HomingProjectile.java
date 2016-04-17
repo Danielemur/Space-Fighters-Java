@@ -26,7 +26,7 @@ public class HomingProjectile extends Projectile {
 		target = closestEntity();
 		speed = velocity.magnitude();
 		try {
-			this.setTexture(ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/missile.png")));
+			this.setTexture(ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/projectile-3.png")));
 			couldLoadImage = true;
 		} catch (IOException e) {
 			couldLoadImage = false;
@@ -55,9 +55,6 @@ public class HomingProjectile extends Projectile {
 			double imagemidx = this.getTexture().getWidth(null)/2;
 			double imagemidy = this.getTexture().getHeight(null)/2;
 			AffineTransform tf = new AffineTransform();
-			//AffineTransform scale = AffineTransform.getScaleInstance(.1, .1);
-			tf.scale(IMAGE_RATIO, IMAGE_RATIO);
-			tf.rotate(angle, imagemidx, imagemidy);
 			AffineTransformOp op = new AffineTransformOp(tf, AffineTransformOp.TYPE_BILINEAR);
 			g.drawImage(op.filter((BufferedImage)this.getTexture(), null), (int)(pos.getX()-imagemidx*IMAGE_RATIO), (int)(pos.getY()-imagemidy*IMAGE_RATIO), null);
 		}
@@ -81,6 +78,12 @@ public class HomingProjectile extends Projectile {
 		}
 		if (target == null) {
 			target = closestEntity();
+		}
+		for (Entity e : this.getStage().getEntities()) {
+			if (e == this) continue;
+			if ((e.getPosition().distance(this.getPosition()) < this.getRadius() + e.getRadius()) && isOppositeFaction(e)) {
+				this.setHealth(this.getHealth() - ((EntityLiving)e).getDamage());
+			}
 		}
 	}
 }
