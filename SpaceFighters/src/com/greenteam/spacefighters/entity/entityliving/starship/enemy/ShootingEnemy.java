@@ -10,6 +10,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import com.greenteam.spacefighters.common.Vec2;
+import com.greenteam.spacefighters.entity.entityliving.projectile.LinearProjectile;
 import com.greenteam.spacefighters.entity.entityliving.projectile.Projectile;
 import com.greenteam.spacefighters.stage.Stage;
 
@@ -72,7 +73,7 @@ public class ShootingEnemy extends Enemy {
 		if (time > SHOOTING_INTERVAL) {
 			time = 0;
 			Vec2 vectorToTarget = stage.getPlayer().getPosition().subtract(this.getPosition()).normalize().scale(PROJECTILE_SPEED);
-			Projectile proj = new Projectile(stage, 1, 3, this.getPosition(), vectorToTarget, Enemy.class);
+			Projectile proj = new LinearProjectile(stage, 1, 3, this.getPosition(), vectorToTarget, Enemy.class);
 			stage.add(proj);
 		}
 		this.setVelocity(randpos.subtract(this.getPosition()));

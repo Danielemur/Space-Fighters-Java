@@ -9,6 +9,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import com.greenteam.spacefighters.common.Vec2;
+import com.greenteam.spacefighters.entity.entityliving.projectile.LinearProjectile;
 import com.greenteam.spacefighters.entity.entityliving.projectile.Projectile;
 import com.greenteam.spacefighters.entity.entityliving.starship.player.Player;
 import com.greenteam.spacefighters.stage.Stage;
@@ -75,11 +76,11 @@ public class TrackerEnemy extends Enemy {
 	public void fire(int mode) {
 		if (chargeLevel >= FIREDRAIN) {
 			int damage = 10 * (getWeaponryMultiplier() + 1);
-			Projectile proj = new Projectile(stage, DEFAULTWEAPONRYHEALTH, damage/2, this.getPosition(), this.getOrientation().scale(PROJECTILESPEED), this.getSource());
+			Projectile proj = new LinearProjectile(stage, DEFAULTWEAPONRYHEALTH, damage/2, this.getPosition(), this.getOrientation().scale(PROJECTILESPEED), this.getSource());
 			stage.add(proj);
-			proj = new Projectile(stage, DEFAULTWEAPONRYHEALTH, damage/2, this.getPosition(), this.getOrientation().scale(PROJECTILESPEED).rotate(new Vec2(0,0), null, -0.04), this.getSource());
+			proj = new LinearProjectile(stage, DEFAULTWEAPONRYHEALTH, damage/2, this.getPosition(), this.getOrientation().scale(PROJECTILESPEED).rotate(new Vec2(0,0), null, -0.04), this.getSource());
 			stage.add(proj);
-			proj = new Projectile(stage, DEFAULTWEAPONRYHEALTH, damage/2, this.getPosition(), this.getOrientation().scale(PROJECTILESPEED).rotate(new Vec2(0,0), null, 0.04), this.getSource());
+			proj = new LinearProjectile(stage, DEFAULTWEAPONRYHEALTH, damage/2, this.getPosition(), this.getOrientation().scale(PROJECTILESPEED).rotate(new Vec2(0,0), null, 0.04), this.getSource());
 			stage.add(proj);
 			chargeLevel -= FIREDRAIN;
 		}

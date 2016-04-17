@@ -39,6 +39,7 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 	private HUD hud;
 	private Timer firePrimaryTimer;
 	private Timer fireSecondaryTimer;
+	private Timer fireTertiaryTimer;
 	private Image[] starfields;
 	private double[] backgroundOffsets;
 	
@@ -64,6 +65,7 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 		this.addKeyListener(this);
 		firePrimaryTimer = new Timer((int)(500/Window.FPS), this);
 		fireSecondaryTimer = new Timer((int)(500/Window.FPS), this);
+		fireTertiaryTimer = new Timer((int)(500/Window.FPS), this);
 		timer = new Timer((int)(1000/Window.FPS), this);
 		timer.start();
 	}
@@ -111,6 +113,9 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 		else if (ev.getSource() == fireSecondaryTimer) {
 			player.fire(1);
 		}
+		else if (ev.getSource() == fireTertiaryTimer) {
+			player.fire(2);
+		}
 	}
 
 	public void remove(Entity entity) {
@@ -143,6 +148,9 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 			case KeyEvent.VK_X:
 				fireSecondaryTimer.start();
 				break;
+			case KeyEvent.VK_C:
+				fireTertiaryTimer.start();
+				break;
 			case KeyEvent.VK_SPACE:
 				if (this.isPaused()) {
 					this.resume();
@@ -173,6 +181,9 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 				break;
 			case KeyEvent.VK_X:
 				fireSecondaryTimer.stop();
+				break;
+			case KeyEvent.VK_C:
+				fireTertiaryTimer.stop();
 				break;
 			default: break;
 			}
