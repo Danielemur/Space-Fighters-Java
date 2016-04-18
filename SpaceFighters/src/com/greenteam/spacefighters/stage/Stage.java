@@ -9,12 +9,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -43,6 +40,7 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 	private Timer fireTertiaryTimer;
 	private Image[] starfields;
 	private double[] backgroundOffsets;
+	private boolean upKeyPressed;
 	
 	public Stage(int width, int height, Player player) {
 		this.entities = new CopyOnWriteArrayList<Entity>();
@@ -67,6 +65,7 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 		fireTertiaryTimer = new Timer((int)(500/Window.FPS), this);
 		timer = new Timer((int)(1000/Window.FPS), this);
 		timer.start();
+		upKeyPressed = false;
 	}
 	
 	@Override
@@ -74,7 +73,6 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 		super.paintComponent(g);
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
-		BufferedImage image = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		
 		Vec2 offsetMax = new Vec2(WIDTH - this.getWidth(), HEIGHT - this.getHeight());
 		Vec2 offsetMin = Vec2.ZERO;
@@ -85,22 +83,21 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 		offset = offset.min(offsetMax).max(offsetMin);
 		System.out.println(offset);
 		//g.setClip((int)offset.getX(), (int)offset.getY(), viewWidth, viewHeight);
-		//g.translate((int)offset.getX(), (int)offset.getY());
-		player.render(image.getGraphics());
+		g.translate(-(int)offset.getX(), -(int)offset.getY());
+		player.render(g);
 		
 		for (int i = 0; i < STARFIELD_LAYERS; ++i) {
 			if (starfields[i] != null) {
-				image.getGraphics().drawImage(starfields[i], 0, 0/*(int)backgroundOffsets[i]*/, null);
-				image.getGraphics().drawImage(starfields[i], 0, 0/*(int)(backgroundOffsets[i] - starfields[i].getHeight(null))*/, null);
+				g.drawImage(starfields[i], 0, 0/*(int)backgroundOffsets[i]*/, null);
+				g.drawImage(starfields[i], 0, 0/*(int)(backgroundOffsets[i] - starfields[i].getHeight(null))*/, null);
 			}
 		}
 		for (Entity e : entities) {
 			if (e != player) {
-				e.render(image.getGraphics());
+				e.render(g);
 			}
 		}
-		//g.translate(-(int)offset.getX(), -(int)offset.getY());
-		g.drawImage(image, 0, 0, null);
+		g.translate((int)offset.getX(), (int)offset.getY());
 		if (hud != null) {
 			hud.render(g);
 		}
@@ -148,19 +145,27 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 			case KeyEvent.VK_LEFT:
 			{
 				player.setOrientation(player.getOrientation().rotate(Vec2.ZERO, 0.5));
+				if (upKeyPressed) {
+					Vec2 orientation = player.getOrientation();
+					player.setVelocity(orientation.scale(Player.MOVEMENT_SPEED).multiply(new Vec2(1, -1)));
+				}
 			}
 				break;
 			case KeyEvent.VK_RIGHT:
 			{
 				player.setOrientation(player.getOrientation().rotate(Vec2.ZERO, -0.5));
+				if (upKeyPressed) {
+					Vec2 orientation = player.getOrientation();
+					player.setVelocity(orientation.scale(Player.MOVEMENT_SPEED).multiply(new Vec2(1, -1)));
+				}
 			}
 				break;
 			case KeyEvent.VK_UP:
+				upKeyPressed = true;
 				Vec2 orientation = player.getOrientation();
 				player.setVelocity(orientation.scale(Player.MOVEMENT_SPEED).multiply(new Vec2(1, -1)));
 				break;
 			case KeyEvent.VK_DOWN:
-				//player.getVelocity().setY(Player.MOVEMENT_SPEED);
 				break;
 			case KeyEvent.VK_Z:
 				firePrimaryTimer.start();
@@ -190,11 +195,11 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 			switch (ev.getKeyCode()) {
 			case KeyEvent.VK_LEFT:
 			case KeyEvent.VK_RIGHT:
-				player.getVelocity().setX(0);
 				break;
 			case KeyEvent.VK_UP:
+				player.setVelocity(Vec2.ZERO);
+				upKeyPressed = false;
 			case KeyEvent.VK_DOWN:
-				player.getVelocity().setY(0);
 				break;
 			case KeyEvent.VK_Z:
 				firePrimaryTimer.stop();

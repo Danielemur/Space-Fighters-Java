@@ -16,11 +16,11 @@ import com.greenteam.spacefighters.entity.entityliving.starship.enemy.TrackerEne
 import com.greenteam.spacefighters.entity.entityliving.starship.player.Player;
 
 public class TestLevelLoader extends LevelLoader implements ActionListener {
-	private static final int TESTENEMY_SPAWNINTERVAL = 200;
-	private static final int ERRATICENEMY_SPAWNINTERVAL = 260;
-	private static final int SHOOTINGENEMY_SPAWNINTERVAL = 270;
-	private static final int TRACKERENEMY_SPAWNINTERVAL = 600;
-	private static final int POWERUP_SPAWNINTERVAL = 2500; //remove this after implementing powerup spawning in Enemy
+	private static final int TESTENEMY_SPAWNINTERVAL = 800;
+	private static final int ERRATICENEMY_SPAWNINTERVAL = 1040;
+	private static final int SHOOTINGENEMY_SPAWNINTERVAL = 1080;
+	private static final int TRACKERENEMY_SPAWNINTERVAL = 2400;
+	private static final int POWERUP_SPAWNINTERVAL = 5000; //remove this after implementing powerup spawning in Enemy
 	
 	private Stage stage;
 	private Timer timer;
@@ -33,7 +33,7 @@ public class TestLevelLoader extends LevelLoader implements ActionListener {
 		timer.addActionListener(this);
 		
 		Player player = new Player(stage, 100);
-		player.setPosition(new Vec2(0,0));//Stage.WIDTH / 2 , Stage.HEIGHT / 2));
+		player.setPosition(new Vec2(Stage.WIDTH / 2 , Stage.HEIGHT / 2));
 		stage.setPlayer(player);
 		stage.setHUD(new HUD(stage));
 	}

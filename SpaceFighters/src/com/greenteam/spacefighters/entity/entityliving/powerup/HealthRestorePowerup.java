@@ -22,6 +22,7 @@ public class HealthRestorePowerup extends Powerup {
 	private Vec2 randpos;
 	private int time;
 	private static final double SPAWNDIST = 400.0D;
+	private static final int SPEED = 600;
 
 	public HealthRestorePowerup(Stage s) {
 		super(s);
@@ -30,7 +31,7 @@ public class HealthRestorePowerup extends Powerup {
 		this.setPosition(this.randSpawnPos(SPAWNDIST));
 		this.setOrientation(new Vec2(0,-1));
 		
-		randpos = new Vec2(Stage.WIDTH * Math.random(), stage.HEIGHT * Math.random());
+		randpos = new Vec2(Stage.WIDTH * Math.random(), Stage.HEIGHT * Math.random());
 		
 		try {
 			this.setTexture(ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/powerup-0.png")));
@@ -63,9 +64,9 @@ public class HealthRestorePowerup extends Powerup {
 		time -= ms;
 		if (time <= 0) {
 			time = SELECT_NEW_POSITION_INTERVAL;
-			randpos = new Vec2(Stage.WIDTH * Math.random(), stage.HEIGHT * Math.random());
+			randpos = new Vec2(Stage.WIDTH * Math.random(), Stage.HEIGHT * Math.random());
 		}
-		this.setVelocity(randpos.subtract(this.getPosition()));
+		this.setVelocity(randpos.subtract(this.getPosition()).normalize().scale(SPEED));
 		if (this.getHealth() <= 0) {
 			stage.setScore(stage.getScore() + this.getPointValue());
 		}

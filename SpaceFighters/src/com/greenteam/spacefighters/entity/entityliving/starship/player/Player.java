@@ -107,14 +107,14 @@ public class Player extends Starship {
 				}
 			}
 		}
-		if (this.getPosition().getX() > stage.WIDTH) {
-			this.getPosition().setX(stage.WIDTH);
+		if (this.getPosition().getX() > Stage.WIDTH) {
+			this.getPosition().setX(Stage.WIDTH);
 		}
 		if (this.getPosition().getX() < 0) {
 			this.getPosition().setX(0);
 		}
-		if (this.getPosition().getY() > stage.HEIGHT) {
-			this.getPosition().setY(stage.HEIGHT);
+		if (this.getPosition().getY() > Stage.HEIGHT) {
+			this.getPosition().setY(Stage.HEIGHT);
 		}
 		if (this.getPosition().getY() < 0) {
 			this.getPosition().setY(0);
@@ -137,10 +137,10 @@ public class Player extends Starship {
 		if (type == 0) {
 			if (chargeLevel >= FIREDRAIN) {
 				--timetofiremissile;
-				Projectile proj = new LinearProjectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getPosition(), new Vec2(0, -PLAYER_PROJECTILE_SPEED), this.getSource());
+				Projectile proj = new LinearProjectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getPosition(), getOrientation().scale(PLAYER_PROJECTILE_SPEED).multiply(new Vec2(1, -1)), this.getSource());
 				stage.add(proj);
 				if (timetofiremissile == 0) {
-					proj = new HomingProjectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getPosition(), new Vec2(0, -MISSILE_SPEED), this.getSource());
+					proj = new HomingProjectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getPosition(), getOrientation().scale(PLAYER_PROJECTILE_SPEED).multiply(new Vec2(1, -1)), this.getSource());
 					stage.add(proj);
 					timetofiremissile = GUN_TO_MISSILE_RATIO;
 				}
@@ -149,14 +149,14 @@ public class Player extends Starship {
 		}
 		if (type == 1) {
 			if (chargeLevel >= HomingProjectile.getEnergyCost()) {
-				Projectile proj = new HomingProjectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getPosition(), new Vec2(0, -MISSILE_SPEED), this.getSource());
+				Projectile proj = new HomingProjectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getPosition(), getOrientation().scale(PLAYER_PROJECTILE_SPEED).multiply(new Vec2(1, -1)), this.getSource());
 				stage.add(proj);
 				chargeLevel -= HomingProjectile.getEnergyCost();
 			}
 		}
 		if (type == 2) {
 			if (chargeLevel >= ExplosiveProjectile.getEnergyCost()) {
-				Projectile proj = new ExplosiveProjectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getPosition(), new Vec2(0, -MISSILE_SPEED), this.getSource());
+				Projectile proj = new ExplosiveProjectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getPosition(), getOrientation().scale(PLAYER_PROJECTILE_SPEED).multiply(new Vec2(1, -1)), this.getSource());
 				stage.add(proj);
 				chargeLevel -= ExplosiveProjectile.getEnergyCost();
 			}

@@ -34,7 +34,7 @@ public class Window extends JFrame implements WindowListener {
 		
 		loader = new TestLevelLoader(stage, null);
 		
-		this.setTitle("Very Speedy");
+		this.setTitle("SpaceFighters");
 		this.setIconImage(new ImageIcon(this.getClass().getResource("/com/greenteam/spacefighters/assets/spaceship-3.png")).getImage());
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
