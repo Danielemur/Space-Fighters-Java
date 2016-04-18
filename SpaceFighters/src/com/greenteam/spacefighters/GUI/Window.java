@@ -16,8 +16,8 @@ import com.greenteam.spacefighters.stage.TestLevelLoader;
 
 public class Window extends JFrame implements WindowListener {
 	private static final long serialVersionUID = 8514984102701282740L;
-	private static final int WIDTH = 600;
-	private static final int HEIGHT = 600;
+	private static final int WIDTH = 800;
+	private static final int HEIGHT = 800;
 	
 	public static final double FPS = 60;
 	
