@@ -1,6 +1,7 @@
 package com.greenteam.spacefighters.entity.entityliving.projectile;
 
 import java.awt.AlphaComposite;
+import java.awt.Composite;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
@@ -69,11 +70,13 @@ public class ExplosiveProjectile extends Projectile {
 		tf.rotate(angle, imagemidx, imagemidy);
 		AffineTransformOp op = new AffineTransformOp(tf, AffineTransformOp.TYPE_BILINEAR);
 		float opacity = (float) Math.pow(1 / scale, 0.25);
+		Composite oldComposite = ((Graphics2D)g).getComposite();
 		((Graphics2D)g).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
 		g.drawImage(op.filter((BufferedImage)this.getTexture(), null),
 				(int)(pos.getX()-imagemidx), (int)(pos.getY()-imagemidy),
 				2 * (int)imagemidx, 2 * (int)imagemidy,
 				null);
+		((Graphics2D)g).setComposite(oldComposite);
 	}
 	
 	@Override
