@@ -34,7 +34,7 @@ public class HealthRestorePowerup extends Powerup {
 		randpos = new Vec2(Stage.WIDTH * Math.random(), Stage.HEIGHT * Math.random());
 		
 		try {
-			this.setTexture(ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/powerup-0.png")));
+			this.setTexture(ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/powerup-3.png")));
 			couldLoadImage = true;
 		} catch (IOException e) {
 			couldLoadImage = false;
