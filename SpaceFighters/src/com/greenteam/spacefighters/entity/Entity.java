@@ -30,22 +30,21 @@ public abstract class Entity {
 		position = position.add(velocity.scale(((double)ms)/1000));
 	}
 	
-	public Vec2 randSpawnPos(double minDist) {
-		Stage s = this.getStage();
+	public Vec2 randSpawnPos(Entity e, double minDist) {
 		Vec2 spawnPos = Vec2.random(Stage.WIDTH, Stage.HEIGHT);
-		Vec2 playerPos = s.getPlayer().getPosition();
-		double dist = playerPos.distance(spawnPos);
+		Vec2 entityPos = e.getPosition();
+		double dist = entityPos.distance(spawnPos);
 		if (dist < minDist) {
-			Vec2 player2Enemy = spawnPos.subtract(playerPos);
+			Vec2 player2Enemy = spawnPos.subtract(entityPos);
 			spawnPos = spawnPos.add(player2Enemy.scale(minDist / dist));
 			int i = 0;
 			while (!Stage.inStage(spawnPos)) {
 				if (i < 3) {
-					spawnPos = spawnPos.rotate(playerPos, Math.PI / 2);
+					spawnPos = spawnPos.rotate(entityPos, Math.PI / 2);
 					i++;
 				} else {
 					System.err.println("Entity placement failed!");
-					System.err.println("Player:\t" + playerPos);
+					System.err.println("Player:\t" + entityPos);
 						System.err.println("Entity:\t" + spawnPos);
 					spawnPos = Vec2.ZERO;
 					break;

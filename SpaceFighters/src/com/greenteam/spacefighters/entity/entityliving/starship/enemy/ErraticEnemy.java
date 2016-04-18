@@ -22,7 +22,7 @@ public class ErraticEnemy extends Enemy {
 	public ErraticEnemy(Stage s) {
 		super(s, 1, 0, 0);
 		time = 0;
-		this.setPosition(randSpawnPos(SPAWNDIST));
+		this.setPosition(randSpawnPos(s.getPlayer(), SPAWNDIST));
 		this.setVelocity(new Vec2(1000*Math.random()-500,200));
 		try {
 			this.setTexture(ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/enemy-1.png")));

@@ -28,10 +28,10 @@ public class ShootingEnemy extends Enemy {
 	public ShootingEnemy(Stage s) {
 		super(s, 1, 0, 0);
 		time = 0;
-		this.setPosition(randSpawnPos(SPAWNDIST));
+		this.setPosition(randSpawnPos(s.getPlayer(), SPAWNDIST));
 		this.setOrientation(new Vec2(0,-1));
 		
-		randpos = randSpawnPos(0);
+		randpos = randSpawnPos(s.getPlayer(), 0);
 		
 		try {
 			this.setTexture(ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/enemy-2.png")));
@@ -78,7 +78,7 @@ public class ShootingEnemy extends Enemy {
 			stage.add(proj);
 		}
 		if (getPosition().distance(randpos) < 5)
-			randpos = randSpawnPos(0);
+			randpos = randSpawnPos(this.getStage().getPlayer(), 0);
 		this.setVelocity(randpos.subtract(this.getPosition()));
 		this.setOrientation(this.getVelocity().normalize().multiply(new Vec2(1, -1)));
 	}

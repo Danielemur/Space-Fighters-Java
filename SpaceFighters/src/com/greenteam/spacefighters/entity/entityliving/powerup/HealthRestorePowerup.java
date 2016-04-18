@@ -28,7 +28,7 @@ public class HealthRestorePowerup extends Powerup {
 		super(s);
 		time = SELECT_NEW_POSITION_INTERVAL;
 		
-		this.setPosition(this.randSpawnPos(SPAWNDIST));
+		this.setPosition(this.randSpawnPos(s.getPlayer(), SPAWNDIST));
 		this.setOrientation(new Vec2(0,-1));
 		
 		randpos = new Vec2(Stage.WIDTH * Math.random(), Stage.HEIGHT * Math.random());

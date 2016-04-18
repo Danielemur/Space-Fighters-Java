@@ -20,7 +20,7 @@ public class TestEnemy extends Enemy {
 	
 	public TestEnemy(Stage s) {
 		super(s, 1, 0, 0);
-		this.setPosition(randSpawnPos(SPAWNDIST));
+		this.setPosition(randSpawnPos(s.getPlayer(), SPAWNDIST));
 		this.setVelocity(new Vec2(-440,200));
 		try {
 			this.setTexture(ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/enemy-0.png")));

@@ -29,7 +29,7 @@ public class TrackerEnemy extends Enemy {
 	
 	public TrackerEnemy(Stage s) {
 		super(s, 40, DEFAULTARMORLEVEL, DEFAULTWEAPONRYLEVEL);
-		this.setPosition(randSpawnPos(SPAWNDIST));
+		this.setPosition(randSpawnPos(s.getPlayer(), SPAWNDIST));
 		this.setVelocity(new Vec2(1000*Math.random()-500,200));
 		this.setOrientation(new Vec2(0, -1));
 		try {
