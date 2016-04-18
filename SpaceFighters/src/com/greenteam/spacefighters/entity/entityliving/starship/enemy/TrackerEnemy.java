@@ -58,14 +58,14 @@ public class TrackerEnemy extends Enemy {
 			double drag = speed * speed * DRAG;
 			setAcceleration(new Vec2(0, -1).scale(ACCELERATION).subtract(getVelocity().scale(drag)));
 		}
-		if (this.getPosition().getX() > stage.WIDTH) {
-			this.getPosition().setX(stage.WIDTH);
+		if (this.getPosition().getX() > Stage.WIDTH) {
+			this.getPosition().setX(Stage.WIDTH);
 		}
 		if (this.getPosition().getX() < 0) {
 			this.getPosition().setX(0);
 		}
-		if (this.getPosition().getY() > stage.HEIGHT) {
-			this.getPosition().setY(stage.HEIGHT);
+		if (this.getPosition().getY() > Stage.HEIGHT) {
+			this.getPosition().setY(Stage.HEIGHT);
 		}
 		if (this.getPosition().getY() < 0) {
 			this.getPosition().setY(0);
