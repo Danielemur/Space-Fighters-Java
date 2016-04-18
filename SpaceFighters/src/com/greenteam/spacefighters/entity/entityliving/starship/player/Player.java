@@ -25,7 +25,7 @@ import com.greenteam.spacefighters.stage.Stage;
 public class Player extends Starship {
 	private static final int DEFAULTARMORLEVEL = 0;
 	private static final int DEFAULTWEAPONRYLEVEL= 0;
-	private static final int DEFAULTWEAPONRYHEALTH = 1;
+	private static final int DEFAULTWEAPONRYHEALTH = 2;
 	private static final int FIREDRAIN = 15;
 	private static final int FULLCHARGE = 500;
 	public static final int MOVEMENT_SPEED = 500;

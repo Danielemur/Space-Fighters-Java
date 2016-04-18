@@ -19,7 +19,7 @@ public class TestLevelLoader extends LevelLoader implements ActionListener {
 	private static final int TESTENEMY_SPAWNINTERVAL = 800;
 	private static final int ERRATICENEMY_SPAWNINTERVAL = 1040;
 	private static final int SHOOTINGENEMY_SPAWNINTERVAL = 1080;
-	private static final int TRACKERENEMY_SPAWNINTERVAL = 2400;
+	private static final int TRACKERENEMY_SPAWNINTERVAL = 1400;
 	private static final int POWERUP_SPAWNINTERVAL = 5000; //remove this after implementing powerup spawning in Enemy
 	
 	private Stage stage;
