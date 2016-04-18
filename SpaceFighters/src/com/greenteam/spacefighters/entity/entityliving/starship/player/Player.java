@@ -31,7 +31,7 @@ public class Player extends Starship {
 	public static final int MOVEMENT_SPEED = 500;
 	private static final int PLAYER_PROJECTILE_SPEED = 1200;
 	private static final int MISSILE_SPEED = 1000;
-	private static final int HEALTH_REGEN_TIME = 800;
+	private static final int HEALTH_REGEN_TIME = 1600;
 	private static final int GUN_TO_MISSILE_RATIO = 5;
 	private static final int MISSILE_SPREAD_COUNT = 12;
 	
