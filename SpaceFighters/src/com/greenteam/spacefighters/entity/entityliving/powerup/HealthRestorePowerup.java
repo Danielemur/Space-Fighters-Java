@@ -22,7 +22,7 @@ public class HealthRestorePowerup extends Powerup {
 	private Vec2 randpos;
 	private int time;
 	private static final double SPAWNDIST = 400.0D;
-	private static final int SPEED = 600;
+	private static final int SPEED = 300;
 
 	public HealthRestorePowerup(Stage s) {
 		super(s);

@@ -5,6 +5,8 @@ Bosses
 Weapons upgrades
 Hull upgrades
 Scoreboard for high scores
-2D scrolling for Stage
-Updating Player (or making a PlayerFreeform) to support arbitrary directions
+Add asteroids
 Powerups need to have a decay time, and duplicates of the same powerup type should not be allowed on the screen at the same time.
+direction timers
+levels
+enemy max

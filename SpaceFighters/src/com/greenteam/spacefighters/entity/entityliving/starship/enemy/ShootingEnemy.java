@@ -80,6 +80,7 @@ public class ShootingEnemy extends Enemy {
 		if (getPosition().distance(randpos) < 5)
 			randpos = randSpawnPos(0);
 		this.setVelocity(randpos.subtract(this.getPosition()));
+		this.setOrientation(this.getVelocity().normalize().multiply(new Vec2(1, -1)));
 	}
 
 	@Override

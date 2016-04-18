@@ -38,9 +38,12 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 	private Timer firePrimaryTimer;
 	private Timer fireSecondaryTimer;
 	private Timer fireTertiaryTimer;
+	private Timer rotateTimer;
 	private Image[] starfields;
 	private double[] backgroundOffsets;
 	private boolean upKeyPressed;
+	private boolean leftKeyPressed;
+	private boolean rightKeyPressed;
 	
 	public Stage(int width, int height, Player player) {
 		this.entities = new CopyOnWriteArrayList<Entity>();
@@ -61,11 +64,16 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 		this.setSize(new Dimension(width, height));
 		this.addKeyListener(this);
 		firePrimaryTimer = new Timer((int)(500/Window.FPS), this);
+		firePrimaryTimer.setInitialDelay(0);
 		fireSecondaryTimer = new Timer((int)(500/Window.FPS), this);
-		fireTertiaryTimer = new Timer((int)(500/Window.FPS), this);
+		fireSecondaryTimer.setInitialDelay(0);
+		fireTertiaryTimer = new Timer((int)(10000/Window.FPS), this);
+		fireTertiaryTimer.setInitialDelay(0);
 		timer = new Timer((int)(1000/Window.FPS), this);
 		timer.start();
 		upKeyPressed = false;
+		leftKeyPressed = false;
+		rightKeyPressed = false;
 	}
 	
 	@Override
@@ -81,7 +89,6 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 							   player.getPosition().getY() - this.getHeight() / 2);
 		
 		offset = offset.min(offsetMax).max(offsetMin);
-		System.out.println(offset);
 		//g.setClip((int)offset.getX(), (int)offset.getY(), viewWidth, viewHeight);
 		g.translate(-(int)offset.getX(), -(int)offset.getY());
 		player.render(g);
@@ -108,14 +115,27 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 	@Override
 	public void actionPerformed(ActionEvent ev) {
 		if (ev.getSource() == timer) {
+			if (leftKeyPressed && !rightKeyPressed) {
+				player.setOrientation(player.getOrientation().rotate(Vec2.ZERO, Math.PI / 32));
+				if (upKeyPressed) {
+					Vec2 orientation = player.getOrientation();
+					player.setVelocity(orientation.scale(Player.MOVEMENT_SPEED).multiply(new Vec2(1, -1)));
+				}
+			} else if (rightKeyPressed && !leftKeyPressed) {
+				player.setOrientation(player.getOrientation().rotate(Vec2.ZERO, -Math.PI / 32));
+				if (upKeyPressed) {
+					Vec2 orientation = player.getOrientation();
+					player.setVelocity(orientation.scale(Player.MOVEMENT_SPEED).multiply(new Vec2(1, -1)));
+				}
+			}
 			for (int i = 0; i < STARFIELD_LAYERS; ++i) {
 				backgroundOffsets[i] += (double)Stage.BACKGROUND_SCROLL_SPEED/Math.pow((i+1),0.5);
-				if (backgroundOffsets[i] > Stage.BACKGROUND_OVERSIZE_RATIO*this.getHeight()) {
+				if (backgroundOffsets[i] > Stage.BACKGROUND_OVERSIZE_RATIO * this.getHeight()) {
 					backgroundOffsets[i] = 0;
 				}
 			}
 			for (Entity e : entities) {
-				e.update((int)(1000/Window.FPS));
+				e.update((int)(1000 / Window.FPS));
 			}
 			this.repaint();
 		}
@@ -144,20 +164,12 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 			switch (ev.getKeyCode()) {
 			case KeyEvent.VK_LEFT:
 			{
-				player.setOrientation(player.getOrientation().rotate(Vec2.ZERO, 0.5));
-				if (upKeyPressed) {
-					Vec2 orientation = player.getOrientation();
-					player.setVelocity(orientation.scale(Player.MOVEMENT_SPEED).multiply(new Vec2(1, -1)));
-				}
+				leftKeyPressed = true;
 			}
 				break;
 			case KeyEvent.VK_RIGHT:
 			{
-				player.setOrientation(player.getOrientation().rotate(Vec2.ZERO, -0.5));
-				if (upKeyPressed) {
-					Vec2 orientation = player.getOrientation();
-					player.setVelocity(orientation.scale(Player.MOVEMENT_SPEED).multiply(new Vec2(1, -1)));
-				}
+				rightKeyPressed = true;
 			}
 				break;
 			case KeyEvent.VK_UP:
@@ -168,13 +180,22 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 			case KeyEvent.VK_DOWN:
 				break;
 			case KeyEvent.VK_Z:
-				firePrimaryTimer.start();
+				if (!firePrimaryTimer.isRunning()) {
+					firePrimaryTimer.restart();
+					firePrimaryTimer.start();
+				}
 				break;
 			case KeyEvent.VK_X:
-				fireSecondaryTimer.start();
+				if (!fireSecondaryTimer.isRunning()) {
+					fireSecondaryTimer.restart();
+					fireSecondaryTimer.start();
+				}
 				break;
 			case KeyEvent.VK_C:
-				fireTertiaryTimer.start();
+				if (!fireTertiaryTimer.isRunning()) {
+					fireTertiaryTimer.restart();
+					fireTertiaryTimer.start();
+				}
 				break;
 			case KeyEvent.VK_SPACE:
 				if (this.isPaused()) {
@@ -194,11 +215,15 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 		if (player != null) {
 			switch (ev.getKeyCode()) {
 			case KeyEvent.VK_LEFT:
+				leftKeyPressed = false;
+				break;
 			case KeyEvent.VK_RIGHT:
+				rightKeyPressed = false;
 				break;
 			case KeyEvent.VK_UP:
 				player.setVelocity(Vec2.ZERO);
 				upKeyPressed = false;
+				break;
 			case KeyEvent.VK_DOWN:
 				break;
 			case KeyEvent.VK_Z:

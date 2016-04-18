@@ -50,7 +50,7 @@ public class ExplosiveProjectile extends Projectile {
 	}
 	
 	public static int getEnergyCost() {
-		return 300;
+		return 125;
 	}
 	
 	@Override
