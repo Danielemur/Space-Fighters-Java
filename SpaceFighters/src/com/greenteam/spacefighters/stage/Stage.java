@@ -109,6 +109,11 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 		}
 	}
 	
+	private void doUpKey() {
+		Vec2 orientation = player.getOrientation();
+		player.setVelocity(orientation.scale(Player.MOVEMENT_SPEED).multiply(new Vec2(1, -1)));
+	}
+	
 	public List<Entity> getEntities() {return entities;}
 
 	@Override
@@ -117,14 +122,12 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 			if (leftKeyPressed && !rightKeyPressed) {
 				player.setOrientation(player.getOrientation().rotate(Vec2.ZERO, Math.PI / 32));
 				if (upKeyPressed) {
-					Vec2 orientation = player.getOrientation();
-					player.setVelocity(orientation.scale(Player.MOVEMENT_SPEED).multiply(new Vec2(1, -1)));
+					doUpKey();
 				}
 			} else if (rightKeyPressed && !leftKeyPressed) {
 				player.setOrientation(player.getOrientation().rotate(Vec2.ZERO, -Math.PI / 32));
 				if (upKeyPressed) {
-					Vec2 orientation = player.getOrientation();
-					player.setVelocity(orientation.scale(Player.MOVEMENT_SPEED).multiply(new Vec2(1, -1)));
+					doUpKey();
 				}
 			}
 			for (int i = 0; i < STARFIELD_LAYERS; ++i) {
@@ -173,8 +176,7 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 				break;
 			case KeyEvent.VK_UP:
 				upKeyPressed = true;
-				Vec2 orientation = player.getOrientation();
-				player.setVelocity(orientation.scale(Player.MOVEMENT_SPEED).multiply(new Vec2(1, -1)));
+				doUpKey();
 				break;
 			case KeyEvent.VK_DOWN:
 				break;

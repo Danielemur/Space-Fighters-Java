@@ -33,6 +33,7 @@ public class Player extends Starship {
 	private static final int MISSILE_SPEED = 1000;
 	private static final int HEALTH_REGEN_TIME = 800;
 	private static final int GUN_TO_MISSILE_RATIO = 5;
+	private static final int MISSILE_SPREAD_COUNT = 12;
 	
 	private int timetofiremissile;
 	private int chargeLevel;
@@ -148,10 +149,12 @@ public class Player extends Starship {
 			}
 		}
 		if (type == 1) {
-			if (chargeLevel >= HomingProjectile.getEnergyCost()) {
-				Projectile proj = new HomingProjectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getPosition(), getOrientation().scale(PLAYER_PROJECTILE_SPEED).multiply(new Vec2(1, -1)), this.getSource());
-				stage.add(proj);
-				chargeLevel -= HomingProjectile.getEnergyCost();
+			if (chargeLevel >= HomingProjectile.getEnergyCost()*MISSILE_SPREAD_COUNT) {
+				for (int i = 0; i < MISSILE_SPREAD_COUNT; ++i) {
+					Projectile proj = new HomingProjectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getPosition(), getOrientation().scale(MISSILE_SPEED).multiply(new Vec2(1, -1)).rotate(new Vec2(0,0), (i-(double)MISSILE_SPREAD_COUNT/2)/MISSILE_SPREAD_COUNT*2*Math.PI), this.getSource());
+					stage.add(proj);
+				}
+				chargeLevel -= HomingProjectile.getEnergyCost()*MISSILE_SPREAD_COUNT;
 			}
 		}
 		if (type == 2) {
