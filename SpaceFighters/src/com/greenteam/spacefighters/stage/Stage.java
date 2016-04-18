@@ -38,7 +38,6 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 	private Timer firePrimaryTimer;
 	private Timer fireSecondaryTimer;
 	private Timer fireTertiaryTimer;
-	private Timer rotateTimer;
 	private Image[] starfields;
 	private double[] backgroundOffsets;
 	private boolean upKeyPressed;

@@ -26,7 +26,7 @@ public class HomingProjectile extends Projectile {
 		target = closestEntity();
 		speed = velocity.magnitude();
 		try {
-			this.setTexture(ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/projectile-3.png")));
+			this.setTexture(ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/projectile-1.png")));
 			couldLoadImage = true;
 		} catch (IOException e) {
 			couldLoadImage = false;

@@ -19,7 +19,7 @@ public class LinearProjectile extends Projectile {
 	public LinearProjectile(Stage s, int health, int damage, Vec2 position, Vec2 velocity, Class<?> source) {
 		super(s, health, damage, position, velocity, source);
 		try {
-			this.setTexture(ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/projectile-1.png")));
+			this.setTexture(ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/projectile-0.png")));
 		} catch (IOException e) {}
 		decayCount = DECAYCOUNTDOWN;
 	}
