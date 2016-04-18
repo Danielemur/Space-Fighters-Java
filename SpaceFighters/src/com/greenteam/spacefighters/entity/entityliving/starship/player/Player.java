@@ -133,14 +133,15 @@ public class Player extends Starship {
 	@Override
 	public void fire(int type) {
 		int damage = 10 * (getWeaponryMultiplier() + 1);
+		Vec2 playerVel = this.getVelocity();
 		//Projectile proj = new Projectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getSource());
 		if (type == 0) {
 			if (chargeLevel >= FIREDRAIN) {
 				--timetofiremissile;
-				Projectile proj = new LinearProjectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getPosition(), getOrientation().scale(PLAYER_PROJECTILE_SPEED).multiply(new Vec2(1, -1)), this.getSource());
+				Projectile proj = new LinearProjectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getPosition(), getOrientation().scale(PLAYER_PROJECTILE_SPEED).multiply(new Vec2(1, -1)).add(playerVel), this.getSource());
 				stage.add(proj);
 				if (timetofiremissile == 0) {
-					proj = new HomingProjectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getPosition(), getOrientation().scale(PLAYER_PROJECTILE_SPEED).multiply(new Vec2(1, -1)), this.getSource());
+					proj = new HomingProjectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getPosition(), getOrientation().scale(MISSILE_SPEED).multiply(new Vec2(1, -1)), this.getSource());
 					stage.add(proj);
 					timetofiremissile = GUN_TO_MISSILE_RATIO;
 				}
@@ -149,7 +150,7 @@ public class Player extends Starship {
 		}
 		if (type == 1) {
 			if (chargeLevel >= HomingProjectile.getEnergyCost()) {
-				Projectile proj = new HomingProjectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getPosition(), getOrientation().scale(PLAYER_PROJECTILE_SPEED).multiply(new Vec2(1, -1)), this.getSource());
+				Projectile proj = new HomingProjectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getPosition(), getOrientation().scale(MISSILE_SPEED).multiply(new Vec2(1, -1)), this.getSource());
 				stage.add(proj);
 				chargeLevel -= HomingProjectile.getEnergyCost();
 			}

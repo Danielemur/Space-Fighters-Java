@@ -7,6 +7,6 @@ Hull upgrades
 Scoreboard for high scores
 Add asteroids
 Powerups need to have a decay time, and duplicates of the same powerup type should not be allowed on the screen at the same time.
-direction timers
 levels
-enemy max
+max enemy count
+drop explosives in place
