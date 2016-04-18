@@ -166,6 +166,10 @@ public class Vec2 {
 		return new Vec2(x * vec.x, y * vec.y);
 	}
 	
+	public Vec2 setMag(double s) {
+		return this.normalize().scale(s);
+	}
+	
 	public static Vec2 fromAngle(double angle) {
 	    return new Vec2(Math.cos(angle), Math.sin(angle));
 	}
