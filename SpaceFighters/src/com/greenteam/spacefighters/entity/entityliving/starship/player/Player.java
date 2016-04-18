@@ -48,7 +48,7 @@ public class Player extends Starship {
 		time = 0;
 		timetofiremissile = GUN_TO_MISSILE_RATIO;
 		try {
-			this.setTexture(ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/spaceship-3.png")));
+			this.setTexture(ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/spaceship-2.png")));
 			this.width = this.getTexture().getWidth(null);
 			this.height = this.getTexture().getHeight(null);
 			couldLoadImage = true;

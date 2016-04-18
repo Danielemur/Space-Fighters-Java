@@ -129,8 +129,8 @@ public class Vec2 {
 	public Vec2 rotate(Vec2 center, double radians) {
 	    
 	    return new Vec2(
-	    		((center.x) * (1 - Math.cos(radians)) + x * Math.cos(radians) + (center.y - y) * Math.sin(radians)),
-	    		((center.y) * (1 - Math.cos(radians)) + y * Math.cos(radians) + (center.x + x) * Math.sin(radians))
+	    		(Math.cos(radians) * (x - center.x) - Math.sin(radians) * (y - center.y) + center.x),
+	    		(Math.sin(radians) * (x - center.x) + Math.cos(radians) * (y - center.y) + center.y)
 	    		);
 	}
 	

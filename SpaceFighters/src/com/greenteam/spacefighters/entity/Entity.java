@@ -37,14 +37,16 @@ public abstract class Entity {
 		double dist = playerPos.distance(spawnPos);
 		if (dist < minDist) {
 			Vec2 player2Enemy = spawnPos.subtract(playerPos);
-			spawnPos = spawnPos.add(player2Enemy).scale(minDist / dist);
+			spawnPos = spawnPos.add(player2Enemy.scale(minDist / dist));
 			int i = 0;
 			while (!Stage.inStage(spawnPos)) {
 				if (i < 3) {
 					spawnPos = spawnPos.rotate(playerPos, Math.PI / 2);
 					i++;
 				} else {
-					System.err.println("Enemy placement failed!");
+					System.err.println("Entity placement failed!");
+					System.err.println("Player:\t" + playerPos);
+						System.err.println("Entity:\t" + spawnPos);
 					spawnPos = Vec2.ZERO;
 					break;
 				}
