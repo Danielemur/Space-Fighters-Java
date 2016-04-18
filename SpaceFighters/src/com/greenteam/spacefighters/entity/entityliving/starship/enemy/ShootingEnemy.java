@@ -18,6 +18,7 @@ public class ShootingEnemy extends Enemy {
 	private static final int SHOOTING_INTERVAL = 800;
 	private static final int PROJECTILE_SPEED = 550;
 	private static final double SPAWNDIST = 400.0D;
+	private static final double SPEED = 300.0D;
 	
 	private int width;
 	private int height;
@@ -79,7 +80,7 @@ public class ShootingEnemy extends Enemy {
 		}
 		if (getPosition().distance(randpos) < 5)
 			randpos = randSpawnPos(this.getStage().getPlayer(), 0);
-		this.setVelocity(randpos.subtract(this.getPosition()));
+		this.setVelocity(randpos.subtract(this.getPosition()).normalize().scale(SPEED));
 		this.setOrientation(this.getVelocity().normalize().multiply(new Vec2(1, -1)));
 	}
 
