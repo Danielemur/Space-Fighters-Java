@@ -41,6 +41,7 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 	private Image[] starfields;
 	private double[] backgroundOffsets;
 	private boolean upKeyPressed;
+	private boolean downKeyPressed;
 	private boolean leftKeyPressed;
 	private boolean rightKeyPressed;
 	
@@ -71,6 +72,7 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 		timer = new Timer((int)(1000/Window.FPS), this);
 		timer.start();
 		upKeyPressed = false;
+		downKeyPressed = false;
 		leftKeyPressed = false;
 		rightKeyPressed = false;
 	}
@@ -114,6 +116,11 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 		player.setVelocity(orientation.scale(Player.MOVEMENT_SPEED).multiply(new Vec2(1, -1)));
 	}
 	
+	private void doDownKey() {
+		Vec2 orientation = player.getOrientation();
+		player.setVelocity(orientation.scale(-Player.MOVEMENT_SPEED).multiply(new Vec2(1, -1)));
+	}
+	
 	public List<Entity> getEntities() {return entities;}
 
 	@Override
@@ -121,13 +128,17 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 		if (ev.getSource() == timer) {
 			if (leftKeyPressed && !rightKeyPressed) {
 				player.setOrientation(player.getOrientation().rotate(Vec2.ZERO, Math.PI / 32));
-				if (upKeyPressed) {
+				if (upKeyPressed && !downKeyPressed) {
 					doUpKey();
+				} else if (downKeyPressed && !upKeyPressed) {
+					doDownKey();
 				}
 			} else if (rightKeyPressed && !leftKeyPressed) {
 				player.setOrientation(player.getOrientation().rotate(Vec2.ZERO, -Math.PI / 32));
-				if (upKeyPressed) {
+				if (upKeyPressed && !downKeyPressed) {
 					doUpKey();
+				} else if (downKeyPressed && !upKeyPressed) {
+					doDownKey();
 				}
 			}
 			for (int i = 0; i < STARFIELD_LAYERS; ++i) {
@@ -179,6 +190,8 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 				doUpKey();
 				break;
 			case KeyEvent.VK_DOWN:
+				downKeyPressed = true;
+				doDownKey();
 				break;
 			case KeyEvent.VK_Z:
 				if (!firePrimaryTimer.isRunning()) {
@@ -226,6 +239,8 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 				upKeyPressed = false;
 				break;
 			case KeyEvent.VK_DOWN:
+				player.setVelocity(Vec2.ZERO);
+				downKeyPressed = false;
 				break;
 			case KeyEvent.VK_Z:
 				firePrimaryTimer.stop();
