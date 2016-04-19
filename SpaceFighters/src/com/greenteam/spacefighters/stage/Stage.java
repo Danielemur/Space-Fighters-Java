@@ -90,14 +90,13 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 							   player.getPosition().getY() - this.getHeight() / 2);
 		
 		offset = offset.min(offsetMax).max(offsetMin);
-		//g.setClip((int)offset.getX(), (int)offset.getY(), viewWidth, viewHeight);
 		g.translate(-(int)offset.getX(), -(int)offset.getY());
 		player.render(g);
 		
 		for (int i = 0; i < STARFIELD_LAYERS; ++i) {
 			if (starfields[i] != null) {
-				g.drawImage(starfields[i], 0, 0/*(int)backgroundOffsets[i]*/, null);
-				g.drawImage(starfields[i], 0, 0/*(int)(backgroundOffsets[i] - starfields[i].getHeight(null))*/, null);
+				g.drawImage(starfields[i], 0, 0, null);
+				g.drawImage(starfields[i], 0, 0, null);
 			}
 		}
 		for (Entity e : entities) {

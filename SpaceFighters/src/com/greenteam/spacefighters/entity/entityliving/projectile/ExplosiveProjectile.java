@@ -21,12 +21,11 @@ public class ExplosiveProjectile extends Projectile {
 	private double hitRadius;
 	private int countdown;
 	private boolean isExploding;
-	private double speed;
 	
 	public ExplosiveProjectile(Stage s, int health, int damage, Vec2 position, Vec2 velocity, Class<?> source) {
 		super(s, health, damage, position, velocity.normalize().scale(SPEED), source);
 		
-		this.setTexture(this.getTexFromEnum(ProjectileColor.RED));
+		this.setTexture(Projectile.getTexFromEnum(ProjectileColor.RED));
 		
 		hitRadius = PROJECTILERADIUS;
 		countdown = COUNTDOWNTIME;

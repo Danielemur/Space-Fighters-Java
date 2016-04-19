@@ -16,7 +16,7 @@ public class LinearProjectile extends Projectile {
 	public LinearProjectile(Stage s, int health, int damage, Vec2 position, Vec2 velocity, Class<?> source) {
 		super(s, health, damage, position, velocity, source);
 		
-		this.setTexture(this.getTexFromEnum(ProjectileColor.YELLOW));
+		this.setTexture(Projectile.getTexFromEnum(ProjectileColor.YELLOW));
 		
 		decayCount = DECAYCOUNTDOWN;
 	}

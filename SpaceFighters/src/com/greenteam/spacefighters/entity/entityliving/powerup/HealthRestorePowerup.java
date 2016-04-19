@@ -1,13 +1,5 @@
 package com.greenteam.spacefighters.entity.entityliving.powerup;
 
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Composite;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
-import java.awt.image.BufferedImage;
 import com.greenteam.spacefighters.common.Vec2;
 import com.greenteam.spacefighters.entity.Entity;
 import com.greenteam.spacefighters.entity.entityliving.EntityLiving;
@@ -20,11 +12,9 @@ public class HealthRestorePowerup extends Powerup {
 	private static final int SPEED = 100;
 	private static final int TIME_ON_SCREEN = 15000;
 	private static final int BEGIN_FADING_TIME = 500;
-	
-	private boolean couldLoadImage;
+
 	private Vec2 randpos;
 	private int time;
-	private int timeRemaining;
 
 	public HealthRestorePowerup(Stage s) {
 		super(s);
@@ -36,40 +26,11 @@ public class HealthRestorePowerup extends Powerup {
 		
 		randpos = new Vec2(Stage.WIDTH * Math.random(), Stage.HEIGHT * Math.random());
 		
-		this.setTexture(this.getTexFromEnum(PowerupColor.RED));
-	}
-	
-	@Override
-	public void render(Graphics g) {
-		Vec2 pos = this.getPosition();
-		if (couldLoadImage) {
-			if ((timeRemaining <= BEGIN_FADING_TIME) && (timeRemaining >= 0)) {
-				float opacity = timeRemaining/(float)BEGIN_FADING_TIME;
-				opacity = (float)Math.pow(opacity, 0.25);
-				Composite oldComposite = ((Graphics2D)g).getComposite();
-				((Graphics2D)g).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
-
-				double angle = this.getOrientation().angle();
-				double imagemidx = this.getTexture().getWidth(null)/2;
-				double imagemidy = this.getTexture().getHeight(null)/2;
-				AffineTransform tf = AffineTransform.getRotateInstance(angle, imagemidx, imagemidy);
-				AffineTransformOp op = new AffineTransformOp(tf, AffineTransformOp.TYPE_BILINEAR);
-				g.drawImage(op.filter((BufferedImage)this.getTexture(), null), (int)(pos.getX()-imagemidx), (int)(pos.getY()-imagemidy), null);
-				
-				((Graphics2D)g).setComposite(oldComposite);
-			}
-			else {
-				double angle = this.getOrientation().angle();
-				double imagemidx = this.getTexture().getWidth(null)/2;
-				double imagemidy = this.getTexture().getHeight(null)/2;
-				AffineTransform tf = AffineTransform.getRotateInstance(angle, imagemidx, imagemidy);
-				AffineTransformOp op = new AffineTransformOp(tf, AffineTransformOp.TYPE_BILINEAR);
-				g.drawImage(op.filter((BufferedImage)this.getTexture(), null), (int)(pos.getX()-imagemidx), (int)(pos.getY()-imagemidy), null);
-			}
-		}
-		else {
-			g.setColor(Color.RED);
-			g.fillRect((int)pos.getX(), (int)pos.getY(), 10, 10);
+		this.setTexture(Powerup.getTexFromEnum(PowerupColor.RED));
+		if (this.getTexture() != null) {
+			couldLoadImage = true;
+		} else {
+			couldLoadImage = false;
 		}
 	}
 	
@@ -105,4 +66,15 @@ public class HealthRestorePowerup extends Powerup {
 	public int getDamage() {
 		return -20;
 	}
+	
+	@Override
+	public int getBeginFadingTime() {
+		return BEGIN_FADING_TIME;
+	}
+
+	@Override
+	public java.awt.Color noTextureColor() {
+		return java.awt.Color.RED;
+	}
+	
 }

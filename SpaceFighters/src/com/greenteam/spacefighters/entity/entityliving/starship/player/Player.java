@@ -1,6 +1,5 @@
 package com.greenteam.spacefighters.entity.entityliving.starship.player;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
@@ -38,6 +37,7 @@ public class Player extends Starship {
 	private int width;
 	private int height;
 	private boolean couldLoadImage;
+	private java.awt.Color noTexColor;
 	private int maxhealth;
 	private int time;
 
@@ -55,6 +55,7 @@ public class Player extends Starship {
 			couldLoadImage = false;
 			this.width = 20;
 			this.height = 30;
+			noTexColor = noTextureColor(color);
 		}
 		chargeLevel = FULLCHARGE;
 	}
@@ -76,7 +77,7 @@ public class Player extends Starship {
 			g.drawImage(op.filter((BufferedImage)this.getTexture(), null), (int)(pos.getX()-imagemidx), (int)(pos.getY()-imagemidy), null);
 		}
 		else {
-			g.setColor(Color.GREEN);
+			g.setColor(noTexColor);
 			g.fillRect((int)pos.getX(), (int)pos.getY(), width, height);
 		}
 	}
@@ -197,6 +198,25 @@ public class Player extends Starship {
 					return ImageIO.read(Player.class.getResource("/com/greenteam/spacefighters/assets/spaceship-3.png"));
 				default :
 					return ImageIO.read(Player.class.getResource("/com/greenteam/spacefighters/assets/spaceship-0.png"));
+			}
+		} catch(Exception e) {
+			return null;
+		}
+	}
+	
+	public static java.awt.Color noTextureColor(PlayerShipColor color) {
+		try {
+			switch(color) {
+				case RED:
+					return java.awt.Color.RED;
+				case BLUE:
+					return java.awt.Color.BLUE;
+				case GREEN:
+					return java.awt.Color.GREEN;
+				case YELLOW:
+					return java.awt.Color.YELLOW;
+				default :
+					return java.awt.Color.RED;
 			}
 		} catch(Exception e) {
 			return null;

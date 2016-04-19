@@ -7,10 +7,11 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
-import com.greenteam.spacefighters.stage.LevelLoader;
+import com.greenteam.spacefighters.entity.entityliving.starship.player.Player;
+import com.greenteam.spacefighters.entity.entityliving.starship.player.Player.PlayerShipColor;
+//import com.greenteam.spacefighters.stage.LevelLoader;
 import com.greenteam.spacefighters.stage.Stage;
 import com.greenteam.spacefighters.stage.TestLevelLoader;
 
@@ -22,7 +23,7 @@ public class Window extends JFrame implements WindowListener {
 	public static final double FPS = 60;
 	
 	private Stage stage;
-	private LevelLoader loader;
+	//private LevelLoader loader;
 	
 	Window() {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -32,10 +33,11 @@ public class Window extends JFrame implements WindowListener {
 		this.add(stage, BorderLayout.CENTER);
 		this.setBounds(new Rectangle(Window.WIDTH, Window.HEIGHT));
 		
-		loader = new TestLevelLoader(stage, null);
+		/*loader = */
+		new TestLevelLoader(stage, null);
 		
 		this.setTitle("SpaceFighters");
-		this.setIconImage(new ImageIcon());
+		this.setIconImage(Player.getTexFromEnum(PlayerShipColor.RED));
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.addWindowFocusListener(new WindowAdapter() {

@@ -83,19 +83,19 @@ public abstract class Projectile extends EntityLiving {
 		return source;
 	}
 	
-	public BufferedImage getTexFromEnum(ProjectileColor color) {
+	public static BufferedImage getTexFromEnum(ProjectileColor color) {
 		try {
 			switch(color) {
 				case YELLOW:
-					return ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/projectile-0.png"));
+					return ImageIO.read(Projectile.class.getResource("/com/greenteam/spacefighters/assets/projectile-0.png"));
 				case BLUE:
-					return ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/projectile-1.png"));
+					return ImageIO.read(Projectile.class.getResource("/com/greenteam/spacefighters/assets/projectile-1.png"));
 				case RED:
-					return ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/projectile-2.png"));
+					return ImageIO.read(Projectile.class.getResource("/com/greenteam/spacefighters/assets/projectile-2.png"));
 				case GREEN:
-					return ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/projectile-3.png"));
+					return ImageIO.read(Projectile.class.getResource("/com/greenteam/spacefighters/assets/projectile-3.png"));
 				default :
-					return ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/projectile-0.png"));
+					return ImageIO.read(Projectile.class.getResource("/com/greenteam/spacefighters/assets/projectile-0.png"));
 			}
 		} catch(Exception e) {
 			return null;

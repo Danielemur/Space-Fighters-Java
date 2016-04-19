@@ -1,10 +1,5 @@
 package com.greenteam.spacefighters.entity.entityliving.starship.enemy;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
-import java.awt.image.BufferedImage;
 import com.greenteam.spacefighters.common.Vec2;
 import com.greenteam.spacefighters.entity.entityliving.projectile.LinearProjectile;
 import com.greenteam.spacefighters.entity.entityliving.projectile.Projectile;
@@ -23,16 +18,13 @@ public class TrackerEnemy extends Enemy {
 	private static final double SPAWNDIST = 400.0D;
 	
 	private int chargeLevel;
-	private boolean couldLoadImage;
-	private int width;
-	private int height;
 	
 	public TrackerEnemy(Stage s) {
 		super(s, 40, DEFAULTARMORLEVEL, DEFAULTWEAPONRYLEVEL);
 		this.setPosition(randSpawnPos(s.getPlayer(), SPAWNDIST));
 		this.setVelocity(new Vec2(1000*Math.random()-500,200));
 		this.setOrientation(new Vec2(0, -1));
-		this.setTexture(this.getTexFromEnum(EnemyShipColor.BLACK));		
+		this.setTexture(Enemy.getTexFromEnum(EnemyShipColor.BLACK));		
 		if (this.getTexture() != null) {
 			couldLoadImage = true;
 			this.width = this.getTexture().getWidth(null);
@@ -95,22 +87,6 @@ public class TrackerEnemy extends Enemy {
 	}
 
 	@Override
-	public void render(Graphics g) {
-		Vec2 pos = this.getPosition();
-		if (couldLoadImage) {
-			double angle = this.getOrientation().multiply(new Vec2(1, -1)).angle();
-			double imagemidx = this.getTexture().getWidth(null)/2;
-			double imagemidy = this.getTexture().getHeight(null)/2;
-			AffineTransform tf = AffineTransform.getRotateInstance(angle, imagemidx, imagemidy);
-			AffineTransformOp op = new AffineTransformOp(tf, AffineTransformOp.TYPE_BILINEAR);
-			g.drawImage(op.filter((BufferedImage)this.getTexture(), null), (int)(pos.getX()-imagemidx), (int)(pos.getY()-imagemidy), null);
-		} else {
-			g.setColor(Color.BLUE);
-			g.fillRect((int)pos.getX(), (int)pos.getY(), width, height);
-		}
-	}
-
-	@Override
 	public Class<?> getSource() {
 		return Enemy.class;
 	}
@@ -124,4 +100,10 @@ public class TrackerEnemy extends Enemy {
 	public int getPointValue() {
 		return 75;
 	}
+
+	@Override
+	public java.awt.Color noTextureColor() {
+		return java.awt.Color.BLACK;
+	}
+
 }

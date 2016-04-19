@@ -1,9 +1,13 @@
 package com.greenteam.spacefighters.entity.entityliving.starship.enemy;
 
+import java.awt.Graphics;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
 import javax.imageio.ImageIO;
 
+import com.greenteam.spacefighters.common.Vec2;
 import com.greenteam.spacefighters.entity.Entity;
 import com.greenteam.spacefighters.entity.entityliving.EntityLiving;
 import com.greenteam.spacefighters.entity.entityliving.obstacle.Obstacle;
@@ -12,9 +16,31 @@ import com.greenteam.spacefighters.entity.entityliving.starship.player.Player;
 import com.greenteam.spacefighters.stage.Stage;
 
 public abstract class Enemy extends Starship {
-
+	protected boolean couldLoadImage;
+	protected int width;
+	protected int height;
+	
 	public Enemy(Stage s, int health, int armorMultiplier, int weaponryMultiplier) {
 		super(s, health, armorMultiplier, weaponryMultiplier);
+	}
+	
+	public abstract java.awt.Color noTextureColor();
+
+	@Override
+	public void render(Graphics g) {
+		Vec2 pos = this.getPosition();
+		if (couldLoadImage) {
+			double angle = this.getOrientation().angle();
+			double imagemidx = this.getTexture().getWidth(null)/2;
+			double imagemidy = this.getTexture().getHeight(null)/2;
+			AffineTransform tf = AffineTransform.getRotateInstance(angle, imagemidx, imagemidy);
+			AffineTransformOp op = new AffineTransformOp(tf, AffineTransformOp.TYPE_BILINEAR);
+			g.drawImage(op.filter((BufferedImage)this.getTexture(), null), (int)(pos.getX()-imagemidx), (int)(pos.getY()-imagemidy), null);
+		}
+		else {
+			g.setColor(this.noTextureColor());
+			g.fillRect((int)pos.getX(), (int)pos.getY(), width, height);
+		}
 	}
 
 	@Override
