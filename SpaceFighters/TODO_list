@@ -6,8 +6,8 @@ Weapons upgrades
 Hull upgrades
 Scoreboard for high scores
 Add asteroids
-Closed: Powerups need to have a decay time, and duplicates of the same powerup type should not be allowed on the screen at the same time.
-	(I think multiple powerups of the same type is OK, in most games this is allowed)
 levels
 max enemy count
 drop explosives in place
+chain weapon powerup
+stun weapon
