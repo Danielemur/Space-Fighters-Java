@@ -17,6 +17,8 @@ import com.greenteam.spacefighters.stage.Stage;
 public class ShootingEnemy extends Enemy {
 	private static final int SHOOTING_INTERVAL = 800;
 	private static final int PROJECTILE_SPEED = 550;
+	private static final double SPAWNDIST = 400.0D;
+	private static final double SPEED = 300.0D;
 	
 	private int width;
 	private int height;
@@ -24,24 +26,24 @@ public class ShootingEnemy extends Enemy {
 	private int time;
 	private Vec2 randpos;
 	
-	public ShootingEnemy(Stage s, int width, int height) {
+	public ShootingEnemy(Stage s) {
 		super(s, 1, 0, 0);
 		time = 0;
-		this.setPosition(new Vec2((stage.getWidth()-40)*Math.random(),0));
+		this.setPosition(randSpawnPos(s.getPlayer(), SPAWNDIST));
 		this.setOrientation(new Vec2(0,-1));
 		
-		randpos = new Vec2((stage.getWidth()-40)*Math.random(), stage.getHeight()/3*Math.random());
+		randpos = randSpawnPos(s.getPlayer(), 0);
 		
 		try {
 			this.setTexture(ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/enemy-2.png")));
+			couldLoadImage = true;
 			this.width = this.getTexture().getWidth(null);
 			this.height = this.getTexture().getHeight(null);
-			couldLoadImage = true;
 		} catch (IOException e) {
 			couldLoadImage = false;
+			this.width = 20;
+			this.height = 60;
 		}
-		this.width = width;
-		this.height = height;
 	}
 
 	@Override
@@ -76,7 +78,10 @@ public class ShootingEnemy extends Enemy {
 			Projectile proj = new LinearProjectile(stage, 1, 3, this.getPosition(), vectorToTarget, Enemy.class);
 			stage.add(proj);
 		}
-		this.setVelocity(randpos.subtract(this.getPosition()));
+		if (getPosition().distance(randpos) < 5)
+			randpos = randSpawnPos(this.getStage().getPlayer(), 0);
+		this.setVelocity(randpos.subtract(this.getPosition()).normalize().scale(SPEED));
+		this.setOrientation(this.getVelocity().normalize().multiply(new Vec2(1, -1)));
 	}
 
 	@Override

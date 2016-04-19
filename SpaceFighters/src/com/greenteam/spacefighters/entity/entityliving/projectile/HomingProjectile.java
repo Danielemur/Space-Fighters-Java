@@ -16,17 +16,20 @@ import com.greenteam.spacefighters.stage.Stage;
 
 public class HomingProjectile extends Projectile {
 	private static final double IMAGE_RATIO = 0.05;
+	private static final int INIT_DELAY = 50;
 	
 	private double speed;
 	private Entity target;
 	private boolean couldLoadImage;
+	private int startTrackDelay;
 	
 	public HomingProjectile(Stage s, int health, int damage, Vec2 position, Vec2 velocity, Class<?> source) {
 		super(s, health, damage, position, velocity, source);
-		target = closestEntity();
 		speed = velocity.magnitude();
+		target = null;
+		startTrackDelay = INIT_DELAY;
 		try {
-			this.setTexture(ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/projectile-3.png")));
+			this.setTexture(ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/projectile-1.png")));
 			couldLoadImage = true;
 		} catch (IOException e) {
 			couldLoadImage = false;
@@ -67,23 +70,30 @@ public class HomingProjectile extends Projectile {
 	@Override
 	public void update(int ms) {
 		super.update(ms);
-		if (target != null) {
-			if (((EntityLiving)target).getHealth() <= 0) {
+		startTrackDelay -= ms;
+		if (startTrackDelay <= 0) {
+			if (target != null) {
+				if (((EntityLiving)target).getHealth() <= 0) {
+					target = closestEntity();
+				}
+			}
+			if (target != null) {
+				Vec2 vectorToTarget = target.getPosition().subtract(this.getPosition()).normalize().scale(speed);
+				this.setVelocity(vectorToTarget);
+			}
+			if (target == null) {
 				target = closestEntity();
 			}
-		}
-		if (target != null) {
-			Vec2 vectorToTarget = target.getPosition().subtract(this.getPosition()).normalize().scale(speed);
-			this.setVelocity(vectorToTarget);
-		}
-		if (target == null) {
-			target = closestEntity();
-		}
-		for (Entity e : this.getStage().getEntities()) {
-			if (e == this) continue;
-			if ((e.getPosition().distance(this.getPosition()) < this.getRadius() + e.getRadius()) && isOppositeFaction(e)) {
-				this.setHealth(this.getHealth() - ((EntityLiving)e).getDamage());
+			for (Entity e : this.getStage().getEntities()) {
+				if (e == this) continue;
+				if ((e.getPosition().distance(this.getPosition()) < this.getRadius() + e.getRadius()) && isOppositeFaction(e)) {
+					this.setHealth(this.getHealth() - ((EntityLiving)e).getDamage());
+				}
 			}
 		}
+	}
+	
+	public static int getEnergyCost() {
+		return 25;
 	}
 }

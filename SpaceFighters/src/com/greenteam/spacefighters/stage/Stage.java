@@ -9,31 +9,29 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import com.greenteam.spacefighters.GUI.HUD;
 import com.greenteam.spacefighters.GUI.Window;
+import com.greenteam.spacefighters.common.Vec2;
 import com.greenteam.spacefighters.entity.Entity;
 import com.greenteam.spacefighters.entity.entityliving.starship.player.Player;
 
 public class Stage extends JPanel implements ActionListener, KeyListener {
+	public static final int WIDTH = 2400;
+	public static final int HEIGHT= 2400;
 	private static final long serialVersionUID = -2937557151448523567L;
-	private static final int NUM_STARS = 12;
+	private static final int NUM_STARS = 120;
 	private static final double BACKGROUND_SCROLL_SPEED = 2.5;
 	private static final int BACKGROUND_OVERSIZE_RATIO = 5;
 	private static final int STARFIELD_LAYERS = 3;
 
 	private CopyOnWriteArrayList<Entity> entities;
 	private Timer timer;
-	private int width;
-	private int height;
 	private Player player;
 	private int score;
 	private HUD hud;
@@ -42,32 +40,41 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 	private Timer fireTertiaryTimer;
 	private Image[] starfields;
 	private double[] backgroundOffsets;
+	private boolean upKeyPressed;
+	private boolean downKeyPressed;
+	private boolean leftKeyPressed;
+	private boolean rightKeyPressed;
 	
 	public Stage(int width, int height, Player player) {
 		this.entities = new CopyOnWriteArrayList<Entity>();
-		this.width = width;
-		this.height = height;
 		this.player = player;
 		this.score = 0;
 		this.hud = null;
 		this.backgroundOffsets = new double[STARFIELD_LAYERS];
 		this.starfields = new BufferedImage[STARFIELD_LAYERS];
 		for (int i = 0; i < STARFIELD_LAYERS; ++i) {
-			starfields[i] = new BufferedImage(width, height*Stage.BACKGROUND_OVERSIZE_RATIO, BufferedImage.TYPE_INT_ARGB);
+			starfields[i] = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
 			Graphics g = starfields[i].getGraphics();
 			g.setColor(Color.WHITE);
-			for (int j = 0; j < Stage.NUM_STARS*Stage.BACKGROUND_OVERSIZE_RATIO; ++j) {
-				g.fillRect((int)(width*Math.random()), (int)(height*Stage.BACKGROUND_OVERSIZE_RATIO*Math.random()), 1, 1);
+			for (int j = 0; j < Stage.NUM_STARS; ++j) {
+				g.fillRect((int)(WIDTH * Math.random()), (int)(HEIGHT * Math.random()), 1, 1);
 			}
 		}
 		this.setPreferredSize(new Dimension(width, height));
 		this.setSize(new Dimension(width, height));
 		this.addKeyListener(this);
 		firePrimaryTimer = new Timer((int)(500/Window.FPS), this);
+		firePrimaryTimer.setInitialDelay(0);
 		fireSecondaryTimer = new Timer((int)(500/Window.FPS), this);
-		fireTertiaryTimer = new Timer((int)(500/Window.FPS), this);
+		fireSecondaryTimer.setInitialDelay(0);
+		fireTertiaryTimer = new Timer((int)(10000/Window.FPS), this);
+		fireTertiaryTimer.setInitialDelay(0);
 		timer = new Timer((int)(1000/Window.FPS), this);
 		timer.start();
+		upKeyPressed = false;
+		downKeyPressed = false;
+		leftKeyPressed = false;
+		rightKeyPressed = false;
 	}
 	
 	@Override
@@ -75,20 +82,43 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 		super.paintComponent(g);
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
-		BufferedImage image = new BufferedImage(this.getSize().width, this.getSize().height, BufferedImage.TYPE_INT_ARGB);
+		
+		Vec2 offsetMax = new Vec2(WIDTH - this.getWidth(), HEIGHT - this.getHeight());
+		Vec2 offsetMin = Vec2.ZERO;
+		
+		Vec2 offset = new Vec2(player.getPosition().getX() - this.getWidth() / 2,
+							   player.getPosition().getY() - this.getHeight() / 2);
+		
+		offset = offset.min(offsetMax).max(offsetMin);
+		//g.setClip((int)offset.getX(), (int)offset.getY(), viewWidth, viewHeight);
+		g.translate(-(int)offset.getX(), -(int)offset.getY());
+		player.render(g);
+		
 		for (int i = 0; i < STARFIELD_LAYERS; ++i) {
 			if (starfields[i] != null) {
-				image.getGraphics().drawImage(starfields[i], 0, (int)backgroundOffsets[i], null);
-				image.getGraphics().drawImage(starfields[i], 0, (int)(backgroundOffsets[i] - starfields[i].getHeight(null)), null);
+				g.drawImage(starfields[i], 0, 0/*(int)backgroundOffsets[i]*/, null);
+				g.drawImage(starfields[i], 0, 0/*(int)(backgroundOffsets[i] - starfields[i].getHeight(null))*/, null);
 			}
 		}
 		for (Entity e : entities) {
-			e.render(image.getGraphics());
+			if (e != player) {
+				e.render(g);
+			}
 		}
-		g.drawImage(image, 0, 0, null);
+		g.translate((int)offset.getX(), (int)offset.getY());
 		if (hud != null) {
 			hud.render(g);
 		}
+	}
+	
+	private void doUpKey() {
+		Vec2 orientation = player.getOrientation();
+		player.setVelocity(orientation.scale(Player.MOVEMENT_SPEED).multiply(new Vec2(1, -1)));
+	}
+	
+	private void doDownKey() {
+		Vec2 orientation = player.getOrientation();
+		player.setVelocity(orientation.scale(-Player.MOVEMENT_SPEED).multiply(new Vec2(1, -1)));
 	}
 	
 	public List<Entity> getEntities() {return entities;}
@@ -96,14 +126,29 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 	@Override
 	public void actionPerformed(ActionEvent ev) {
 		if (ev.getSource() == timer) {
+			if (leftKeyPressed && !rightKeyPressed) {
+				player.setOrientation(player.getOrientation().rotate(Vec2.ZERO, Math.PI / 32));
+				if (upKeyPressed && !downKeyPressed) {
+					doUpKey();
+				} else if (downKeyPressed && !upKeyPressed) {
+					doDownKey();
+				}
+			} else if (rightKeyPressed && !leftKeyPressed) {
+				player.setOrientation(player.getOrientation().rotate(Vec2.ZERO, -Math.PI / 32));
+				if (upKeyPressed && !downKeyPressed) {
+					doUpKey();
+				} else if (downKeyPressed && !upKeyPressed) {
+					doDownKey();
+				}
+			}
 			for (int i = 0; i < STARFIELD_LAYERS; ++i) {
 				backgroundOffsets[i] += (double)Stage.BACKGROUND_SCROLL_SPEED/Math.pow((i+1),0.5);
-				if (backgroundOffsets[i] > Stage.BACKGROUND_OVERSIZE_RATIO*this.getHeight()) {
+				if (backgroundOffsets[i] > Stage.BACKGROUND_OVERSIZE_RATIO * this.getHeight()) {
 					backgroundOffsets[i] = 0;
 				}
 			}
 			for (Entity e : entities) {
-				e.update((int)(1000/Window.FPS));
+				e.update((int)(1000 / Window.FPS));
 			}
 			this.repaint();
 		}
@@ -131,25 +176,40 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 		if (player != null) {
 			switch (ev.getKeyCode()) {
 			case KeyEvent.VK_LEFT:
-				player.getVelocity().setX(-Player.MOVEMENT_SPEED);
+			{
+				leftKeyPressed = true;
+			}
 				break;
 			case KeyEvent.VK_RIGHT:
-				player.getVelocity().setX(Player.MOVEMENT_SPEED);
+			{
+				rightKeyPressed = true;
+			}
 				break;
 			case KeyEvent.VK_UP:
-				player.getVelocity().setY(-Player.MOVEMENT_SPEED);
+				upKeyPressed = true;
+				doUpKey();
 				break;
 			case KeyEvent.VK_DOWN:
-				player.getVelocity().setY(Player.MOVEMENT_SPEED);
+				downKeyPressed = true;
+				doDownKey();
 				break;
 			case KeyEvent.VK_Z:
-				firePrimaryTimer.start();
+				if (!firePrimaryTimer.isRunning()) {
+					firePrimaryTimer.restart();
+					firePrimaryTimer.start();
+				}
 				break;
 			case KeyEvent.VK_X:
-				fireSecondaryTimer.start();
+				if (!fireSecondaryTimer.isRunning()) {
+					fireSecondaryTimer.restart();
+					fireSecondaryTimer.start();
+				}
 				break;
 			case KeyEvent.VK_C:
-				fireTertiaryTimer.start();
+				if (!fireTertiaryTimer.isRunning()) {
+					fireTertiaryTimer.restart();
+					fireTertiaryTimer.start();
+				}
 				break;
 			case KeyEvent.VK_SPACE:
 				if (this.isPaused()) {
@@ -169,12 +229,18 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 		if (player != null) {
 			switch (ev.getKeyCode()) {
 			case KeyEvent.VK_LEFT:
+				leftKeyPressed = false;
+				break;
 			case KeyEvent.VK_RIGHT:
-				player.getVelocity().setX(0);
+				rightKeyPressed = false;
 				break;
 			case KeyEvent.VK_UP:
+				player.setVelocity(Vec2.ZERO);
+				upKeyPressed = false;
+				break;
 			case KeyEvent.VK_DOWN:
-				player.getVelocity().setY(0);
+				player.setVelocity(Vec2.ZERO);
+				downKeyPressed = false;
 				break;
 			case KeyEvent.VK_Z:
 				firePrimaryTimer.stop();
@@ -200,6 +266,7 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 	}
 
 	public void setPlayer(Player player) {
+		this.add(player);
 		this.player = player;
 	}
 	
@@ -229,6 +296,11 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 	
 	public Timer getTimer() {
 		return timer;
+	}
+	
+	public static boolean inStage(Vec2 pos) {
+		return (pos.getX() > 0 && pos.getX() < Stage.WIDTH &&
+				pos.getY() > 0 && pos.getY() < Stage.HEIGHT);
 	}
 	
 	public Entity getNearestEntity(Entity entity) {

@@ -25,14 +25,15 @@ import com.greenteam.spacefighters.stage.Stage;
 public class Player extends Starship {
 	private static final int DEFAULTARMORLEVEL = 0;
 	private static final int DEFAULTWEAPONRYLEVEL= 0;
-	private static final int DEFAULTWEAPONRYHEALTH = 1;
+	private static final int DEFAULTWEAPONRYHEALTH = 2;
 	private static final int FIREDRAIN = 15;
 	private static final int FULLCHARGE = 500;
 	public static final int MOVEMENT_SPEED = 500;
 	private static final int PLAYER_PROJECTILE_SPEED = 1200;
 	private static final int MISSILE_SPEED = 1000;
-	private static final int HEALTH_REGEN_TIME = 800;
+	private static final int HEALTH_REGEN_TIME = 1600;
 	private static final int GUN_TO_MISSILE_RATIO = 5;
+	private static final int MISSILE_SPREAD_COUNT = 12;
 	
 	private int timetofiremissile;
 	private int chargeLevel;
@@ -48,7 +49,7 @@ public class Player extends Starship {
 		time = 0;
 		timetofiremissile = GUN_TO_MISSILE_RATIO;
 		try {
-			this.setTexture(ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/spaceship-3.png")));
+			this.setTexture(ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/spaceship-1.png")));
 			this.width = this.getTexture().getWidth(null);
 			this.height = this.getTexture().getHeight(null);
 			couldLoadImage = true;
@@ -75,8 +76,6 @@ public class Player extends Starship {
 			AffineTransform tf = AffineTransform.getRotateInstance(angle, imagemidx, imagemidy);
 			AffineTransformOp op = new AffineTransformOp(tf, AffineTransformOp.TYPE_BILINEAR);
 			g.drawImage(op.filter((BufferedImage)this.getTexture(), null), (int)(pos.getX()-imagemidx), (int)(pos.getY()-imagemidy), null);
-			g.setColor(Color.WHITE);
-			g.fillRect((int)(pos.getX()), (int)(pos.getY()), 3, 3);
 		}
 		else {
 			g.setColor(Color.GREEN);
@@ -107,14 +106,14 @@ public class Player extends Starship {
 				}
 			}
 		}
-		if (this.getPosition().getX() > stage.getWidth()) {
-			this.getPosition().setX(stage.getWidth());
+		if (this.getPosition().getX() > Stage.WIDTH) {
+			this.getPosition().setX(Stage.WIDTH);
 		}
 		if (this.getPosition().getX() < 0) {
 			this.getPosition().setX(0);
 		}
-		if (this.getPosition().getY() > stage.getHeight()) {
-			this.getPosition().setY(stage.getHeight());
+		if (this.getPosition().getY() > Stage.HEIGHT) {
+			this.getPosition().setY(Stage.HEIGHT);
 		}
 		if (this.getPosition().getY() < 0) {
 			this.getPosition().setY(0);
@@ -133,14 +132,15 @@ public class Player extends Starship {
 	@Override
 	public void fire(int type) {
 		int damage = 10 * (getWeaponryMultiplier() + 1);
+		Vec2 playerVel = this.getVelocity();
 		//Projectile proj = new Projectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getSource());
 		if (type == 0) {
 			if (chargeLevel >= FIREDRAIN) {
 				--timetofiremissile;
-				Projectile proj = new LinearProjectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getPosition(), new Vec2(0, -PLAYER_PROJECTILE_SPEED), this.getSource());
+				Projectile proj = new LinearProjectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getPosition(), getOrientation().scale(PLAYER_PROJECTILE_SPEED).multiply(new Vec2(1, -1)).add(playerVel), this.getSource());
 				stage.add(proj);
 				if (timetofiremissile == 0) {
-					proj = new HomingProjectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getPosition(), new Vec2(0, -MISSILE_SPEED), this.getSource());
+					proj = new HomingProjectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getPosition(), getOrientation().scale(MISSILE_SPEED).multiply(new Vec2(1, -1)), this.getSource());
 					stage.add(proj);
 					timetofiremissile = GUN_TO_MISSILE_RATIO;
 				}
@@ -148,15 +148,17 @@ public class Player extends Starship {
 			}
 		}
 		if (type == 1) {
-			if (chargeLevel >= HomingProjectile.getEnergyCost()) {
-				Projectile proj = new HomingProjectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getPosition(), new Vec2(0, -MISSILE_SPEED), this.getSource());
-				stage.add(proj);
-				chargeLevel -= HomingProjectile.getEnergyCost();
+			if (chargeLevel >= HomingProjectile.getEnergyCost()*MISSILE_SPREAD_COUNT) {
+				for (int i = 0; i < MISSILE_SPREAD_COUNT; ++i) {
+					Projectile proj = new HomingProjectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getPosition(), getOrientation().scale(MISSILE_SPEED).multiply(new Vec2(1, -1)).rotate(new Vec2(0,0), (i-(double)MISSILE_SPREAD_COUNT/2)/MISSILE_SPREAD_COUNT*2*Math.PI), this.getSource());
+					stage.add(proj);
+				}
+				chargeLevel -= HomingProjectile.getEnergyCost()*MISSILE_SPREAD_COUNT;
 			}
 		}
 		if (type == 2) {
 			if (chargeLevel >= ExplosiveProjectile.getEnergyCost()) {
-				Projectile proj = new ExplosiveProjectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getPosition(), new Vec2(0, -MISSILE_SPEED), this.getSource());
+				Projectile proj = new ExplosiveProjectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getPosition(), getOrientation().scale(PLAYER_PROJECTILE_SPEED).multiply(new Vec2(1, -1)), this.getSource());
 				stage.add(proj);
 				chargeLevel -= ExplosiveProjectile.getEnergyCost();
 			}

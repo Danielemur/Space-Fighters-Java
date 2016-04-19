@@ -126,11 +126,11 @@ public class Vec2 {
 		return this.subtract(v.scale(2 * this.dotProduct(v)));
 	}
 
-	public Vec2 rotate(Vec2 center, Vec2 axis, double radians) {
+	public Vec2 rotate(Vec2 center, double radians) {
 	    
 	    return new Vec2(
-	    		((center.x) * (1 - Math.cos(radians)) + x * Math.cos(radians) + (center.y - y) * Math.sin(radians)),
-	    		((center.y) * (1 - Math.cos(radians)) + y * Math.cos(radians) + (center.x + x) * Math.sin(radians))
+	    		(Math.cos(radians) * (x - center.x) - Math.sin(radians) * (y - center.y) + center.x),
+	    		(Math.sin(radians) * (x - center.x) + Math.cos(radians) * (y - center.y) + center.y)
 	    		);
 	}
 	
@@ -166,7 +166,24 @@ public class Vec2 {
 		return new Vec2(x * vec.x, y * vec.y);
 	}
 	
-	public static Vec2 fromAngle(Vec2 x, Vec2 y, double angle) {
+	public Vec2 setMag(double s) {
+		return this.normalize().scale(s);
+	}
+	
+	public static Vec2 fromAngle(double angle) {
 	    return new Vec2(Math.cos(angle), Math.sin(angle));
 	}
+	
+	public static Vec2 random() {
+		return new Vec2(Math.random(), Math.random());
+	}
+	
+	public static Vec2 random(double max) {
+		return new Vec2(max * Math.random(), max * Math.random());
+	}
+	
+	public static Vec2 random(double xMax, double yMax) {
+		return new Vec2(xMax * Math.random(), yMax * Math.random());
+	}
+	
 }

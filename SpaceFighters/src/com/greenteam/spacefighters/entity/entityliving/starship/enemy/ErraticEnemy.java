@@ -17,22 +17,23 @@ public class ErraticEnemy extends Enemy {
 	private int height;
 	private boolean couldLoadImage;
 	private int time;
+	private static final double SPAWNDIST = 400.0D;
 	
-	public ErraticEnemy(Stage s, int width, int height) {
+	public ErraticEnemy(Stage s) {
 		super(s, 1, 0, 0);
 		time = 0;
-		this.setPosition(new Vec2((stage.getWidth()-40)*Math.random(),0));
+		this.setPosition(randSpawnPos(s.getPlayer(), SPAWNDIST));
 		this.setVelocity(new Vec2(1000*Math.random()-500,200));
 		try {
 			this.setTexture(ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/enemy-1.png")));
+			couldLoadImage = true;
 			this.width = this.getTexture().getWidth(null);
 			this.height = this.getTexture().getHeight(null);
-			couldLoadImage = true;
 		} catch (IOException e) {
 			couldLoadImage = false;
+			this.width = 20;
+			this.height = 60;
 		}
-		this.width = width;
-		this.height = height;
 	}
 
 	@Override
@@ -62,18 +63,19 @@ public class ErraticEnemy extends Enemy {
 		super.update(ms);
 		time += ms;
 		//this.setOrientation(this.getOrientation().rotate(new Vec2(0,0), null, 0.1));
-		this.setOrientation(new Vec2(0,1).rotate(new Vec2(0,0), null, this.getVelocity().angle()+Math.PI));
-		if ((this.getPosition().getX() + width*2 > stage.getWidth()) || (this.getPosition().getX() < 0)) {
+		this.setOrientation(new Vec2(0,1).rotate(new Vec2(0,0), this.getVelocity().angle()+Math.PI));
+		if ((this.getPosition().getX() + width * 2 > Stage.WIDTH) || (this.getPosition().getX() < 0)) {
 			this.getVelocity().setX(this.getVelocity().getX()*-1);
 		}
+		if ((this.getPosition().getY() + height * 2 > Stage.HEIGHT) || (this.getPosition().getY() < 0)) {
+			this.getVelocity().setY(this.getVelocity().getY() * -1);
+		}
 		else {
-			if (time > 400*Math.random()+300) {
-				this.getVelocity().setX(1000*Math.random() - 500);
+			if (time > 400 * Math.random() + 300) {
+				this.setVelocity(new Vec2(1000 * Math.random() - 500,
+										  1000 * Math.random() - 500));
 				time = 0;
 			}
-		}
-		if (this.getPosition().getY() - 1 > stage.getHeight()) {
-			this.remove();
 		}
 	}
 

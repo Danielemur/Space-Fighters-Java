@@ -16,8 +16,8 @@ import com.greenteam.spacefighters.stage.TestLevelLoader;
 
 public class Window extends JFrame implements WindowListener {
 	private static final long serialVersionUID = 8514984102701282740L;
-	private static final int WIDTH = 400;
-	private static final int HEIGHT = 600;
+	private static final int WIDTH = 800;
+	private static final int HEIGHT = 800;
 	
 	public static final double FPS = 60;
 	
@@ -34,8 +34,8 @@ public class Window extends JFrame implements WindowListener {
 		
 		loader = new TestLevelLoader(stage, null);
 		
-		this.setTitle("Very Speedy");
-		this.setIconImage(new ImageIcon(this.getClass().getResource("/com/greenteam/spacefighters/assets/spaceship-3.png")).getImage());
+		this.setTitle("SpaceFighters");
+		this.setIconImage(new ImageIcon(this.getClass().getResource("/com/greenteam/spacefighters/assets/spaceship-2.png")).getImage());
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		this.addWindowFocusListener(new WindowAdapter() {
