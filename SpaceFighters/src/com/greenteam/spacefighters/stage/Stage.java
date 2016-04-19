@@ -148,7 +148,7 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 				}
 			}
 			for (Entity e : entities) {
-				e.update((int)(1000 / Window.FPS));
+				e.update((int)(700 / Window.FPS));
 			}
 			this.repaint();
 		}
