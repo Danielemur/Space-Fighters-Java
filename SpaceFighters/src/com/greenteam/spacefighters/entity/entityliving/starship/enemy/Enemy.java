@@ -1,5 +1,9 @@
 package com.greenteam.spacefighters.entity.entityliving.starship.enemy;
 
+import java.awt.image.BufferedImage;
+
+import javax.imageio.ImageIO;
+
 import com.greenteam.spacefighters.entity.Entity;
 import com.greenteam.spacefighters.entity.entityliving.EntityLiving;
 import com.greenteam.spacefighters.entity.entityliving.obstacle.Obstacle;
@@ -32,4 +36,28 @@ public abstract class Enemy extends Starship {
 	public Class<?> getSource() {
 		return Enemy.class;
 	}
+	
+	public static BufferedImage getTexFromEnum(EnemyShipColor color) {
+		try {
+			switch(color) {
+				case GREEN:
+					return ImageIO.read(Enemy.class.getResource("/com/greenteam/spacefighters/assets/enemy-0.png"));
+				case BLUE:
+					return ImageIO.read(Enemy.class.getResource("/com/greenteam/spacefighters/assets/enemy-1.png"));
+				case RED:
+					return ImageIO.read(Enemy.class.getResource("/com/greenteam/spacefighters/assets/enemy-2.png"));
+				case BLACK:
+					return ImageIO.read(Enemy.class.getResource("/com/greenteam/spacefighters/assets/enemy-3.png"));
+				default :
+					return ImageIO.read(Enemy.class.getResource("/com/greenteam/spacefighters/assets/enemy-0.png"));
+			}
+		} catch(Exception e) {
+			return null;
+		}
+	}
+	
+	public enum EnemyShipColor {
+		GREEN, BLUE, RED, BLACK
+	}
+	
 }

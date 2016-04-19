@@ -8,10 +8,6 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
 import com.greenteam.spacefighters.common.Vec2;
 import com.greenteam.spacefighters.entity.Entity;
 import com.greenteam.spacefighters.entity.entityliving.EntityLiving;
@@ -40,12 +36,7 @@ public class HealthRestorePowerup extends Powerup {
 		
 		randpos = new Vec2(Stage.WIDTH * Math.random(), Stage.HEIGHT * Math.random());
 		
-		try {
-			this.setTexture(ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/powerup-3.png")));
-			couldLoadImage = true;
-		} catch (IOException e) {
-			couldLoadImage = false;
-		}
+		this.setTexture(this.getTexFromEnum(PowerupColor.RED));
 	}
 	
 	@Override

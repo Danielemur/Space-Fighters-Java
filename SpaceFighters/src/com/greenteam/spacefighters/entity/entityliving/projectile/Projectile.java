@@ -5,6 +5,8 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
+import javax.imageio.ImageIO;
+
 import com.greenteam.spacefighters.common.Vec2;
 import com.greenteam.spacefighters.entity.Entity;
 import com.greenteam.spacefighters.entity.entityliving.EntityLiving;
@@ -80,4 +82,28 @@ public abstract class Projectile extends EntityLiving {
 	public Class<?> getSource() {
 		return source;
 	}
+	
+	public BufferedImage getTexFromEnum(ProjectileColor color) {
+		try {
+			switch(color) {
+				case YELLOW:
+					return ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/projectile-0.png"));
+				case BLUE:
+					return ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/projectile-1.png"));
+				case RED:
+					return ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/projectile-2.png"));
+				case GREEN:
+					return ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/projectile-3.png"));
+				default :
+					return ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/projectile-0.png"));
+			}
+		} catch(Exception e) {
+			return null;
+		}
+	}
+	
+	public enum ProjectileColor {
+		YELLOW, BLUE, RED, GREEN
+	}
+
 }

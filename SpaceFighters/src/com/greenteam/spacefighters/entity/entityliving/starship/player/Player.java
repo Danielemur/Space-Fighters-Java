@@ -5,8 +5,6 @@ import java.awt.Graphics;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-
 import javax.imageio.ImageIO;
 
 import com.greenteam.spacefighters.common.Vec2;
@@ -43,17 +41,17 @@ public class Player extends Starship {
 	private int maxhealth;
 	private int time;
 
-	public Player(Stage s, int health) {
+	public Player(Stage s, int health, PlayerShipColor color) {
 		super(s, health, DEFAULTARMORLEVEL, DEFAULTWEAPONRYLEVEL);
 		maxhealth = health;
 		time = 0;
 		timetofiremissile = GUN_TO_MISSILE_RATIO;
-		try {
-			this.setTexture(ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/spaceship-1.png")));
+		this.setTexture(Player.getTexFromEnum(color));
+		if (this.getTexture() != null) {
 			this.width = this.getTexture().getWidth(null);
 			this.height = this.getTexture().getHeight(null);
 			couldLoadImage = true;
-		} catch (IOException e) {
+		} else {
 			couldLoadImage = false;
 			this.width = 20;
 			this.height = 30;
@@ -185,4 +183,28 @@ public class Player extends Starship {
 	public int getDamage() {
 		return 50;
 	}
+	
+	public static BufferedImage getTexFromEnum(PlayerShipColor color) {
+		try {
+			switch(color) {
+				case RED:
+					return ImageIO.read(Player.class.getResource("/com/greenteam/spacefighters/assets/spaceship-0.png"));
+				case BLUE:
+					return ImageIO.read(Player.class.getResource("/com/greenteam/spacefighters/assets/spaceship-1.png"));
+				case GREEN:
+					return ImageIO.read(Player.class.getResource("/com/greenteam/spacefighters/assets/spaceship-2.png"));
+				case YELLOW:
+					return ImageIO.read(Player.class.getResource("/com/greenteam/spacefighters/assets/spaceship-3.png"));
+				default :
+					return ImageIO.read(Player.class.getResource("/com/greenteam/spacefighters/assets/spaceship-0.png"));
+			}
+		} catch(Exception e) {
+			return null;
+		}
+	}
+	
+	public enum PlayerShipColor {
+		RED, BLUE, GREEN, YELLOW
+	}
+	
 }

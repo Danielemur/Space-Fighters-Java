@@ -5,10 +5,6 @@ import java.awt.Graphics;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
 import com.greenteam.spacefighters.common.Vec2;
 import com.greenteam.spacefighters.stage.Stage;
 
@@ -22,12 +18,13 @@ public class TestEnemy extends Enemy {
 		super(s, 1, 0, 0);
 		this.setPosition(randSpawnPos(s.getPlayer(), SPAWNDIST));
 		this.setVelocity(new Vec2(-440,200));
-		try {
-			this.setTexture(ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/enemy-0.png")));
+		
+		this.setTexture(this.getTexFromEnum(EnemyShipColor.GREEN));		
+		if (this.getTexture() != null) {
 			couldLoadImage = true;
 			this.width = this.getTexture().getWidth(null);
 			this.height = this.getTexture().getHeight(null);
-		} catch (IOException e) {
+		} else {
 			couldLoadImage = false;
 			this.width = 20;
 			this.height = 60;

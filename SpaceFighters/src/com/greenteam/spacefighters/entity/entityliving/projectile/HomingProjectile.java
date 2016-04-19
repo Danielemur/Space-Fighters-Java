@@ -5,10 +5,6 @@ import java.awt.Graphics;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
 import com.greenteam.spacefighters.common.Vec2;
 import com.greenteam.spacefighters.entity.Entity;
 import com.greenteam.spacefighters.entity.entityliving.EntityLiving;
@@ -28,12 +24,9 @@ public class HomingProjectile extends Projectile {
 		speed = velocity.magnitude();
 		target = null;
 		startTrackDelay = INIT_DELAY;
-		try {
-			this.setTexture(ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/projectile-1.png")));
-			couldLoadImage = true;
-		} catch (IOException e) {
-			couldLoadImage = false;
-		}
+		
+		this.setTexture(this.getTexFromEnum(ProjectileColor.BLUE));
+
 	}
 	
 	private Entity closestEntity() {

@@ -5,10 +5,6 @@ import java.awt.Graphics;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
 import com.greenteam.spacefighters.common.Vec2;
 import com.greenteam.spacefighters.entity.entityliving.projectile.LinearProjectile;
 import com.greenteam.spacefighters.entity.entityliving.projectile.Projectile;
@@ -33,13 +29,12 @@ public class ShootingEnemy extends Enemy {
 		this.setOrientation(new Vec2(0,-1));
 		
 		randpos = randSpawnPos(s.getPlayer(), 0);
-		
-		try {
-			this.setTexture(ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/enemy-2.png")));
+		this.setTexture(this.getTexFromEnum(EnemyShipColor.RED));		
+		if (this.getTexture() != null) {
 			couldLoadImage = true;
 			this.width = this.getTexture().getWidth(null);
 			this.height = this.getTexture().getHeight(null);
-		} catch (IOException e) {
+		} else {
 			couldLoadImage = false;
 			this.width = 20;
 			this.height = 60;
