@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 
 import com.greenteam.spacefighters.entity.entityliving.starship.player.Player;
 import com.greenteam.spacefighters.entity.entityliving.starship.player.Player.PlayerShipColor;
+import com.greenteam.spacefighters.stage.LevelLoader;
 //import com.greenteam.spacefighters.stage.LevelLoader;
 import com.greenteam.spacefighters.stage.Stage;
 import com.greenteam.spacefighters.stage.TestLevelLoader;
@@ -24,39 +25,26 @@ public class Window extends JFrame implements WindowListener {
 	public static final String STAGE_CARDLAYOUT_NAME = "STAGE";
 	
 	private Stage stage;
-	//private LevelLoader loader;
+	private LevelLoader loader;
 	
 	Window() {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		stage = new Stage(Window.WIDTH, Window.HEIGHT, null);
-		//this.setLayout(new CardLayout());
 		
 		final JPanel contentPane = new JPanel();
 		contentPane.setLayout(new CardLayout());
-//		this.setLayout(new BorderLayout(0,0));
-//		stage.setBorder(BorderFactory.createEmptyBorder());
-//		this.add(stage, BorderLayout.CENTER);
 		contentPane.add(new TitleScreen(this), TITLE_SCREEN_CARDLAYOUT_NAME);
 		contentPane.add(stage, STAGE_CARDLAYOUT_NAME);
 		contentPane.setBounds(new Rectangle(Window.WIDTH, Window.HEIGHT));
 		this.setBounds(new Rectangle(Window.WIDTH, Window.HEIGHT));
 		
-		/*loader = */
-		new TestLevelLoader(stage, null);
+		loader = new TestLevelLoader(stage, null);
 		
 		this.setTitle("SpaceFighters");
 		this.setIconImage(Player.getTexFromEnum(PlayerShipColor.RED));
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
-		//contentPane.addKeyListener(stage);
-		//stage.setInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW, stage.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW));
-		/*
-		this.addWindowFocusListener(new WindowAdapter() {
-			public void windowGainedFocus(WindowEvent ev) {
-				stage.requestFocusInWindow();
-			}
-		});
-		*/
+		this.setContentPane(contentPane);
 		this.setVisible(true);
 	}
 	

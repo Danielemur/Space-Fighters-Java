@@ -10,6 +10,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class TitleScreen extends JPanel implements ActionListener {
+	private static final long serialVersionUID = -8833873967148164038L;
+	
 	private JLabel title;
 	private JButton startButton;
 	private Window window;
