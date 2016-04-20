@@ -52,7 +52,7 @@ public class Window extends JFrame implements WindowListener {
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		//contentPane.addKeyListener(stage);
-		stage.setInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW, stage.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW));
+		//stage.setInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW, stage.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW));
 		/*
 		this.addWindowFocusListener(new WindowAdapter() {
 			public void windowGainedFocus(WindowEvent ev) {

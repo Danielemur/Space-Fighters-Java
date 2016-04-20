@@ -12,7 +12,11 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import javax.swing.AbstractAction;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 import javax.swing.Timer;
 
 import com.greenteam.spacefighters.GUI.HUD;
@@ -21,7 +25,7 @@ import com.greenteam.spacefighters.common.Vec2;
 import com.greenteam.spacefighters.entity.Entity;
 import com.greenteam.spacefighters.entity.entityliving.starship.player.Player;
 
-public class Stage extends JPanel implements ActionListener, KeyListener {
+public class Stage extends JPanel implements ActionListener {
 	public static final int WIDTH = 2400;
 	public static final int HEIGHT= 2400;
 	private static final long serialVersionUID = -2937557151448523567L;
@@ -29,6 +33,17 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 	private static final double BACKGROUND_SCROLL_SPEED = 2.5;
 	private static final int BACKGROUND_OVERSIZE_RATIO = 5;
 	private static final int STARFIELD_LAYERS = 3;
+	
+	private static final String MOVE_FORWARD = "FORWARD";
+	private static final String MOVE_BACKWARD = "BACKWARD";
+	private static final String MOVE_LEFT = "LEFT";
+	private static final String MOVE_RIGHT = "RIGHT";
+	private static final String FIRE_PRIMARY = "FIREPRIMARY";
+	private static final String FIRE_SECONDARY = "FIRESECONDARY";
+	private static final String FIRE_TERTIARY = "FIRETERTIARY";
+	
+	private static final String PRESSED = " pressed";
+	private static final String RELEASED = " released";
 
 	private CopyOnWriteArrayList<Entity> entities;
 	private Timer timer;
@@ -62,7 +77,40 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 		}
 		this.setPreferredSize(new Dimension(width, height));
 		this.setSize(new Dimension(width, height));
-		this.addKeyListener(this);
+		
+		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("pressed UP"),MOVE_FORWARD+PRESSED);
+		this.getActionMap().put(MOVE_FORWARD+PRESSED, new MoveActionPressed(DirectionKey.FORWARD));
+		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("pressed DOWN"),MOVE_BACKWARD+PRESSED);
+		this.getActionMap().put(MOVE_BACKWARD+PRESSED, new MoveActionPressed(DirectionKey.BACK));
+		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("pressed LEFT"),MOVE_LEFT+PRESSED);
+		this.getActionMap().put(MOVE_LEFT+PRESSED, new MoveActionPressed(DirectionKey.LEFT));
+		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("pressed RIGHT"),MOVE_RIGHT+PRESSED);
+		this.getActionMap().put(MOVE_RIGHT+PRESSED, new MoveActionPressed(DirectionKey.RIGHT));
+		
+		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("released UP"),MOVE_FORWARD+RELEASED);
+		this.getActionMap().put(MOVE_FORWARD+RELEASED, new MoveActionReleased(DirectionKey.FORWARD));
+		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("released DOWN"),MOVE_BACKWARD+RELEASED);
+		this.getActionMap().put(MOVE_BACKWARD+RELEASED, new MoveActionReleased(DirectionKey.BACK));
+		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("released LEFT"),MOVE_LEFT+RELEASED);
+		this.getActionMap().put(MOVE_LEFT+RELEASED, new MoveActionReleased(DirectionKey.LEFT));
+		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("released RIGHT"),MOVE_RIGHT+RELEASED);
+		this.getActionMap().put(MOVE_RIGHT+RELEASED, new MoveActionReleased(DirectionKey.RIGHT));
+		
+		
+		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("pressed Z"),FIRE_PRIMARY+PRESSED);
+		this.getActionMap().put(FIRE_PRIMARY+PRESSED, new FireKeyPressed(FireKey.PRIMARY));
+		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("pressed X"),FIRE_SECONDARY+PRESSED);
+		this.getActionMap().put(FIRE_SECONDARY+PRESSED, new FireKeyPressed(FireKey.SECONDARY));
+		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("pressed C"),FIRE_TERTIARY+PRESSED);
+		this.getActionMap().put(FIRE_TERTIARY+PRESSED, new FireKeyPressed(FireKey.TERTIARY));
+		
+		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("released Z"),FIRE_PRIMARY+RELEASED);
+		this.getActionMap().put(FIRE_PRIMARY+RELEASED, new FireKeyReleased(FireKey.PRIMARY));
+		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("released X"),FIRE_SECONDARY+RELEASED);
+		this.getActionMap().put(FIRE_SECONDARY+RELEASED, new FireKeyReleased(FireKey.SECONDARY));
+		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("released C"),FIRE_TERTIARY+RELEASED);
+		this.getActionMap().put(FIRE_TERTIARY+RELEASED, new FireKeyReleased(FireKey.TERTIARY));
+		
 		firePrimaryTimer = new Timer((int)(500/Window.FPS), this);
 		firePrimaryTimer.setInitialDelay(0);
 		fireSecondaryTimer = new Timer((int)(500/Window.FPS), this);
@@ -161,6 +209,7 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 		else if (ev.getSource() == fireTertiaryTimer) {
 			player.fire(2);
 		}
+		if (ev.getActionCommand() != null) System.out.println(ev.getActionCommand());
 	}
 
 	public void remove(Entity entity) {
@@ -171,46 +220,9 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 		entities.add(entity);
 	}
 
-	@Override
 	public void keyPressed(KeyEvent ev) {
 		if (player != null) {
 			switch (ev.getKeyCode()) {
-			case KeyEvent.VK_LEFT:
-			{
-				leftKeyPressed = true;
-			}
-				break;
-			case KeyEvent.VK_RIGHT:
-			{
-				rightKeyPressed = true;
-			}
-				break;
-			case KeyEvent.VK_UP:
-				upKeyPressed = true;
-				doUpKey();
-				break;
-			case KeyEvent.VK_DOWN:
-				downKeyPressed = true;
-				doDownKey();
-				break;
-			case KeyEvent.VK_Z:
-				if (!firePrimaryTimer.isRunning()) {
-					firePrimaryTimer.restart();
-					firePrimaryTimer.start();
-				}
-				break;
-			case KeyEvent.VK_X:
-				if (!fireSecondaryTimer.isRunning()) {
-					fireSecondaryTimer.restart();
-					fireSecondaryTimer.start();
-				}
-				break;
-			case KeyEvent.VK_C:
-				if (!fireTertiaryTimer.isRunning()) {
-					fireTertiaryTimer.restart();
-					fireTertiaryTimer.start();
-				}
-				break;
 			case KeyEvent.VK_SPACE:
 				if (this.isPaused()) {
 					this.resume();
@@ -222,43 +234,6 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 			default: break;
 			}
 		}
-	}
-
-	@Override
-	public void keyReleased(KeyEvent ev) {
-		if (player != null) {
-			switch (ev.getKeyCode()) {
-			case KeyEvent.VK_LEFT:
-				leftKeyPressed = false;
-				break;
-			case KeyEvent.VK_RIGHT:
-				rightKeyPressed = false;
-				break;
-			case KeyEvent.VK_UP:
-				player.setVelocity(Vec2.ZERO);
-				upKeyPressed = false;
-				break;
-			case KeyEvent.VK_DOWN:
-				player.setVelocity(Vec2.ZERO);
-				downKeyPressed = false;
-				break;
-			case KeyEvent.VK_Z:
-				firePrimaryTimer.stop();
-				break;
-			case KeyEvent.VK_X:
-				fireSecondaryTimer.stop();
-				break;
-			case KeyEvent.VK_C:
-				fireTertiaryTimer.stop();
-				break;
-			default: break;
-			}
-		}
-	}
-
-	@Override
-	public void keyTyped(KeyEvent arg0) {
-		//do nothing
 	}
 
 	public Player getPlayer() {
@@ -333,4 +308,148 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 	    return nearestEntity;
 	}
 	
+	private class MoveActionPressed extends AbstractAction {
+		private static final long serialVersionUID = 481979749241664534L;
+		
+		private DirectionKey key;
+		
+		public MoveActionPressed(DirectionKey key) {
+			super();
+			this.key = key;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent ev) {
+			if (player != null) {
+				switch (key) {
+				case LEFT:
+				{
+					leftKeyPressed = true;
+				}
+					break;
+				case RIGHT:
+				{
+					rightKeyPressed = true;
+				}
+					break;
+				case FORWARD:
+					upKeyPressed = true;
+					doUpKey();
+					break;
+				case BACK:
+					downKeyPressed = true;
+					doDownKey();
+					break;
+				default:
+					break;
+				}
+			}
+		}
+	}
+	
+	private class MoveActionReleased extends AbstractAction {
+		private static final long serialVersionUID = 3135951535219119594L;
+		
+		private DirectionKey key;
+		
+		public MoveActionReleased(DirectionKey key) {
+			super();
+			this.key = key;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent ev) {
+			if (player != null) {
+				switch (key) {
+				case LEFT:
+					leftKeyPressed = false;
+					break;
+				case RIGHT:
+					rightKeyPressed = false;
+					break;
+				case FORWARD:
+					player.setVelocity(Vec2.ZERO);
+					upKeyPressed = false;
+					break;
+				case BACK:
+					player.setVelocity(Vec2.ZERO);
+					downKeyPressed = false;
+					break;
+				default:
+					break;
+				}
+			}
+		}
+	}
+	
+	private class FireKeyPressed extends AbstractAction {
+		private static final long serialVersionUID = -6212427508037713506L;
+		
+		private FireKey weapon;
+		
+		public FireKeyPressed(FireKey weapon) {
+			this.weapon = weapon;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent ev) {
+			switch (weapon) {
+			case PRIMARY:
+				if (!firePrimaryTimer.isRunning()) {
+					firePrimaryTimer.restart();
+					firePrimaryTimer.start();
+				}
+				break;
+			case SECONDARY:
+				if (!fireSecondaryTimer.isRunning()) {
+					fireSecondaryTimer.restart();
+					fireSecondaryTimer.start();
+				}
+				break;
+			case TERTIARY:
+				if (!fireTertiaryTimer.isRunning()) {
+					fireTertiaryTimer.restart();
+					fireTertiaryTimer.start();
+				}
+				break;
+			default:
+				break;
+			}
+		}
+	}
+	
+	private class FireKeyReleased extends AbstractAction {
+		private static final long serialVersionUID = -2618332729409396890L;
+		
+		private FireKey weapon;
+		
+		public FireKeyReleased(FireKey weapon) {
+			this.weapon = weapon;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent ev) {
+			switch (weapon) {
+			case PRIMARY:
+				firePrimaryTimer.stop();
+				break;
+			case SECONDARY:
+				fireSecondaryTimer.stop();
+				break;
+			case TERTIARY:
+				fireTertiaryTimer.stop();
+				break;
+			default:
+				break;
+			}
+		}
+	}
+	
+	private enum DirectionKey {
+		FORWARD, BACK, LEFT, RIGHT
+	}
+	
+	private enum FireKey {
+		PRIMARY, SECONDARY, TERTIARY
+	}
 }
