@@ -41,10 +41,12 @@ public class Stage extends JPanel implements ActionListener {
 	private static final String FIRE_PRIMARY = "FIREPRIMARY";
 	private static final String FIRE_SECONDARY = "FIRESECONDARY";
 	private static final String FIRE_TERTIARY = "FIRETERTIARY";
+	private static final String PAUSE = "PAUSE";
 	
 	private static final String PRESSED = " pressed";
 	private static final String RELEASED = " released";
 
+	
 	private CopyOnWriteArrayList<Entity> entities;
 	private Timer timer;
 	private Player player;
@@ -110,6 +112,10 @@ public class Stage extends JPanel implements ActionListener {
 		this.getActionMap().put(FIRE_SECONDARY+RELEASED, new FireKeyReleased(FireKey.SECONDARY));
 		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("released C"),FIRE_TERTIARY+RELEASED);
 		this.getActionMap().put(FIRE_TERTIARY+RELEASED, new FireKeyReleased(FireKey.TERTIARY));
+		
+		
+		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("pressed SPACE"),PAUSE+PRESSED);
+		this.getActionMap().put(PAUSE+PRESSED, new PauseAction());
 		
 		firePrimaryTimer = new Timer((int)(500/Window.FPS), this);
 		firePrimaryTimer.setInitialDelay(0);
@@ -218,22 +224,6 @@ public class Stage extends JPanel implements ActionListener {
 	
 	public void add(Entity entity) {
 		entities.add(entity);
-	}
-
-	public void keyPressed(KeyEvent ev) {
-		if (player != null) {
-			switch (ev.getKeyCode()) {
-			case KeyEvent.VK_SPACE:
-				if (this.isPaused()) {
-					this.resume();
-				}
-				else {
-					this.pause();
-				}
-				break;
-			default: break;
-			}
-		}
 	}
 
 	public Player getPlayer() {
@@ -441,6 +431,22 @@ public class Stage extends JPanel implements ActionListener {
 				break;
 			default:
 				break;
+			}
+		}
+	}
+	
+	private class PauseAction extends AbstractAction {
+		private static final long serialVersionUID = 5280811003086658604L;
+
+		public PauseAction() {}
+
+		@Override
+		public void actionPerformed(ActionEvent ev) {
+			if (Stage.this.isPaused()) {
+				Stage.this.resume();
+			}
+			else {
+				Stage.this.pause();
 			}
 		}
 	}
