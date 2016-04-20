@@ -31,7 +31,7 @@ public class TestEnemy extends Enemy {
 	@Override
 	public void update(int ms) {
 		super.update(ms);
-		this.setOrientation(this.getVelocity().normalize().multiply(new Vec2(1, -1)));
+		this.setOrientation(this.getVelocity());
 		if ((this.getPosition().getX() + width * 2 > Stage.WIDTH) || (this.getPosition().getX() < 0)) {
 			this.getVelocity().setX(this.getVelocity().getX()*-1);
 		}

@@ -30,7 +30,7 @@ public abstract class Enemy extends Starship {
 	public void render(Graphics g) {
 		Vec2 pos = this.getPosition();
 		if (couldLoadImage) {
-			double angle = this.getOrientation().angle();
+			double angle = this.getOrientation().multiply(new Vec2(1,-1)).angle();
 			double imagemidx = this.getTexture().getWidth(null)/2;
 			double imagemidy = this.getTexture().getHeight(null)/2;
 			AffineTransform tf = AffineTransform.getRotateInstance(angle, imagemidx, imagemidy);

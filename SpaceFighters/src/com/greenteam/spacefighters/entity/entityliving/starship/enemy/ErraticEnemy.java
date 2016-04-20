@@ -35,7 +35,7 @@ public class ErraticEnemy extends Enemy {
 		super.update(ms);
 		time += ms;
 		//this.setOrientation(this.getOrientation().rotate(new Vec2(0,0), null, 0.1));
-		this.setOrientation(new Vec2(0,1).rotate(new Vec2(0,0), this.getVelocity().angle()+Math.PI));
+		this.setOrientation(this.getVelocity());
 		if ((this.getPosition().getX() + width * 2 > Stage.WIDTH) || (this.getPosition().getX() < 0)) {
 			this.getVelocity().setX(this.getVelocity().getX()*-1);
 		}

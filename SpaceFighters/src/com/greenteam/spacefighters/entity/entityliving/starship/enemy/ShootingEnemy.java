@@ -51,7 +51,7 @@ public class ShootingEnemy extends Enemy {
 		if (getPosition().distance(randpos) < 5)
 			randpos = randSpawnPos(this.getStage().getPlayer(), 0);
 		this.setVelocity(randpos.subtract(this.getPosition()).normalize().scale(SPEED));
-		this.setOrientation(this.getVelocity().normalize().multiply(new Vec2(1, -1)));
+		this.setOrientation(this.getVelocity());
 	}
 
 	@Override
