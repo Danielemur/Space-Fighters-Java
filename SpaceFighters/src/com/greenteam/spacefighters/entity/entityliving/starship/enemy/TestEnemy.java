@@ -1,53 +1,25 @@
 package com.greenteam.spacefighters.entity.entityliving.starship.enemy;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
 import com.greenteam.spacefighters.common.Vec2;
 import com.greenteam.spacefighters.stage.Stage;
 
 public class TestEnemy extends Enemy {
-	private int width;
-	private int height;
-	private boolean couldLoadImage;
 	private static final double SPAWNDIST = 400.0D;
 	
 	public TestEnemy(Stage s) {
 		super(s, 1, 0, 0);
 		this.setPosition(randSpawnPos(s.getPlayer(), SPAWNDIST));
 		this.setVelocity(new Vec2(-440,200));
-		try {
-			this.setTexture(ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/enemy-0.png")));
+		
+		this.setTexture(Enemy.getTexFromEnum(EnemyShipColor.GREEN));		
+		if (this.getTexture() != null) {
 			couldLoadImage = true;
 			this.width = this.getTexture().getWidth(null);
 			this.height = this.getTexture().getHeight(null);
-		} catch (IOException e) {
+		} else {
 			couldLoadImage = false;
 			this.width = 20;
 			this.height = 60;
-		}
-	}
-
-	@Override
-	public void render(Graphics g) {
-		Vec2 pos = this.getPosition();
-		if (couldLoadImage) {
-			double angle = this.getOrientation().angle();
-			double imagemidx = this.getTexture().getWidth(null)/2;
-			double imagemidy = this.getTexture().getHeight(null)/2;
-			AffineTransform tf = AffineTransform.getRotateInstance(angle, imagemidx, imagemidy);
-			AffineTransformOp op = new AffineTransformOp(tf, AffineTransformOp.TYPE_BILINEAR);
-			g.drawImage(op.filter((BufferedImage)this.getTexture(), null), (int)(pos.getX()-imagemidx), (int)(pos.getY()-imagemidy), null);
-		}
-		else {
-			g.setColor(Color.GREEN);
-			g.fillRect((int)pos.getX(), (int)pos.getY(), width, height);
 		}
 	}
 	
@@ -80,4 +52,10 @@ public class TestEnemy extends Enemy {
 	public int getPointValue() {
 		return 25;
 	}
+
+	@Override
+	public java.awt.Color noTextureColor() {
+		return java.awt.Color.GREEN;
+	}
+
 }

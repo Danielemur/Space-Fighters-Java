@@ -14,6 +14,7 @@ import com.greenteam.spacefighters.entity.entityliving.starship.enemy.ShootingEn
 import com.greenteam.spacefighters.entity.entityliving.starship.enemy.TestEnemy;
 import com.greenteam.spacefighters.entity.entityliving.starship.enemy.TrackerEnemy;
 import com.greenteam.spacefighters.entity.entityliving.starship.player.Player;
+import com.greenteam.spacefighters.entity.entityliving.starship.player.Player.PlayerShipColor;
 
 public class TestLevelLoader extends LevelLoader implements ActionListener {
 	private static final double[] LEVEL_INTERVAL_RATIOS = {1.0, 0.9, 0.8, 0.6, 0.5};
@@ -38,7 +39,7 @@ public class TestLevelLoader extends LevelLoader implements ActionListener {
 		timer.addActionListener(this);
 		level = 0;
 		
-		Player player = new Player(stage, 100);
+		Player player = new Player(stage, 100, PlayerShipColor.RED);
 		player.setPosition(new Vec2(Stage.WIDTH / 2 , Stage.HEIGHT / 2));
 		stage.setPlayer(player);
 		stage.setHUD(new HUD(stage));

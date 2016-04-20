@@ -7,10 +7,6 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-
 import com.greenteam.spacefighters.common.Vec2;
 import com.greenteam.spacefighters.entity.Entity;
 import com.greenteam.spacefighters.stage.Stage;
@@ -25,13 +21,12 @@ public class ExplosiveProjectile extends Projectile {
 	private double hitRadius;
 	private int countdown;
 	private boolean isExploding;
-	private double speed;
 	
 	public ExplosiveProjectile(Stage s, int health, int damage, Vec2 position, Vec2 velocity, Class<?> source) {
 		super(s, health, damage, position, velocity.normalize().scale(SPEED), source);
-		try {
-			this.setTexture(ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/projectile-2.png")));
-		} catch (IOException e) {}
+		
+		this.setTexture(Projectile.getTexFromEnum(ProjectileColor.RED));
+		
 		hitRadius = PROJECTILERADIUS;
 		countdown = COUNTDOWNTIME;
 		isExploding = false;

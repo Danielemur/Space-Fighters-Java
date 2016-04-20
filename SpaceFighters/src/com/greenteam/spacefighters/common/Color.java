@@ -73,6 +73,22 @@ public class Color {
 	public float getAlpha() {
 		return a;
 	}
+
+	public void setRed(float r) {
+		this.r = r;
+	}
+
+	public void setGreen(float g) {
+		this.g = g;
+	}
+
+	public void setBlue(float b) {
+		this.b = b;
+	}
+
+	public void setAlpha(float a) {
+		this.a = a;
+	}
 	
 	public void set(float r, float g, float b, float a) {
 		this.r = r;

@@ -4,9 +4,6 @@ import java.awt.AlphaComposite;
 import java.awt.Composite;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 import com.greenteam.spacefighters.common.Vec2;
 import com.greenteam.spacefighters.entity.Entity;
 import com.greenteam.spacefighters.entity.entityliving.EntityLiving;
@@ -18,9 +15,9 @@ public class LinearProjectile extends Projectile {
 
 	public LinearProjectile(Stage s, int health, int damage, Vec2 position, Vec2 velocity, Class<?> source) {
 		super(s, health, damage, position, velocity, source);
-		try {
-			this.setTexture(ImageIO.read(this.getClass().getResource("/com/greenteam/spacefighters/assets/projectile-0.png")));
-		} catch (IOException e) {}
+		
+		this.setTexture(Projectile.getTexFromEnum(ProjectileColor.YELLOW));
+		
 		decayCount = DECAYCOUNTDOWN;
 	}
 	
