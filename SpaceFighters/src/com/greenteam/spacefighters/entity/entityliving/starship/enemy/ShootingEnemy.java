@@ -41,6 +41,7 @@ public class ShootingEnemy extends Enemy {
 	@Override
 	public void update(int ms) {
 		super.update(ms);
+		Stage stage = this.getStage();
 		time += ms;
 		if (time > SHOOTING_INTERVAL) {
 			time = 0;

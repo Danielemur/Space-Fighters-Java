@@ -27,7 +27,7 @@ public abstract class EntityLiving extends Entity {
 	public void update(int ms) {
 		super.update(ms);
 		if (health <= 0) {
-			stage.remove(this);
+			this.getStage().remove(this);
 		}
 	}
 	

@@ -12,7 +12,7 @@ public abstract class Entity {
 	private Vec2 acceleration;
 	private Vec2 orientation;
 	protected Image texture;
-	protected Stage stage;
+	private Stage stage;
 	
 	public Entity(Stage s) {
 		position = new Vec2(0, 0);

@@ -71,6 +71,7 @@ public abstract class Powerup extends EntityLiving {
 	@Override
 	public void update(int ms) {
 		super.update(ms);
+		Stage stage = this.getStage();
 		time -= ms;
 		if (time <= 0) {
 			time = SELECT_NEW_POSITION_INTERVAL;

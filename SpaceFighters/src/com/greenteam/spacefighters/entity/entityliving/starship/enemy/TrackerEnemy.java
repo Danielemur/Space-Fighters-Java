@@ -40,6 +40,7 @@ public class TrackerEnemy extends Enemy {
 	@Override
 	public void update(int ms) {
 		super.update(ms);
+		Stage stage = this.getStage();
 		Player target = (Player) stage.getNearestEntity(this, Player.class);
 		if (target != null) {
 			double dist = getPosition().distance(target.getPosition()); 
@@ -74,6 +75,7 @@ public class TrackerEnemy extends Enemy {
 
 	@Override
 	public void fire(int mode) {
+		Stage stage = this.getStage();
 		if (chargeLevel >= FIREDRAIN) {
 			int damage = 10 * (getWeaponryMultiplier() + 1);
 			Projectile proj = new LinearProjectile(stage, DEFAULTWEAPONRYHEALTH, damage/2, this.getPosition(), this.getOrientation().scale(PROJECTILESPEED), this.getSource());

@@ -85,6 +85,7 @@ public class Player extends Starship {
 	@Override
 	public void update(int ms) {
 		super.update(ms);
+		Stage stage = this.getStage();
 		if (this.getHealth() <= 0) {
 			stage.pause();
 		}
@@ -130,6 +131,7 @@ public class Player extends Starship {
 
 	@Override
 	public void fire(int type) {
+		Stage stage = this.getStage();
 		int damage = 10 * (getWeaponryMultiplier() + 1);
 		Vec2 playerVel = this.getVelocity();
 		//Projectile proj = new Projectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getSource());

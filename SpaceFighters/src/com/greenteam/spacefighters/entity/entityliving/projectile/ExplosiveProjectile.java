@@ -84,7 +84,7 @@ public class ExplosiveProjectile extends Projectile {
 				setVelocity(new Vec2(0, 0));
 				countdown += EXPLOSIONDURATION;
 			} else {
-				stage.remove(this);
+				this.getStage().remove(this);
 			}
 		}
 		

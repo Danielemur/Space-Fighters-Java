@@ -25,7 +25,7 @@ public class HomingProjectile extends Projectile {
 	private Entity closestEntity() {
 		double shortestDistance = 99999;
 		Entity shortest = null;
-		for (Entity e : stage.getEntities()) {
+		for (Entity e : this.getStage().getEntities()) {
 			if (isOppositeFaction(e)) {
 				if (e.getPosition().distance(this.getPosition()) < shortestDistance) {
 					shortestDistance = e.getPosition().distance(this.getPosition());

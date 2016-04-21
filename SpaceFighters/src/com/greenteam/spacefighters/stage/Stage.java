@@ -70,7 +70,6 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 		fireTertiaryTimer = new Timer((int)(10000/Window.FPS), this);
 		fireTertiaryTimer.setInitialDelay(0);
 		timer = new Timer((int)(1000/Window.FPS), this);
-		timer.start();
 		upKeyPressed = false;
 		downKeyPressed = false;
 		leftKeyPressed = false;

@@ -9,5 +9,8 @@ Add asteroids
 levels
 max enemy count
 drop explosives in place
-chain weapon powerup
+	chain weapon powerup
 stun weapon
+	force field
+	augmented charge bar
+	augmented health bar
