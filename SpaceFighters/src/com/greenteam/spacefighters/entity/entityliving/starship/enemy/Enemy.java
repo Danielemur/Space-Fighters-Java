@@ -47,7 +47,8 @@ public abstract class Enemy extends Starship {
 	public void update(int ms) {
 		super.update(ms);
 		if (this.getHealth() <= 0) {
-			stage.setScore(stage.getScore() + this.getPointValue());
+			stage.getPlayer().setScore(stage.getPlayer().getScore() + this.getPointValue());
+			stage.getPlayer().setMoney(stage.getPlayer().getMoney() + this.getPointValue()/10);
 		}
 		for (Entity e : this.getStage().getEntities()) {
 			if (e == this) continue;

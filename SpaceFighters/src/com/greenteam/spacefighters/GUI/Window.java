@@ -38,7 +38,7 @@ public class Window extends JFrame implements WindowListener {
 		contentPane.setBounds(new Rectangle(Window.WIDTH, Window.HEIGHT));
 		this.setBounds(new Rectangle(Window.WIDTH, Window.HEIGHT));
 		
-		loader = new TestLevelLoader(stage, null);
+		new TestLevelLoader(stage, null);
 		
 		this.setTitle("SpaceFighters");
 		this.setIconImage(Player.getTexFromEnum(PlayerShipColor.RED));

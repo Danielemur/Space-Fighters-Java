@@ -50,7 +50,6 @@ public class Stage extends JPanel implements ActionListener {
 	private CopyOnWriteArrayList<Entity> entities;
 	private Timer timer;
 	private Player player;
-	private int score;
 	private HUD hud;
 	private Timer firePrimaryTimer;
 	private Timer fireSecondaryTimer;
@@ -65,7 +64,6 @@ public class Stage extends JPanel implements ActionListener {
 	public Stage(int width, int height, Player player) {
 		this.entities = new CopyOnWriteArrayList<Entity>();
 		this.player = player;
-		this.score = 0;
 		this.hud = null;
 		this.backgroundOffsets = new double[STARFIELD_LAYERS];
 		this.starfields = new BufferedImage[STARFIELD_LAYERS];
@@ -234,16 +232,13 @@ public class Stage extends JPanel implements ActionListener {
 		this.player = player;
 	}
 	
-	public int getScore() {
-		return score;
-	}
-	
-	public void setScore(int score) {
-		this.score = score;
-	}
-	
 	public void setHUD(HUD hud) {
 		this.hud = hud;
+	}
+	
+	public void gameOver() {
+		hud.setGameOver(true);
+		this.pause();
 	}
 	
 	public void pause() {
@@ -272,7 +267,7 @@ public class Stage extends JPanel implements ActionListener {
 	    Entity nearestEntity = null;
 	    for (Entity testEntity : entities) {
 	    	if (testEntity != entity) {
-	    		double distance = entity.getPosition().distance(testEntity.getPosition()); 
+	    		double distance = entity.getPosition().distance(testEntity.getPosition());
 	    		if (distance < bestDistance) {
 	                nearestEntity = testEntity;
 	                bestDistance = distance;

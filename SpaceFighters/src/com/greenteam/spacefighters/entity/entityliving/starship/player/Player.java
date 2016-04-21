@@ -40,12 +40,16 @@ public class Player extends Starship {
 	private java.awt.Color noTexColor;
 	private int maxhealth;
 	private int time;
+	private int score;
+	private int money;
 
 	public Player(Stage s, int health, PlayerShipColor color) {
 		super(s, health, DEFAULTARMORLEVEL, DEFAULTWEAPONRYLEVEL);
 		maxhealth = health;
 		time = 0;
 		timetofiremissile = GUN_TO_MISSILE_RATIO;
+		money = 0;
+		score = 0;
 		this.setTexture(Player.getTexFromEnum(color));
 		if (this.getTexture() != null) {
 			this.width = this.getTexture().getWidth(null);
@@ -86,7 +90,7 @@ public class Player extends Starship {
 	public void update(int ms) {
 		super.update(ms);
 		if (this.getHealth() <= 0) {
-			stage.pause();
+			stage.gameOver();
 		}
 		time += ms;
 		if (time > HEALTH_REGEN_TIME) {
@@ -227,4 +231,19 @@ public class Player extends Starship {
 		RED, BLUE, GREEN, YELLOW
 	}
 	
+	public int getScore() {
+		return score;
+	}
+	
+	public void setScore(int score) {
+		this.score = score;
+	}
+	
+	public int getMoney() {
+		return money;
+	}
+	
+	public void setMoney(int money) {
+		this.money = money;
+	}
 }

@@ -78,7 +78,8 @@ public abstract class Powerup extends EntityLiving {
 		}
 		this.setVelocity(randpos.subtract(this.getPosition()).normalize().scale(SPEED));
 		if (this.getHealth() <= 0) {
-			stage.setScore(stage.getScore() + this.getPointValue());
+			stage.getPlayer().setScore(stage.getPlayer().getScore() + this.getPointValue());
+			stage.getPlayer().setMoney(stage.getPlayer().getMoney() + this.getPointValue()/10);
 		}
 		for (Entity e : this.getStage().getEntities()) {
 			if (e == this) continue;

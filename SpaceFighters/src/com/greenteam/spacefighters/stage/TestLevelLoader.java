@@ -65,7 +65,7 @@ public class TestLevelLoader extends LevelLoader implements ActionListener {
 				stage.add(new HealthRestorePowerup(stage));
 			}
 		}
-		if (stage.getScore() >= LEVEL_SCORE_THRESHOLD*(level+1)) {
+		if ((stage.getPlayer()) != null && (stage.getPlayer().getScore() >= LEVEL_SCORE_THRESHOLD*(level+1))) {
 			if (level < LEVEL_INTERVAL_RATIOS.length-1) {
 				++level;
 			}

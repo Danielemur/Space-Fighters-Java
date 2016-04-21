@@ -9,9 +9,11 @@ import com.greenteam.spacefighters.stage.Stage;
 
 public class HUD {
 	private Stage stage;
+	private boolean gameOver;
 	
 	public HUD(Stage stage) {
 		this.stage = stage;
+		this.gameOver = false;
 	}
 	
 	public void render(Graphics g) {
@@ -26,8 +28,10 @@ public class HUD {
 		
 		g.setColor(Color.WHITE);
 		Font f = new Font(Font.MONOSPACED, Font.BOLD, 18);
+		
 		g.setFont(f);
-		g.drawString(String.format("Score: %d", stage.getScore()), 10, 23);
+		g.drawString(String.format("Score: %d", stage.getPlayer().getScore()), 10, 23);
+		g.drawString(String.format("Money: %d", stage.getPlayer().getMoney()), 10, 50);
 		g.drawString("CHARGE", 215, 50);
 		
 		int health = p.getHealth();
@@ -38,5 +42,20 @@ public class HUD {
 		g.fillRect(150+(int)(200*health/p.getMaxHealth()), 5, (int)(200*(1-(double)health/p.getMaxHealth())), 25);
 		g.setColor(Color.WHITE);
 		g.drawString(String.format("%d/%d", health, p.getMaxHealth()), 215, 23);
+		
+		if (gameOver) {
+			g.setColor(Color.RED);
+			f = new Font(Font.MONOSPACED, Font.BOLD, 42);
+			g.setFont(f);
+			
+			g.drawString(String.format("GAME OVER", health, p.getMaxHealth()), 180, 270);
+			f = new Font(Font.MONOSPACED, Font.BOLD, 28);
+			g.setFont(f);
+			g.drawString(String.format("Your ship has exploded.", health, p.getMaxHealth()), 110, 350);
+		}
+	}
+	
+	public void setGameOver(boolean gameOver) {
+		this.gameOver = gameOver;
 	}
 }
