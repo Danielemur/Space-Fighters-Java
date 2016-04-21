@@ -53,7 +53,7 @@ public abstract class Projectile extends EntityLiving {
 				(this.getPosition().getX() < 0) ||
 				(this.getPosition().getY() > Stage.HEIGHT) ||
 				(this.getPosition().getY() < 0)) {
-			stage.remove(this);
+			this.getStage().remove(this);
 		}
 	}
 	

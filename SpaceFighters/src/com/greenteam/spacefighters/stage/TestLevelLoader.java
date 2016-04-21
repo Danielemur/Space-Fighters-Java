@@ -8,6 +8,7 @@ import javax.swing.Timer;
 
 import com.greenteam.spacefighters.GUI.HUD;
 import com.greenteam.spacefighters.common.Vec2;
+import com.greenteam.spacefighters.entity.entityliving.powerup.ForceFieldPowerup;
 import com.greenteam.spacefighters.entity.entityliving.powerup.HealthRestorePowerup;
 import com.greenteam.spacefighters.entity.entityliving.starship.enemy.ErraticEnemy;
 import com.greenteam.spacefighters.entity.entityliving.starship.enemy.ShootingEnemy;
@@ -23,7 +24,8 @@ public class TestLevelLoader extends LevelLoader implements ActionListener {
 	private static final int ERRATICENEMY_SPAWNINTERVAL = 1040;
 	private static final int SHOOTINGENEMY_SPAWNINTERVAL = 1080;
 	private static final int TRACKERENEMY_SPAWNINTERVAL = 1400;
-	private static final int POWERUP_SPAWNINTERVAL = 5000; //remove this after implementing powerup spawning in Enemy
+	private static final int POWERUP_SPAWNINTERVAL = 5; //remove this after implementing powerup spawning in Enemy
+	private static final int POWERUP_TYPENUMBER = 2;
 	
 	private static final int LEVEL_SCORE_THRESHOLD = 1000;
 	
@@ -43,6 +45,7 @@ public class TestLevelLoader extends LevelLoader implements ActionListener {
 		player.setPosition(new Vec2(Stage.WIDTH / 2 , Stage.HEIGHT / 2));
 		stage.setPlayer(player);
 		stage.setHUD(new HUD(stage));
+		stage.resume();
 	}
 	
 	@Override
@@ -62,7 +65,17 @@ public class TestLevelLoader extends LevelLoader implements ActionListener {
 				stage.add(new TrackerEnemy(stage));
 			}
 			if ((time % (int)(POWERUP_SPAWNINTERVAL*LEVEL_INTERVAL_RATIOS[level]))==0) {
-				stage.add(new HealthRestorePowerup(stage));
+				switch((int)(Math.random() * POWERUP_TYPENUMBER)) {
+					case 0 :
+						stage.add(new HealthRestorePowerup(stage));
+						break;
+					case 1 :
+						stage.add(new ForceFieldPowerup(stage));
+						break;
+					default :
+						stage.add(new HealthRestorePowerup(stage));
+						break;
+				}
 			}
 		}
 		if ((stage.getPlayer()) != null && (stage.getPlayer().getScore() >= LEVEL_SCORE_THRESHOLD*(level+1))) {

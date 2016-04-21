@@ -102,8 +102,8 @@ public class Color {
 		this.g = g;
 		this.b = b;
 	}
-
-	public int getRGB() {
+	
+	public int getRGBA() {
 		int R = Math.round(r * 255);
 		int G = Math.round(g * 255);
 		int B = Math.round(b * 255);
@@ -169,7 +169,7 @@ public class Color {
 	}
 	
 	public java.awt.Color toAWTColor() {
-		return new java.awt.Color(getRGB());
+		return new java.awt.Color(getRGBA(), true);
 	}
 
 }
