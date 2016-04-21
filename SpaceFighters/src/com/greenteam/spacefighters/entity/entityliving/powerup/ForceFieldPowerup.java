@@ -44,7 +44,7 @@ public class ForceFieldPowerup extends Powerup {
 	
 	private class ForceField extends EntityLiving {
 		private static final double RADIUS = 50;
-		private final Color COLOR = new Color(210, 210, 10);
+		private final Color COLOR = new Color(49, 11, 210);
 		private Entity entity;
 		
 		public ForceField(Stage s, Entity e) {
@@ -62,9 +62,9 @@ public class ForceFieldPowerup extends Powerup {
 			float[] fractions = new float[]{0.5f, 1.0f};
 			java.awt.Color[] colors = new java.awt.Color[]{centerColor.toAWTColor(), edgeColor.toAWTColor()};
 			Graphics2D g2 = (Graphics2D) g;
-			//RadialGradientPaint grad = new RadialGradientPaint((float)pos.getX(), (float)pos.getY(), (float)RADIUS, fractions, colors);
-			g.setColor(centerColor.toAWTColor());//Paint(grad);
-			g.fillOval((int)(pos.getX() - RADIUS), (int)(pos.getY() - RADIUS), (int)(2 * RADIUS), (int)(2 * RADIUS));
+			RadialGradientPaint grad = new RadialGradientPaint((float)pos.getX(), (float)pos.getY(), (float)RADIUS, fractions, colors);
+			g2.setPaint(grad);
+			g2.fillOval((int)(pos.getX() - RADIUS), (int)(pos.getY() - RADIUS), (int)(2 * RADIUS), (int)(2 * RADIUS));
 		}
 		
 		@Override
