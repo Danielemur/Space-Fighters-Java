@@ -41,6 +41,7 @@ public class Stage extends JPanel implements ActionListener {
 	private static final String FIRE_PRIMARY = "FIREPRIMARY";
 	private static final String FIRE_SECONDARY = "FIRESECONDARY";
 	private static final String FIRE_TERTIARY = "FIRETERTIARY";
+	private static final String FIRE_QUATERNARY = "FIREQUATERNARY";
 	private static final String PAUSE = "PAUSE";
 	
 	private static final String PRESSED = " pressed";
@@ -54,6 +55,7 @@ public class Stage extends JPanel implements ActionListener {
 	private Timer firePrimaryTimer;
 	private Timer fireSecondaryTimer;
 	private Timer fireTertiaryTimer;
+	private Timer fireQuaternaryTimer;
 	private Image[] starfields;
 	private double[] backgroundOffsets;
 	private boolean upKeyPressed;
@@ -103,6 +105,8 @@ public class Stage extends JPanel implements ActionListener {
 		this.getActionMap().put(FIRE_SECONDARY+PRESSED, new FireKeyPressed(FireKey.SECONDARY));
 		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("pressed C"),FIRE_TERTIARY+PRESSED);
 		this.getActionMap().put(FIRE_TERTIARY+PRESSED, new FireKeyPressed(FireKey.TERTIARY));
+		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("pressed F"),FIRE_QUATERNARY+PRESSED);
+		this.getActionMap().put(FIRE_QUATERNARY+PRESSED, new FireKeyPressed(FireKey.QUATERNARY));
 		
 		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("released Z"),FIRE_PRIMARY+RELEASED);
 		this.getActionMap().put(FIRE_PRIMARY+RELEASED, new FireKeyReleased(FireKey.PRIMARY));
@@ -110,6 +114,8 @@ public class Stage extends JPanel implements ActionListener {
 		this.getActionMap().put(FIRE_SECONDARY+RELEASED, new FireKeyReleased(FireKey.SECONDARY));
 		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("released C"),FIRE_TERTIARY+RELEASED);
 		this.getActionMap().put(FIRE_TERTIARY+RELEASED, new FireKeyReleased(FireKey.TERTIARY));
+		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("released F"),FIRE_QUATERNARY+RELEASED);
+		this.getActionMap().put(FIRE_QUATERNARY+RELEASED, new FireKeyReleased(FireKey.QUATERNARY));
 		
 		
 		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("pressed SPACE"),PAUSE+PRESSED);
@@ -121,6 +127,8 @@ public class Stage extends JPanel implements ActionListener {
 		fireSecondaryTimer.setInitialDelay(0);
 		fireTertiaryTimer = new Timer((int)(10000/Window.FPS), this);
 		fireTertiaryTimer.setInitialDelay(0);
+		fireQuaternaryTimer = new Timer((int)(10000/Window.FPS), this);
+		fireQuaternaryTimer.setInitialDelay(0);
 		timer = new Timer((int)(1000/Window.FPS), this);
 		upKeyPressed = false;
 		downKeyPressed = false;
@@ -211,7 +219,9 @@ public class Stage extends JPanel implements ActionListener {
 		else if (ev.getSource() == fireTertiaryTimer) {
 			player.fire(2);
 		}
-		if (ev.getActionCommand() != null) System.out.println(ev.getActionCommand());
+		else if (ev.getSource() == fireQuaternaryTimer) {
+			player.fire(3);
+		}
 	}
 
 	public void remove(Entity entity) {
@@ -395,6 +405,12 @@ public class Stage extends JPanel implements ActionListener {
 					fireTertiaryTimer.start();
 				}
 				break;
+			case QUATERNARY:
+				if (!fireQuaternaryTimer.isRunning()) {
+					fireQuaternaryTimer.restart();
+					fireQuaternaryTimer.start();
+				}
+				break;
 			default:
 				break;
 			}
@@ -421,6 +437,9 @@ public class Stage extends JPanel implements ActionListener {
 				break;
 			case TERTIARY:
 				fireTertiaryTimer.stop();
+				break;
+			case QUATERNARY:
+				fireQuaternaryTimer.stop();
 				break;
 			default:
 				break;
@@ -449,6 +468,6 @@ public class Stage extends JPanel implements ActionListener {
 	}
 	
 	private enum FireKey {
-		PRIMARY, SECONDARY, TERTIARY
+		PRIMARY, SECONDARY, TERTIARY, QUATERNARY
 	}
 }

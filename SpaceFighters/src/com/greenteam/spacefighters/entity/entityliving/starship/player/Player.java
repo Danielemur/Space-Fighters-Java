@@ -4,13 +4,17 @@ import java.awt.Graphics;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+
 import javax.imageio.ImageIO;
 
 import com.greenteam.spacefighters.common.Vec2;
 import com.greenteam.spacefighters.entity.Entity;
 import com.greenteam.spacefighters.entity.entityliving.EntityLiving;
 import com.greenteam.spacefighters.entity.entityliving.obstacle.Obstacle;
+import com.greenteam.spacefighters.entity.entityliving.powerup.ForceFieldPowerup;
 import com.greenteam.spacefighters.entity.entityliving.powerup.Powerup;
+import com.greenteam.spacefighters.entity.entityliving.powerupcontainer.PowerupContainer;
 import com.greenteam.spacefighters.entity.entityliving.projectile.ExplosiveProjectile;
 import com.greenteam.spacefighters.entity.entityliving.projectile.HomingProjectile;
 import com.greenteam.spacefighters.entity.entityliving.projectile.LinearProjectile;
@@ -28,6 +32,7 @@ public class Player extends Starship {
 	public static final int MOVEMENT_SPEED = 500;
 	private static final int PLAYER_PROJECTILE_SPEED = 1200;
 	private static final int MISSILE_SPEED = 1000;
+	private static final int EXPLOSIVE_SPEED = 400;
 	private static final int HEALTH_REGEN_TIME = 1600;
 	private static final int GUN_TO_MISSILE_RATIO = 5;
 	private static final int MISSILE_SPREAD_COUNT = 12;
@@ -42,6 +47,7 @@ public class Player extends Starship {
 	private int time;
 	private int score;
 	private int money;
+	private ArrayList<Powerup> powerups;
 
 	public Player(Stage s, int health, PlayerShipColor color) {
 		super(s, health, DEFAULTARMORLEVEL, DEFAULTWEAPONRYLEVEL);
@@ -62,6 +68,7 @@ public class Player extends Starship {
 			noTexColor = noTextureColor(color);
 		}
 		chargeLevel = FULLCHARGE;
+		powerups = new ArrayList<Powerup>();
 	}
 
 	@Override
@@ -86,6 +93,14 @@ public class Player extends Starship {
 		}
 	}
 	
+	private boolean hasForceField() {
+		for (Powerup powerup : powerups) {
+			if (powerup instanceof ForceFieldPowerup)
+				return true;
+		}
+		return false;
+	}
+	
 	@Override
 	public void update(int ms) {
 		super.update(ms);
@@ -103,8 +118,10 @@ public class Player extends Starship {
 		for (Entity e : this.getStage().getEntities()) {
 			if (e == this) continue;
 			if ((e.getPosition().distance(this.getPosition()) < this.getRadius() + e.getRadius()) &&
-					((Obstacle.class.isAssignableFrom(e.getSource())) || ((Enemy.class.isAssignableFrom(e.getSource()) || (Powerup.class.isAssignableFrom(e.getSource())))))) {
-				this.setHealth(this.getHealth() - ((EntityLiving)e).getDamage());
+					((Obstacle.class.isAssignableFrom(e.getSource())) || ((Enemy.class.isAssignableFrom(e.getSource()) || (PowerupContainer.class.isAssignableFrom(e.getSource())))))) {
+				int damage = ((EntityLiving)e).getDamage();
+				if (!hasForceField() || damage < 0)
+					this.setHealth(this.getHealth() - damage);
 				if (this.getHealth() > this.getMaxHealth()) {
 					this.setHealth(this.getMaxHealth());
 				}
@@ -132,42 +149,80 @@ public class Player extends Starship {
 	public Class<?> getSource() {
 		return this.getClass();
 	}
+	
+	@Override
+	public double getRadius() {
+		return 20;
+	}
 
 	@Override
 	public void fire(int type) {
 		Stage stage = this.getStage();
 		int damage = 10 * (getWeaponryMultiplier() + 1);
 		Vec2 playerVel = this.getVelocity();
-		//Projectile proj = new Projectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getSource());
-		if (type == 0) {
-			if (chargeLevel >= FIREDRAIN) {
-				--timetofiremissile;
-				Projectile proj = new LinearProjectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getPosition(), getOrientation().scale(PLAYER_PROJECTILE_SPEED).multiply(new Vec2(1, -1)).add(playerVel), this.getSource());
-				stage.add(proj);
-				if (timetofiremissile == 0) {
-					proj = new HomingProjectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getPosition(), getOrientation().scale(MISSILE_SPEED).multiply(new Vec2(1, -1)), this.getSource());
+		switch(type) {
+			case 0 :
+			{
+				if (chargeLevel >= FIREDRAIN) {
+					--timetofiremissile;
+					Projectile proj = new LinearProjectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getPosition(), getOrientation().scale(PLAYER_PROJECTILE_SPEED).multiply(new Vec2(1, -1)).add(playerVel), this.getSource());
 					stage.add(proj);
-					timetofiremissile = GUN_TO_MISSILE_RATIO;
+					if (timetofiremissile == 0) {
+						proj = new HomingProjectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getPosition(), getOrientation().scale(MISSILE_SPEED).multiply(new Vec2(1, -1)).add(playerVel), this.getSource());
+						stage.add(proj);
+						timetofiremissile = GUN_TO_MISSILE_RATIO;
+					}
+					chargeLevel -= FIREDRAIN;
 				}
-				chargeLevel -= FIREDRAIN;
 			}
-		}
-		if (type == 1) {
-			if (chargeLevel >= HomingProjectile.getEnergyCost()*MISSILE_SPREAD_COUNT) {
-				for (int i = 0; i < MISSILE_SPREAD_COUNT; ++i) {
-					Projectile proj = new HomingProjectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getPosition(), getOrientation().scale(MISSILE_SPEED).multiply(new Vec2(1, -1)).rotate(new Vec2(0,0), (i-(double)MISSILE_SPREAD_COUNT/2)/MISSILE_SPREAD_COUNT*2*Math.PI), this.getSource());
+			break;
+			case 1 :
+			{
+				if (chargeLevel >= HomingProjectile.getEnergyCost()*MISSILE_SPREAD_COUNT) {
+					for (int i = 0; i < MISSILE_SPREAD_COUNT; ++i) {
+						Projectile proj = new HomingProjectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getPosition(), getOrientation().scale(MISSILE_SPEED).multiply(new Vec2(1, -1)).rotate(new Vec2(0,0), (i-(double)MISSILE_SPREAD_COUNT/2)/MISSILE_SPREAD_COUNT*2*Math.PI).add(playerVel), this.getSource());
+						stage.add(proj);
+					}
+					chargeLevel -= HomingProjectile.getEnergyCost()*MISSILE_SPREAD_COUNT;
+				}
+			}
+			break;
+			case 2 :
+			{
+				if (chargeLevel >= ExplosiveProjectile.getEnergyCost()) {
+					Projectile proj = new ExplosiveProjectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getPosition(), getOrientation().scale(EXPLOSIVE_SPEED).multiply(new Vec2(1, -1)).add(playerVel), this.getSource());
 					stage.add(proj);
+					chargeLevel -= ExplosiveProjectile.getEnergyCost();
 				}
-				chargeLevel -= HomingProjectile.getEnergyCost()*MISSILE_SPREAD_COUNT;
+			}
+			break;
+			case 3 :
+			{
+				if (chargeLevel >= ExplosiveProjectile.getEnergyCost()) {
+					Projectile proj = new ExplosiveProjectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getPosition(), Vec2.ZERO, this.getSource());
+					stage.add(proj);
+					chargeLevel -= ExplosiveProjectile.getEnergyCost();
+				}
+			}
+			default :
+				break;
+		}
+	}
+	
+	public void addPowerup(Powerup p) {
+		for (Powerup powerup : powerups) {
+			if (p.getClass().isInstance(powerup)) {
+				powerup.resetTime();
+				return;
 			}
 		}
-		if (type == 2) {
-			if (chargeLevel >= ExplosiveProjectile.getEnergyCost()) {
-				Projectile proj = new ExplosiveProjectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getPosition(), getOrientation().scale(PLAYER_PROJECTILE_SPEED).multiply(new Vec2(1, -1)), this.getSource());
-				stage.add(proj);
-				chargeLevel -= ExplosiveProjectile.getEnergyCost();
-			}
-		}
+		powerups.add(p);
+		this.getStage().add(p);
+	}
+	
+	public void removePowerup(Powerup p) {
+		powerups.remove(p);
+		p.remove();
 	}
 	
 	public void setMaxHealth(int max) {
