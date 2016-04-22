@@ -14,7 +14,6 @@ import com.greenteam.spacefighters.stage.Stage;
 public class ExplosiveProjectile extends Projectile {
 	private final static double PROJECTILERADIUS = 5.0D;
 	private final static double BLASTRADIUS = 200.0D;
-	private final static double SPEED = 400.0D;
 	private final static int DAMAGE = 15;
 	private final static int COUNTDOWNTIME = 500;
 	private final static int EXPLOSIONDURATION = 100;
@@ -23,7 +22,7 @@ public class ExplosiveProjectile extends Projectile {
 	private boolean isExploding;
 	
 	public ExplosiveProjectile(Stage s, int health, int damage, Vec2 position, Vec2 velocity, Class<?> source) {
-		super(s, health, damage, position, velocity.normalize().scale(SPEED), source);
+		super(s, health, damage, position, velocity, source);
 		
 		this.setTexture(Projectile.getTexFromEnum(ProjectileColor.RED));
 		
