@@ -35,7 +35,7 @@ public class ShootingEnemy extends Enemy {
 	
 	@Override
 	public double getRadius() {
-		return 32;
+		return 30.0D;
 	}
 	
 	@Override

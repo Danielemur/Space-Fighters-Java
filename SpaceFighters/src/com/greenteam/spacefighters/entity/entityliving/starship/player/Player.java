@@ -12,6 +12,7 @@ import com.greenteam.spacefighters.common.Vec2;
 import com.greenteam.spacefighters.entity.Entity;
 import com.greenteam.spacefighters.entity.entityliving.EntityLiving;
 import com.greenteam.spacefighters.entity.entityliving.obstacle.Obstacle;
+import com.greenteam.spacefighters.entity.entityliving.powerup.ForceFieldPowerup;
 import com.greenteam.spacefighters.entity.entityliving.powerup.Powerup;
 import com.greenteam.spacefighters.entity.entityliving.powerupcontainer.PowerupContainer;
 import com.greenteam.spacefighters.entity.entityliving.projectile.ExplosiveProjectile;
@@ -87,6 +88,14 @@ public class Player extends Starship {
 		}
 	}
 	
+	private boolean hasForceField() {
+		for (Powerup powerup : powerups) {
+			if (powerup instanceof ForceFieldPowerup)
+				return true;
+		}
+		return false;
+	}
+	
 	@Override
 	public void update(int ms) {
 		super.update(ms);
@@ -105,7 +114,9 @@ public class Player extends Starship {
 			if (e == this) continue;
 			if ((e.getPosition().distance(this.getPosition()) < this.getRadius() + e.getRadius()) &&
 					((Obstacle.class.isAssignableFrom(e.getSource())) || ((Enemy.class.isAssignableFrom(e.getSource()) || (PowerupContainer.class.isAssignableFrom(e.getSource())))))) {
-				this.setHealth(this.getHealth() - ((EntityLiving)e).getDamage());
+				int damage = ((EntityLiving)e).getDamage();
+				if (!hasForceField() || damage < 0)
+					this.setHealth(this.getHealth() - damage);
 				if (this.getHealth() > this.getMaxHealth()) {
 					this.setHealth(this.getMaxHealth());
 				}
@@ -132,6 +143,11 @@ public class Player extends Starship {
 	@Override
 	public Class<?> getSource() {
 		return this.getClass();
+	}
+	
+	@Override
+	public double getRadius() {
+		return 20;
 	}
 
 	@Override

@@ -94,7 +94,7 @@ public abstract class PowerupContainer extends EntityLiving {
 	
 	@Override
 	public double getRadius() {
-		return 24;
+		return 30;
 	}
 	
 	@Override

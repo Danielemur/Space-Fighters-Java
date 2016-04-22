@@ -95,7 +95,7 @@ public class TrackerEnemy extends Enemy {
 	
 	@Override
 	public double getRadius() {
-		return 32.0D;
+		return 30.0D;
 	}
 
 	@Override

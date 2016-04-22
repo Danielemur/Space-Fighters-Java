@@ -49,7 +49,7 @@ public class ForceFieldPowerup extends Powerup {
 	
 	@Override
 	public double getRadius() {
-		return RADIUS;
+		return 1.5 * RADIUS;
 	}
 	
 	@Override
