@@ -4,6 +4,8 @@ import java.awt.Graphics;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+
 import javax.imageio.ImageIO;
 
 import com.greenteam.spacefighters.common.Vec2;
@@ -11,6 +13,7 @@ import com.greenteam.spacefighters.entity.Entity;
 import com.greenteam.spacefighters.entity.entityliving.EntityLiving;
 import com.greenteam.spacefighters.entity.entityliving.obstacle.Obstacle;
 import com.greenteam.spacefighters.entity.entityliving.powerup.Powerup;
+import com.greenteam.spacefighters.entity.entityliving.powerupcontainer.PowerupContainer;
 import com.greenteam.spacefighters.entity.entityliving.projectile.ExplosiveProjectile;
 import com.greenteam.spacefighters.entity.entityliving.projectile.HomingProjectile;
 import com.greenteam.spacefighters.entity.entityliving.projectile.LinearProjectile;
@@ -40,6 +43,7 @@ public class Player extends Starship {
 	private java.awt.Color noTexColor;
 	private int maxhealth;
 	private int time;
+	private ArrayList<Powerup> powerups;
 
 	public Player(Stage s, int health, PlayerShipColor color) {
 		super(s, health, DEFAULTARMORLEVEL, DEFAULTWEAPONRYLEVEL);
@@ -58,6 +62,7 @@ public class Player extends Starship {
 			noTexColor = noTextureColor(color);
 		}
 		chargeLevel = FULLCHARGE;
+		powerups = new ArrayList<Powerup>();
 	}
 
 	@Override
@@ -99,7 +104,7 @@ public class Player extends Starship {
 		for (Entity e : this.getStage().getEntities()) {
 			if (e == this) continue;
 			if ((e.getPosition().distance(this.getPosition()) < this.getRadius() + e.getRadius()) &&
-					((Obstacle.class.isAssignableFrom(e.getSource())) || ((Enemy.class.isAssignableFrom(e.getSource()) || (Powerup.class.isAssignableFrom(e.getSource())))))) {
+					((Obstacle.class.isAssignableFrom(e.getSource())) || ((Enemy.class.isAssignableFrom(e.getSource()) || (PowerupContainer.class.isAssignableFrom(e.getSource())))))) {
 				this.setHealth(this.getHealth() - ((EntityLiving)e).getDamage());
 				if (this.getHealth() > this.getMaxHealth()) {
 					this.setHealth(this.getMaxHealth());
@@ -164,6 +169,22 @@ public class Player extends Starship {
 				chargeLevel -= ExplosiveProjectile.getEnergyCost();
 			}
 		}
+	}
+	
+	public void addPowerup(Powerup p) {
+		for (Powerup powerup : powerups) {
+			if (p.getClass().isInstance(powerup)) {
+				powerup.resetTime();
+				return;
+			}
+		}
+		powerups.add(p);
+		this.getStage().add(p);
+	}
+	
+	public void removePowerup(Powerup p) {
+		powerups.remove(p);
+		p.remove();
 	}
 	
 	public void setMaxHealth(int max) {

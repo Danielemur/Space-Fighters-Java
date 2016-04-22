@@ -8,8 +8,8 @@ import javax.swing.Timer;
 
 import com.greenteam.spacefighters.GUI.HUD;
 import com.greenteam.spacefighters.common.Vec2;
-import com.greenteam.spacefighters.entity.entityliving.powerup.ForceFieldPowerup;
-import com.greenteam.spacefighters.entity.entityliving.powerup.HealthRestorePowerup;
+import com.greenteam.spacefighters.entity.entityliving.powerupcontainer.ForceFieldPowerupContainer;
+import com.greenteam.spacefighters.entity.entityliving.powerupcontainer.HealthRestorePowerupContainer;
 import com.greenteam.spacefighters.entity.entityliving.starship.enemy.ErraticEnemy;
 import com.greenteam.spacefighters.entity.entityliving.starship.enemy.ShootingEnemy;
 import com.greenteam.spacefighters.entity.entityliving.starship.enemy.TestEnemy;
@@ -24,7 +24,7 @@ public class TestLevelLoader extends LevelLoader implements ActionListener {
 	private static final int ERRATICENEMY_SPAWNINTERVAL = 1040;
 	private static final int SHOOTINGENEMY_SPAWNINTERVAL = 1080;
 	private static final int TRACKERENEMY_SPAWNINTERVAL = 1400;
-	private static final int POWERUP_SPAWNINTERVAL = 5; //remove this after implementing powerup spawning in Enemy
+	private static final int POWERUP_SPAWNINTERVAL = 5000; //remove this after implementing powerup spawning in Enemy
 	private static final int POWERUP_TYPENUMBER = 2;
 	
 	private static final int LEVEL_SCORE_THRESHOLD = 1000;
@@ -67,13 +67,13 @@ public class TestLevelLoader extends LevelLoader implements ActionListener {
 			if ((time % (int)(POWERUP_SPAWNINTERVAL*LEVEL_INTERVAL_RATIOS[level]))==0) {
 				switch((int)(Math.random() * POWERUP_TYPENUMBER)) {
 					case 0 :
-						stage.add(new HealthRestorePowerup(stage));
+						stage.add(new HealthRestorePowerupContainer(stage));
 						break;
 					case 1 :
-						stage.add(new ForceFieldPowerup(stage));
+						stage.add(new ForceFieldPowerupContainer(stage));
 						break;
 					default :
-						stage.add(new HealthRestorePowerup(stage));
+						stage.add(new HealthRestorePowerupContainer(stage));
 						break;
 				}
 			}
