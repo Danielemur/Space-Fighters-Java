@@ -38,6 +38,7 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 	private Timer firePrimaryTimer;
 	private Timer fireSecondaryTimer;
 	private Timer fireTertiaryTimer;
+	private Timer fireQuaternaryTimer;
 	private Image[] starfields;
 	private double[] backgroundOffsets;
 	private boolean upKeyPressed;
@@ -69,6 +70,8 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 		fireSecondaryTimer.setInitialDelay(0);
 		fireTertiaryTimer = new Timer((int)(10000/Window.FPS), this);
 		fireTertiaryTimer.setInitialDelay(0);
+		fireQuaternaryTimer = new Timer((int)(10000/Window.FPS), this);
+		fireQuaternaryTimer.setInitialDelay(0);
 		timer = new Timer((int)(1000/Window.FPS), this);
 		upKeyPressed = false;
 		downKeyPressed = false;
@@ -159,6 +162,9 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 		else if (ev.getSource() == fireTertiaryTimer) {
 			player.fire(2);
 		}
+		else if (ev.getSource() == fireQuaternaryTimer) {
+			player.fire(3);
+		}
 	}
 
 	public void remove(Entity entity) {
@@ -209,6 +215,12 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 					fireTertiaryTimer.start();
 				}
 				break;
+			case KeyEvent.VK_F:
+				if (!fireQuaternaryTimer.isRunning()) {
+					fireQuaternaryTimer.restart();
+					fireQuaternaryTimer.start();
+				}
+				break;
 			case KeyEvent.VK_SPACE:
 				if (this.isPaused()) {
 					this.resume();
@@ -248,6 +260,9 @@ public class Stage extends JPanel implements ActionListener, KeyListener {
 				break;
 			case KeyEvent.VK_C:
 				fireTertiaryTimer.stop();
+				break;
+			case KeyEvent.VK_F:
+				fireQuaternaryTimer.stop();
 				break;
 			default: break;
 			}
