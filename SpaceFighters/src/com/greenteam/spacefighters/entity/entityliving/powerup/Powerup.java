@@ -9,7 +9,7 @@ public abstract class Powerup extends EntityLiving{
 	private static final int DURATION = 20000;
 	
 	protected Player player;
-	private int timeRemaining;
+	protected int timeRemaining;
 
 	public Powerup(Stage s, Player pl) {
 		super(s, 1);
@@ -17,6 +17,7 @@ public abstract class Powerup extends EntityLiving{
 		timeRemaining = DURATION;
 		this.setAcceleration(Vec2.ZERO);
 		this.setVelocity(Vec2.ZERO);
+		player.addPowerup(this);
 	}
 
 	public void resetTime() {
@@ -28,7 +29,7 @@ public abstract class Powerup extends EntityLiving{
 		super.update(ms);
 		timeRemaining -= ms;
 		if (timeRemaining <= 0)
-			this.remove();
+			player.removePowerup(this);
 	}
 
 }
