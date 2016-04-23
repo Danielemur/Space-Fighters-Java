@@ -31,7 +31,7 @@ public class HUD {
 		
 		g.setFont(f);
 		g.drawString(String.format("Score: %d", stage.getPlayer().getScore()), 10, 23);
-		g.drawString(String.format("Money: %d", stage.getPlayer().getMoney()), 10, 50);
+		g.drawString(String.format("Money: ℭ%d", stage.getPlayer().getMoney()), 10, 50);
 		g.drawString("CHARGE", 215, 50);
 		
 		int health = p.getHealth();
