@@ -32,7 +32,6 @@ public class ErraticEnemy extends Enemy {
 	
 	@Override
 	public void update(int ms) {
-		super.update(ms);
 		time += ms;
 		//this.setOrientation(this.getOrientation().rotate(new Vec2(0,0), null, 0.1));
 		this.setOrientation(this.getVelocity());
@@ -49,6 +48,7 @@ public class ErraticEnemy extends Enemy {
 				time = 0;
 			}
 		}
+		super.update(ms);
 	}
 
 	@Override

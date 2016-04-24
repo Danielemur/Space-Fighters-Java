@@ -8,9 +8,10 @@ Scoreboard for high scores
 Add asteroids
 levels
 max enemy count
-drop explosives in place
 	chain weapon powerup
 stun weapon
 	force field
 	augmented charge bar
-	augmented health bar
+remove/reduce health regen?
+hud for forcefield timer
+lives

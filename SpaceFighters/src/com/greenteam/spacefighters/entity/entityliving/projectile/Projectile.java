@@ -48,13 +48,13 @@ public abstract class Projectile extends EntityLiving {
 	
 	@Override
 	public void update(int ms) {
-		super.update(ms);
 		if ((this.getPosition().getX() > Stage.WIDTH) ||
 				(this.getPosition().getX() < 0) ||
 				(this.getPosition().getY() > Stage.HEIGHT) ||
 				(this.getPosition().getY() < 0)) {
 			this.getStage().remove(this);
 		}
+		super.update(ms);
 	}
 	
 	@Override

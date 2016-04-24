@@ -39,7 +39,6 @@ public class TrackerEnemy extends Enemy {
 
 	@Override
 	public void update(int ms) {
-		super.update(ms);
 		Stage stage = this.getStage();
 		Player target = (Player) stage.getNearestEntity(this, Player.class);
 		if (target != null) {
@@ -71,6 +70,7 @@ public class TrackerEnemy extends Enemy {
 			this.getPosition().setY(0);
 		}
 		chargeLevel += ms;
+		super.update(ms);
 	}
 
 	@Override

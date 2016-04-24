@@ -70,7 +70,6 @@ public abstract class PowerupContainer extends EntityLiving {
 	
 	@Override
 	public void update(int ms) {
-		super.update(ms);
 		Stage stage = this.getStage();
 		time -= ms;
 		if (time <= 0) {
@@ -85,11 +84,12 @@ public abstract class PowerupContainer extends EntityLiving {
 			if (e == this) continue;
 			if ((e.getPosition().distance(this.getPosition()) < this.getRadius() + e.getRadius()) &&
 					(e instanceof Player)) {
-				this.setHealth(this.getHealth() - ((EntityLiving)e).getDamage());
+				this.setHealth(-1);
 			}
 		}
 		timeRemaining -= ms;
 		if (timeRemaining <= 0) this.remove();
+		super.update(ms);
 	}
 	
 	@Override

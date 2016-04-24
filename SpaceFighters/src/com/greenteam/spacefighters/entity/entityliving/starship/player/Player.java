@@ -4,7 +4,7 @@ import java.awt.Graphics;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
+import java.util.HashSet;
 
 import javax.imageio.ImageIO;
 
@@ -14,6 +14,7 @@ import com.greenteam.spacefighters.entity.entityliving.EntityLiving;
 import com.greenteam.spacefighters.entity.entityliving.obstacle.Obstacle;
 import com.greenteam.spacefighters.entity.entityliving.powerup.ForceFieldPowerup;
 import com.greenteam.spacefighters.entity.entityliving.powerup.Powerup;
+import com.greenteam.spacefighters.entity.entityliving.powerupcontainer.HealthBoostPowerupContainer;
 import com.greenteam.spacefighters.entity.entityliving.powerupcontainer.PowerupContainer;
 import com.greenteam.spacefighters.entity.entityliving.projectile.ExplosiveProjectile;
 import com.greenteam.spacefighters.entity.entityliving.projectile.HomingProjectile;
@@ -47,7 +48,7 @@ public class Player extends Starship {
 	private int time;
 	private int score;
 	private int money;
-	private ArrayList<Powerup> powerups;
+	private HashSet<Powerup> powerups;
 
 	public Player(Stage s, int health, PlayerShipColor color) {
 		super(s, health, DEFAULTARMORLEVEL, DEFAULTWEAPONRYLEVEL);
@@ -68,7 +69,7 @@ public class Player extends Starship {
 			noTexColor = noTextureColor(color);
 		}
 		chargeLevel = FULLCHARGE;
-		powerups = new ArrayList<Powerup>();
+		powerups = new HashSet<Powerup>();
 	}
 
 	@Override
@@ -103,12 +104,15 @@ public class Player extends Starship {
 	
 	@Override
 	public void update(int ms) {
-		super.update(ms);
 		Stage stage = this.getStage();
 		if (this.getHealth() <= 0) {
 			stage.gameOver();
 		}
 		time += ms;
+		
+		boolean hasAugmentedHealth = this.getHealth() > this.getMaxHealth();
+		boolean hasAugmentedCharge = this.getCharge() > this.getMaxCharge();
+		
 		if (time > HEALTH_REGEN_TIME) {
 			if (this.getHealth() < this.getMaxHealth()) {
 				this.setHealth(this.getHealth()+1);
@@ -118,14 +122,27 @@ public class Player extends Starship {
 		for (Entity e : this.getStage().getEntities()) {
 			if (e == this) continue;
 			if ((e.getPosition().distance(this.getPosition()) < this.getRadius() + e.getRadius()) &&
-					((Obstacle.class.isAssignableFrom(e.getSource())) || ((Enemy.class.isAssignableFrom(e.getSource()) || (PowerupContainer.class.isAssignableFrom(e.getSource())))))) {
+					(Obstacle.class.isAssignableFrom(e.getSource()) ||
+					 Enemy.class.isAssignableFrom(e.getSource()) 	||
+					 PowerupContainer.class.isAssignableFrom(e.getSource()))) {
 				int damage = ((EntityLiving)e).getDamage();
-				if (!hasForceField() || damage < 0)
-					this.setHealth(this.getHealth() - damage);
-				if (this.getHealth() > this.getMaxHealth()) {
+				boolean addHealth = damage < 0;
+				boolean augmentHealthPowerup = e instanceof HealthBoostPowerupContainer;
+				if (!(hasForceField() && !addHealth)) {
+					if (hasAugmentedHealth && addHealth) {
+						if (augmentHealthPowerup)
+							this.setHealth(this.getMaxHealth() - damage);
+					} else {
+						this.setHealth(this.getHealth() - damage);
+					}
+				}
+				if (this.getHealth() > this.getMaxHealth() &&
+					!(augmentHealthPowerup) &&
+					!hasAugmentedHealth) {
 					this.setHealth(this.getMaxHealth());
 				}
 			}
+			super.update(ms);
 		}
 		if (this.getPosition().getX() > Stage.WIDTH) {
 			this.getPosition().setX(Stage.WIDTH);

@@ -38,7 +38,6 @@ public class HomingProjectile extends Projectile {
 	
 	@Override
 	public void update(int ms) {
-		super.update(ms);
 		startTrackDelay -= ms;
 		if (startTrackDelay <= 0) {
 			if (target != null) {
@@ -60,6 +59,7 @@ public class HomingProjectile extends Projectile {
 				}
 			}
 		}
+		super.update(ms);
 	}
 	
 	public static int getEnergyCost() {

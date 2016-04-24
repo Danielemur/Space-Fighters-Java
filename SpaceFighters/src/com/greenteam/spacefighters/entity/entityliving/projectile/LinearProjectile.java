@@ -33,7 +33,6 @@ public class LinearProjectile extends Projectile {
 	
 	@Override
 	public void update(int ms) {
-		super.update(ms);
 		if (decayCount < 0) {
 			this.setHealth(0);
 		} else {
@@ -45,6 +44,7 @@ public class LinearProjectile extends Projectile {
 				this.setHealth(this.getHealth() - ((EntityLiving)e).getDamage());
 			}
 		}
+		super.update(ms);
 	}
 
 }

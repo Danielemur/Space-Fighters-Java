@@ -40,7 +40,6 @@ public class ShootingEnemy extends Enemy {
 	
 	@Override
 	public void update(int ms) {
-		super.update(ms);
 		Stage stage = this.getStage();
 		time += ms;
 		if (time > SHOOTING_INTERVAL) {
@@ -53,6 +52,7 @@ public class ShootingEnemy extends Enemy {
 			randpos = randSpawnPos(this.getStage().getPlayer(), 0);
 		this.setVelocity(randpos.subtract(this.getPosition()).normalize().scale(SPEED));
 		this.setOrientation(this.getVelocity());
+		super.update(ms);
 	}
 
 	@Override

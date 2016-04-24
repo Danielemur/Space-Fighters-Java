@@ -26,10 +26,10 @@ public abstract class Powerup extends EntityLiving{
 	
 	@Override
 	public void update(int ms) {
-		super.update(ms);
 		timeRemaining -= ms;
 		if (timeRemaining <= 0)
 			player.removePowerup(this);
+		super.update(ms);
 	}
 
 }

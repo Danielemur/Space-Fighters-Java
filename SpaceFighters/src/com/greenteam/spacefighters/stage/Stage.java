@@ -1,19 +1,15 @@
 package com.greenteam.spacefighters.stage;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.swing.AbstractAction;
-import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
@@ -72,7 +68,7 @@ public class Stage extends JPanel implements ActionListener {
 		for (int i = 0; i < STARFIELD_LAYERS; ++i) {
 			starfields[i] = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
 			Graphics g = starfields[i].getGraphics();
-			g.setColor(Color.WHITE);
+			g.setColor(java.awt.Color.WHITE);
 			for (int j = 0; j < Stage.NUM_STARS; ++j) {
 				g.fillRect((int)(WIDTH * Math.random()), (int)(HEIGHT * Math.random()), 1, 1);
 			}
@@ -139,7 +135,7 @@ public class Stage extends JPanel implements ActionListener {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		g.setColor(Color.BLACK);
+		g.setColor(java.awt.Color.BLACK);
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
 		
 		Vec2 offsetMax = new Vec2(WIDTH - this.getWidth(), HEIGHT - this.getHeight());

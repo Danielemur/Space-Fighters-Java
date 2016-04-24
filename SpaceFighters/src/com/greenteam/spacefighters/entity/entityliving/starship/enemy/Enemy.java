@@ -45,7 +45,6 @@ public abstract class Enemy extends Starship {
 
 	@Override
 	public void update(int ms) {
-		super.update(ms);
 		Stage stage = this.getStage();
 		if (this.getHealth() <= 0) {
 			stage.getPlayer().setScore(stage.getPlayer().getScore() + this.getPointValue());
@@ -58,6 +57,7 @@ public abstract class Enemy extends Starship {
 				this.setHealth(this.getHealth() - ((EntityLiving)e).getDamage());
 			}
 		}
+		super.update(ms);
 	}
 	
 	@Override

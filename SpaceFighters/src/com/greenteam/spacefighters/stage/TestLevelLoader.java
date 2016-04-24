@@ -8,12 +8,8 @@ import javax.swing.Timer;
 
 import com.greenteam.spacefighters.GUI.HUD;
 import com.greenteam.spacefighters.common.Vec2;
-import com.greenteam.spacefighters.entity.entityliving.powerupcontainer.ForceFieldPowerupContainer;
-import com.greenteam.spacefighters.entity.entityliving.powerupcontainer.HealthRestorePowerupContainer;
-import com.greenteam.spacefighters.entity.entityliving.starship.enemy.ErraticEnemy;
-import com.greenteam.spacefighters.entity.entityliving.starship.enemy.ShootingEnemy;
-import com.greenteam.spacefighters.entity.entityliving.starship.enemy.TestEnemy;
-import com.greenteam.spacefighters.entity.entityliving.starship.enemy.TrackerEnemy;
+import com.greenteam.spacefighters.entity.entityliving.powerupcontainer.*;
+import com.greenteam.spacefighters.entity.entityliving.starship.enemy.*;
 import com.greenteam.spacefighters.entity.entityliving.starship.player.Player;
 import com.greenteam.spacefighters.entity.entityliving.starship.player.Player.PlayerShipColor;
 
@@ -25,7 +21,7 @@ public class TestLevelLoader extends LevelLoader implements ActionListener {
 	private static final int SHOOTINGENEMY_SPAWNINTERVAL = 1080;
 	private static final int TRACKERENEMY_SPAWNINTERVAL = 1400;
 	private static final int POWERUP_SPAWNINTERVAL = 5000; //remove this after implementing powerup spawning in Enemy
-	private static final int POWERUP_TYPENUMBER = 2;
+	private static final int POWERUP_TYPENUMBER = 3;
 	
 	private static final int LEVEL_SCORE_THRESHOLD = 1000;
 	
@@ -52,25 +48,28 @@ public class TestLevelLoader extends LevelLoader implements ActionListener {
 	public void actionPerformed(ActionEvent ev) {
 		if (ev.getSource() == timer) {
 			time += timer.getDelay();
-			if ((time % (int)(TESTENEMY_SPAWNINTERVAL*LEVEL_INTERVAL_RATIOS[level]))==0) {
+			if ((time % (int)(TESTENEMY_SPAWNINTERVAL*LEVEL_INTERVAL_RATIOS[level])) == 0) {
 				stage.add(new TestEnemy(stage));
 			}
-			if ((time % (int)(ERRATICENEMY_SPAWNINTERVAL*LEVEL_INTERVAL_RATIOS[level]))==0) {
+			if ((time % (int)(ERRATICENEMY_SPAWNINTERVAL*LEVEL_INTERVAL_RATIOS[level])) == 0) {
 				stage.add(new ErraticEnemy(stage));
 			}
-			if ((time % (int)(SHOOTINGENEMY_SPAWNINTERVAL*LEVEL_INTERVAL_RATIOS[level]))==0) {
+			if ((time % (int)(SHOOTINGENEMY_SPAWNINTERVAL*LEVEL_INTERVAL_RATIOS[level])) == 0) {
 				stage.add(new ShootingEnemy(stage));
 			}
-			if ((time % (int)(TRACKERENEMY_SPAWNINTERVAL*LEVEL_INTERVAL_RATIOS[level]))==0) {
+			if ((time % (int)(TRACKERENEMY_SPAWNINTERVAL*LEVEL_INTERVAL_RATIOS[level])) == 0) {
 				stage.add(new TrackerEnemy(stage));
 			}
-			if ((time % (int)(POWERUP_SPAWNINTERVAL*LEVEL_INTERVAL_RATIOS[level]))==0) {
+			if ((time % (int)(POWERUP_SPAWNINTERVAL*LEVEL_INTERVAL_RATIOS[level])) == 0) {
 				switch((int)(Math.random() * POWERUP_TYPENUMBER)) {
 					case 0 :
 						stage.add(new HealthRestorePowerupContainer(stage));
 						break;
 					case 1 :
 						stage.add(new ForceFieldPowerupContainer(stage));
+						break;
+					case 2 :
+						stage.add(new HealthBoostPowerupContainer(stage));
 						break;
 					default :
 						stage.add(new HealthRestorePowerupContainer(stage));
