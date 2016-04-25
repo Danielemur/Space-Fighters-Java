@@ -18,6 +18,11 @@ public class HealthBoostPowerupContainer extends PowerupContainer {
 	public int getDamage() {
 		return -25;
 	}
+	
+	@Override
+	public boolean exceedCap() {
+		return true;
+	}
 
 	@Override
 	public java.awt.Color noTextureColor() {

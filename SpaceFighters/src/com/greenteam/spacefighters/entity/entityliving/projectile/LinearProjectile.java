@@ -5,8 +5,6 @@ import java.awt.Composite;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import com.greenteam.spacefighters.common.Vec2;
-import com.greenteam.spacefighters.entity.Entity;
-import com.greenteam.spacefighters.entity.entityliving.EntityLiving;
 import com.greenteam.spacefighters.stage.Stage;
 
 public class LinearProjectile extends Projectile {
@@ -38,14 +36,6 @@ public class LinearProjectile extends Projectile {
 			this.setHealth(0);
 		} else {
 			decayCount -= ms;
-		}
-		for (Entity e : this.getStage().getEntities()) {
-			if (e == this) continue;
-			if ((e.getPosition().distance(this.getPosition()) < this.getRadius() + e.getRadius()) && isOppositeFaction(e)) {
-				if ((!(e instanceof EntityLiving) || !((EntityLiving)e).isDead())) {
-					this.setHealth(this.getHealth() - ((EntityLiving)e).getDamage());
-				}
-			}
 		}
 	}
 

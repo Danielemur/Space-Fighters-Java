@@ -13,11 +13,6 @@ public class ChargeBoostPowerupContainer extends PowerupContainer {
 			couldLoadImage = false;
 		}
 	}
-	
-	@Override
-	public int getDamage() {
-		return 0;
-	}
 
 	@Override
 	public java.awt.Color noTextureColor() {

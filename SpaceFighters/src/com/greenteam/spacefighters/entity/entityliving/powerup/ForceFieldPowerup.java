@@ -5,8 +5,12 @@ import java.awt.Composite;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RadialGradientPaint;
+
 import com.greenteam.spacefighters.common.Color;
 import com.greenteam.spacefighters.common.Vec2;
+import com.greenteam.spacefighters.entity.Entity;
+import com.greenteam.spacefighters.entity.entityliving.EntityLiving;
+import com.greenteam.spacefighters.entity.entityliving.obstacle.Obstacle;
 import com.greenteam.spacefighters.entity.entityliving.starship.player.Player;
 import com.greenteam.spacefighters.stage.Stage;
 
@@ -53,9 +57,25 @@ public class ForceFieldPowerup extends Powerup {
 	}
 	
 	@Override
+	public int getDamage() {
+		return 50;
+	}
+	
+	@Override
 	public void update(int ms) {
 		super.update(ms);
 		this.setPosition(player.getPosition());
+		if (!this.isDead()) {
+			for (Entity e : this.getStage().getEntities()) {
+				if (e == this) continue;
+				if ((e.getPosition().distance(this.getPosition()) < this.getRadius() + e.getRadius()) &&
+					(e instanceof EntityLiving) &&
+					!((EntityLiving)e).isDead() &&
+					((Obstacle.class.isAssignableFrom(e.getSource())) || ((Player.class.isAssignableFrom(e.getSource()))))) {
+					((EntityLiving)e).damage(this.getDamage());
+				}
+			}
+		}
 	}
 
 	@Override
