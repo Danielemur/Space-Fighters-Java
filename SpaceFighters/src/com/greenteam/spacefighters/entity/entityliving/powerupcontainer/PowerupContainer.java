@@ -29,7 +29,7 @@ public abstract class PowerupContainer extends EntityLiving {
 	private int time;
 	
 	public PowerupContainer(Stage s) {
-		super(s, 1);
+		super(s, 1, 1);
 		time = SELECT_NEW_POSITION_INTERVAL;
 		timeRemaining = TIME_ON_SCREEN;
 		

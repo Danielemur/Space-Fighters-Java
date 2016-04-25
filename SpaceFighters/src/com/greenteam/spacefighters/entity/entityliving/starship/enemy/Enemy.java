@@ -20,8 +20,8 @@ public abstract class Enemy extends Starship {
 	protected int width;
 	protected int height;
 	
-	public Enemy(Stage s, int health, int armorMultiplier, int weaponryMultiplier) {
-		super(s, health, armorMultiplier, weaponryMultiplier);
+	public Enemy(Stage s, int maxHealth, int health, int armorMultiplier, int weaponryMultiplier) {
+		super(s, maxHealth, health, armorMultiplier, weaponryMultiplier);
 	}
 	
 	public abstract java.awt.Color noTextureColor();
@@ -52,11 +52,8 @@ public abstract class Enemy extends Starship {
 				if (e == this) continue;
 				if ((e.getPosition().distance(this.getPosition()) < this.getRadius() + e.getRadius()) &&
 						((Obstacle.class.isAssignableFrom(e.getSource())) || ((Player.class.isAssignableFrom(e.getSource()))))) {
-					if (!e.wasConsumed() &&
-						(!(e instanceof EntityLiving) || !((EntityLiving)e).isDead())) {
+					if ((!(e instanceof EntityLiving) || !((EntityLiving)e).isDead())) {
 						this.setHealth(this.getHealth() - ((EntityLiving)e).getDamage());
-						if (!(e instanceof EntityLiving) || ((EntityLiving)e).isDead())
-							e.consume();
 					}
 				}
 			}

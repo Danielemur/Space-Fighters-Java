@@ -20,7 +20,7 @@ public abstract class Projectile extends EntityLiving {
 	private int damage;
 	
 	public Projectile(Stage s, int health, int damage, Vec2 position, Vec2 velocity, Class<?> source) {
-		super(s, health);
+		super(s, health, health);
 		this.damage = damage;
 		this.source = source;
 		this.setVelocity(velocity);

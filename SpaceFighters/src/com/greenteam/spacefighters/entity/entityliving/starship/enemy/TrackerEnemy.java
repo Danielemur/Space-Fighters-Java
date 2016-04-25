@@ -20,7 +20,7 @@ public class TrackerEnemy extends Enemy {
 	private int chargeLevel;
 	
 	public TrackerEnemy(Stage s) {
-		super(s, 40, DEFAULTARMORLEVEL, DEFAULTWEAPONRYLEVEL);
+		super(s, 40, 40, DEFAULTARMORLEVEL, DEFAULTWEAPONRYLEVEL);
 		this.setPosition(randSpawnPos(s.getPlayer(), SPAWNDIST));
 		this.setVelocity(new Vec2(1000*Math.random()-500,200));
 		this.setOrientation(new Vec2(0, -1));

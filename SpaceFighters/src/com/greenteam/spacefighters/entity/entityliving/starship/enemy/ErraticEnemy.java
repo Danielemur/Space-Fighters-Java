@@ -8,7 +8,7 @@ public class ErraticEnemy extends Enemy {
 	private static final double SPAWNDIST = 400.0D;
 	
 	public ErraticEnemy(Stage s) {
-		super(s, 1, 0, 0);
+		super(s, 1, 1, 0, 0);
 		time = 0;
 		this.setPosition(randSpawnPos(s.getPlayer(), SPAWNDIST));
 		this.setVelocity(new Vec2(1000*Math.random()-500,200));

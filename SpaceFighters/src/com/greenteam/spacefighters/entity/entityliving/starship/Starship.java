@@ -7,8 +7,8 @@ public abstract class Starship extends EntityLiving {
 	private int armorMultiplier;
 	private int weaponryMultiplier;
 
-	public Starship(Stage s, int health, int armorMultiplier, int weaponryMultiply) {
-		super(s, health);
+	public Starship(Stage s, int maxHealth, int health, int armorMultiplier, int weaponryMultiply) {
+		super(s, maxHealth, health);
 	}	
 	
 	public abstract void fire(int type);

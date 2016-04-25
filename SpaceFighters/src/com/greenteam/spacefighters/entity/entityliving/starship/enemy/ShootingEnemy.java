@@ -15,7 +15,7 @@ public class ShootingEnemy extends Enemy {
 	private Vec2 randpos;
 	
 	public ShootingEnemy(Stage s) {
-		super(s, 1, 0, 0);
+		super(s, 1, 1, 0, 0);
 		time = 0;
 		this.setPosition(randSpawnPos(s.getPlayer(), SPAWNDIST));
 		this.setOrientation(new Vec2(0,-1));

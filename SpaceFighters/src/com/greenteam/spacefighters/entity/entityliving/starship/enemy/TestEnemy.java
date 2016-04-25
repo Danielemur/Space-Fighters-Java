@@ -7,7 +7,7 @@ public class TestEnemy extends Enemy {
 	private static final double SPAWNDIST = 400.0D;
 	
 	public TestEnemy(Stage s) {
-		super(s, 1, 0, 0);
+		super(s, 1, 1, 0, 0);
 		this.setPosition(randSpawnPos(s.getPlayer(), SPAWNDIST));
 		this.setVelocity(new Vec2(-440,200));
 		

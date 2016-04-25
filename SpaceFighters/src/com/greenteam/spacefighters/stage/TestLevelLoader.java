@@ -37,7 +37,7 @@ public class TestLevelLoader extends LevelLoader implements ActionListener {
 		timer.addActionListener(this);
 		level = 0;
 		
-		Player player = new Player(stage, 100, PlayerShipColor.RED);
+		Player player = new Player(stage, 100, 100, PlayerShipColor.RED);
 		player.setPosition(new Vec2(Stage.WIDTH / 2 , Stage.HEIGHT / 2));
 		stage.setPlayer(player);
 		stage.setHUD(new HUD(stage));
