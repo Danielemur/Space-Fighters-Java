@@ -51,8 +51,8 @@ public class Player extends Starship {
 	private int money;
 	private HashSet<Powerup> powerups;
 
-	public Player(Stage s, int health, PlayerShipColor color) {
-		super(s, health, DEFAULTARMORLEVEL, DEFAULTWEAPONRYLEVEL);
+	public Player(Stage s, int maxHealth, int health, PlayerShipColor color) {
+		super(s, maxHealth, health, DEFAULTARMORLEVEL, DEFAULTWEAPONRYLEVEL);
 		maxhealth = health;
 		time = 0;
 		timetofiremissile = GUN_TO_MISSILE_RATIO;
@@ -126,8 +126,7 @@ public class Player extends Starship {
 				(Obstacle.class.isAssignableFrom(e.getSource()) ||
 				 Enemy.class.isAssignableFrom(e.getSource()) 	||
 				 PowerupContainer.class.isAssignableFrom(e.getSource()))) {
-				if (!e.wasConsumed() &&
-					(!(e instanceof EntityLiving) || !((EntityLiving)e).isDead())) {
+				if ((!(e instanceof EntityLiving) || !((EntityLiving)e).isDead())) {
 					int damage = ((EntityLiving)e).getDamage();
 					boolean addHealth = damage < 0;
 					boolean augmentHealthPowerup = e instanceof HealthBoostPowerupContainer;
@@ -148,8 +147,6 @@ public class Player extends Starship {
 					if (augmentChargePowerup) {
 						chargeLevel = Math.min(chargeLevel + Player.FULLCHARGE, 2 * Player.FULLCHARGE);
 					}
-					if (!(e instanceof EntityLiving) || ((EntityLiving)e).isDead())
-						e.consume();
 				}
 			}
 		}

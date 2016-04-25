@@ -6,7 +6,7 @@ import com.greenteam.spacefighters.stage.Stage;
 public abstract class Obstacle extends EntityLiving {
 
 	public Obstacle(Stage s, int health) {
-		super(s, health);
+		super(s, health, health);
 	}
 
 	@Override

@@ -12,7 +12,7 @@ public abstract class Powerup extends EntityLiving{
 	protected int timeRemaining;
 
 	public Powerup(Stage s, Player pl) {
-		super(s, 1);
+		super(s, 1, 1);
 		this.player = pl;
 		timeRemaining = getDuration ();
 		this.setAcceleration(Vec2.ZERO);

@@ -56,11 +56,8 @@ public class HomingProjectile extends Projectile {
 			for (Entity e : this.getStage().getEntities()) {
 				if (e == this) continue;
 				if ((e.getPosition().distance(this.getPosition()) < this.getRadius() + e.getRadius()) && isOppositeFaction(e)) {
-					if (!e.wasConsumed() &&
-						(!(e instanceof EntityLiving) || !((EntityLiving)e).isDead())) {
+					if ((!(e instanceof EntityLiving) || !((EntityLiving)e).isDead())) {
 						this.setHealth(this.getHealth() - ((EntityLiving)e).getDamage());
-						if (!(e instanceof EntityLiving) || ((EntityLiving)e).isDead())
-							e.consume();
 					}
 				}
 			}
