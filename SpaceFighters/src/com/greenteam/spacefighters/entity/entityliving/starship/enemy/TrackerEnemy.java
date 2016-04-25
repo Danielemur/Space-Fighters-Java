@@ -39,38 +39,40 @@ public class TrackerEnemy extends Enemy {
 
 	@Override
 	public void update(int ms) {
-		Stage stage = this.getStage();
-		Player target = (Player) stage.getNearestEntity(this, Player.class);
-		if (target != null) {
-			double dist = getPosition().distance(target.getPosition()); 
-	  	
-			if (dist < 10000.0D)
-				fire(0);
-			double speed = getVelocity().magnitude();
-			double drag = speed * speed * DRAG;
-			Vec2 direction = target.getPosition().subtract(getPosition()).normalize();
-			setAcceleration(direction.scale(ACCELERATION).subtract(getVelocity().scale(drag)));
-			this.setOrientation(direction);
-			//System.out.println("" + target.getPosition().subtract(getPosition()).normalize().scale(ACCELERATION).subtract(getVelocity().scale(drag)));
-		} else {
-			double speed = getVelocity().magnitude();
-			double drag = speed * speed * DRAG;
-			setAcceleration(new Vec2(0, -1).scale(ACCELERATION).subtract(getVelocity().scale(drag)));
-		}
-		if (this.getPosition().getX() > Stage.WIDTH) {
-			this.getPosition().setX(Stage.WIDTH);
-		}
-		if (this.getPosition().getX() < 0) {
-			this.getPosition().setX(0);
-		}
-		if (this.getPosition().getY() > Stage.HEIGHT) {
-			this.getPosition().setY(Stage.HEIGHT);
-		}
-		if (this.getPosition().getY() < 0) {
-			this.getPosition().setY(0);
-		}
-		chargeLevel += ms;
 		super.update(ms);
+		if (!this.isDead()) {
+			Stage stage = this.getStage();
+			Player target = (Player) stage.getNearestEntity(this, Player.class);
+			if (target != null) {
+				double dist = getPosition().distance(target.getPosition()); 
+
+				if (dist < 10000.0D)
+					fire(0);
+				double speed = getVelocity().magnitude();
+				double drag = speed * speed * DRAG;
+				Vec2 direction = target.getPosition().subtract(getPosition()).normalize();
+				setAcceleration(direction.scale(ACCELERATION).subtract(getVelocity().scale(drag)));
+				this.setOrientation(direction);
+				//System.out.println("" + target.getPosition().subtract(getPosition()).normalize().scale(ACCELERATION).subtract(getVelocity().scale(drag)));
+			} else {
+				double speed = getVelocity().magnitude();
+				double drag = speed * speed * DRAG;
+				setAcceleration(new Vec2(0, -1).scale(ACCELERATION).subtract(getVelocity().scale(drag)));
+			}
+			if (this.getPosition().getX() > Stage.WIDTH) {
+				this.getPosition().setX(Stage.WIDTH);
+			}
+			if (this.getPosition().getX() < 0) {
+				this.getPosition().setX(0);
+			}
+			if (this.getPosition().getY() > Stage.HEIGHT) {
+				this.getPosition().setY(Stage.HEIGHT);
+			}
+			if (this.getPosition().getY() < 0) {
+				this.getPosition().setY(0);
+			}
+			chargeLevel += ms;
+		}
 	}
 
 	@Override

@@ -45,19 +45,26 @@ public abstract class Enemy extends Starship {
 
 	@Override
 	public void update(int ms) {
-		Stage stage = this.getStage();
-		if (this.getHealth() <= 0) {
-			stage.getPlayer().setScore(stage.getPlayer().getScore() + this.getPointValue());
-			stage.getPlayer().setMoney(stage.getPlayer().getMoney() + this.getPointValue()/10);
-		}
-		for (Entity e : this.getStage().getEntities()) {
-			if (e == this) continue;
-			if ((e.getPosition().distance(this.getPosition()) < this.getRadius() + e.getRadius()) &&
-					((Obstacle.class.isAssignableFrom(e.getSource())) || ((Player.class.isAssignableFrom(e.getSource()))))) {
-				this.setHealth(this.getHealth() - ((EntityLiving)e).getDamage());
+		super.update(ms);
+		if (!this.isDead()) {
+			Stage stage = this.getStage();
+			for (Entity e : this.getStage().getEntities()) {
+				if (e == this) continue;
+				if ((e.getPosition().distance(this.getPosition()) < this.getRadius() + e.getRadius()) &&
+						((Obstacle.class.isAssignableFrom(e.getSource())) || ((Player.class.isAssignableFrom(e.getSource()))))) {
+					if (!e.wasConsumed() &&
+						(!(e instanceof EntityLiving) || !((EntityLiving)e).isDead())) {
+						this.setHealth(this.getHealth() - ((EntityLiving)e).getDamage());
+						if (!(e instanceof EntityLiving) || ((EntityLiving)e).isDead())
+							e.consume();
+					}
+				}
+			}
+			if (this.getHealth() <= 0) {
+				stage.getPlayer().setScore(stage.getPlayer().getScore() + this.getPointValue());
+				stage.getPlayer().setMoney(stage.getPlayer().getMoney() + this.getPointValue()/10);
 			}
 		}
-		super.update(ms);
 	}
 	
 	@Override

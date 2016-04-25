@@ -13,6 +13,7 @@ public abstract class Entity {
 	private Vec2 orientation;
 	protected Image texture;
 	private Stage stage;
+	private boolean consumed;
 	
 	public Entity(Stage s) {
 		position = new Vec2(0, 0);
@@ -21,6 +22,7 @@ public abstract class Entity {
 		orientation = new Vec2(0, 1);
 		texture = null;
 		stage = s;
+		consumed = false;
 	}
 	
 	public abstract void render(Graphics g);
@@ -114,5 +116,13 @@ public abstract class Entity {
 	
 	public int getPointValue() {
 		return 100; //default
+	}
+
+	public boolean wasConsumed() {
+		return consumed;
+	}
+
+	public void consume() {
+		this.consumed = true;
 	}
 }

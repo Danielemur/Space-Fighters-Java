@@ -40,19 +40,21 @@ public class ShootingEnemy extends Enemy {
 	
 	@Override
 	public void update(int ms) {
-		Stage stage = this.getStage();
-		time += ms;
-		if (time > SHOOTING_INTERVAL) {
-			time = 0;
-			Vec2 vectorToTarget = stage.getPlayer().getPosition().subtract(this.getPosition()).normalize().scale(PROJECTILE_SPEED);
-			Projectile proj = new LinearProjectile(stage, 1, 3, this.getPosition(), vectorToTarget, Enemy.class);
-			stage.add(proj);
-		}
-		if (getPosition().distance(randpos) < 5)
-			randpos = randSpawnPos(this.getStage().getPlayer(), 0);
-		this.setVelocity(randpos.subtract(this.getPosition()).normalize().scale(SPEED));
-		this.setOrientation(this.getVelocity());
 		super.update(ms);
+		if (!this.isDead()) {
+			Stage stage = this.getStage();
+			time += ms;
+			if (time > SHOOTING_INTERVAL) {
+				time = 0;
+				Vec2 vectorToTarget = stage.getPlayer().getPosition().subtract(this.getPosition()).normalize().scale(PROJECTILE_SPEED);
+				Projectile proj = new LinearProjectile(stage, 1, 3, this.getPosition(), vectorToTarget, Enemy.class);
+				stage.add(proj);
+			}
+			if (getPosition().distance(randpos) < 5)
+				randpos = randSpawnPos(this.getStage().getPlayer(), 0);
+			this.setVelocity(randpos.subtract(this.getPosition()).normalize().scale(SPEED));
+			this.setOrientation(this.getVelocity());
+		}
 	}
 
 	@Override

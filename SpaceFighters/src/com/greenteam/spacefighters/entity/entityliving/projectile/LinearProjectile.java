@@ -33,6 +33,7 @@ public class LinearProjectile extends Projectile {
 	
 	@Override
 	public void update(int ms) {
+		super.update(ms);
 		if (decayCount < 0) {
 			this.setHealth(0);
 		} else {
@@ -41,10 +42,14 @@ public class LinearProjectile extends Projectile {
 		for (Entity e : this.getStage().getEntities()) {
 			if (e == this) continue;
 			if ((e.getPosition().distance(this.getPosition()) < this.getRadius() + e.getRadius()) && isOppositeFaction(e)) {
-				this.setHealth(this.getHealth() - ((EntityLiving)e).getDamage());
+				if (!e.wasConsumed() &&
+					(!(e instanceof EntityLiving) || !((EntityLiving)e).isDead())) {
+					this.setHealth(this.getHealth() - ((EntityLiving)e).getDamage());
+					if (!(e instanceof EntityLiving) || ((EntityLiving)e).isDead())
+						e.consume();
+				}
 			}
 		}
-		super.update(ms);
 	}
 
 }

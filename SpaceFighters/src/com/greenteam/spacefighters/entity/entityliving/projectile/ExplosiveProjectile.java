@@ -75,6 +75,7 @@ public class ExplosiveProjectile extends Projectile {
 	
 	@Override
 	public void update(int ms) {
+		super.update(ms);
 		countdown -= ms;
 		if (countdown <= 0) {
 			if (!isExploding) {
@@ -89,7 +90,6 @@ public class ExplosiveProjectile extends Projectile {
 		if (isExploding) {
 			hitRadius = PROJECTILERADIUS + (BLASTRADIUS - PROJECTILERADIUS) * (1 - (countdown / (float)EXPLOSIONDURATION));
 		}
-		super.update(ms);
 	}
 	
 }

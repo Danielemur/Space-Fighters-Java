@@ -54,8 +54,8 @@ public class ForceFieldPowerup extends Powerup {
 	
 	@Override
 	public void update(int ms) {
-		this.setPosition(player.getPosition());
 		super.update(ms);
+		this.setPosition(player.getPosition());
 	}
 
 	@Override

@@ -117,9 +117,9 @@ public class Stage extends JPanel implements ActionListener {
 		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("pressed SPACE"),PAUSE+PRESSED);
 		this.getActionMap().put(PAUSE+PRESSED, new PauseAction());
 		
-		firePrimaryTimer = new Timer((int)(500/Window.FPS), this);
+		firePrimaryTimer = new Timer((int)(2000/Window.FPS), this);
 		firePrimaryTimer.setInitialDelay(0);
-		fireSecondaryTimer = new Timer((int)(500/Window.FPS), this);
+		fireSecondaryTimer = new Timer((int)(10000/Window.FPS), this);
 		fireSecondaryTimer.setInitialDelay(0);
 		fireTertiaryTimer = new Timer((int)(10000/Window.FPS), this);
 		fireTertiaryTimer.setInitialDelay(0);

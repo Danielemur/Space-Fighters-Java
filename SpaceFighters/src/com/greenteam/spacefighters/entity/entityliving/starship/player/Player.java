@@ -14,6 +14,7 @@ import com.greenteam.spacefighters.entity.entityliving.EntityLiving;
 import com.greenteam.spacefighters.entity.entityliving.obstacle.Obstacle;
 import com.greenteam.spacefighters.entity.entityliving.powerup.ForceFieldPowerup;
 import com.greenteam.spacefighters.entity.entityliving.powerup.Powerup;
+import com.greenteam.spacefighters.entity.entityliving.powerupcontainer.ChargeBoostPowerupContainer;
 import com.greenteam.spacefighters.entity.entityliving.powerupcontainer.HealthBoostPowerupContainer;
 import com.greenteam.spacefighters.entity.entityliving.powerupcontainer.PowerupContainer;
 import com.greenteam.spacefighters.entity.entityliving.projectile.ExplosiveProjectile;
@@ -104,6 +105,7 @@ public class Player extends Starship {
 	
 	@Override
 	public void update(int ms) {
+		super.update(ms);
 		Stage stage = this.getStage();
 		if (this.getHealth() <= 0) {
 			stage.gameOver();
@@ -111,7 +113,6 @@ public class Player extends Starship {
 		time += ms;
 		
 		boolean hasAugmentedHealth = this.getHealth() > this.getMaxHealth();
-		boolean hasAugmentedCharge = this.getCharge() > this.getMaxCharge();
 		
 		if (time > HEALTH_REGEN_TIME) {
 			if (this.getHealth() < this.getMaxHealth()) {
@@ -122,27 +123,37 @@ public class Player extends Starship {
 		for (Entity e : this.getStage().getEntities()) {
 			if (e == this) continue;
 			if ((e.getPosition().distance(this.getPosition()) < this.getRadius() + e.getRadius()) &&
-					(Obstacle.class.isAssignableFrom(e.getSource()) ||
-					 Enemy.class.isAssignableFrom(e.getSource()) 	||
-					 PowerupContainer.class.isAssignableFrom(e.getSource()))) {
-				int damage = ((EntityLiving)e).getDamage();
-				boolean addHealth = damage < 0;
-				boolean augmentHealthPowerup = e instanceof HealthBoostPowerupContainer;
-				if (!(hasForceField() && !addHealth)) {
-					if (hasAugmentedHealth && addHealth) {
+				(Obstacle.class.isAssignableFrom(e.getSource()) ||
+				 Enemy.class.isAssignableFrom(e.getSource()) 	||
+				 PowerupContainer.class.isAssignableFrom(e.getSource()))) {
+				if (!e.wasConsumed() &&
+					(!(e instanceof EntityLiving) || !((EntityLiving)e).isDead())) {
+					int damage = ((EntityLiving)e).getDamage();
+					boolean addHealth = damage < 0;
+					boolean augmentHealthPowerup = e instanceof HealthBoostPowerupContainer;
+					boolean augmentChargePowerup = e instanceof ChargeBoostPowerupContainer;
+					if (!(hasForceField() && !addHealth)) {
 						if (augmentHealthPowerup)
-							this.setHealth(this.getMaxHealth() - damage);
-					} else {
-						this.setHealth(this.getHealth() - damage);
+							System.out.println("hi " + ((EntityLiving)e).isDead());
+						if (hasAugmentedHealth && addHealth) {
+							if (augmentHealthPowerup)
+								this.setHealth(this.getMaxHealth() - damage);
+						} else {
+							this.setHealth(this.getHealth() - damage);
+						}
 					}
-				}
-				if (this.getHealth() > this.getMaxHealth() &&
-					!(augmentHealthPowerup) &&
-					!hasAugmentedHealth) {
-					this.setHealth(this.getMaxHealth());
+					if (this.getHealth() > this.getMaxHealth() &&
+							!(augmentHealthPowerup) &&
+							!hasAugmentedHealth) {
+						this.setHealth(this.getMaxHealth());
+					}
+					if (augmentChargePowerup) {
+						chargeLevel = Math.min(chargeLevel + Player.FULLCHARGE, 2 * Player.FULLCHARGE);
+					}
+					if (!(e instanceof EntityLiving) || ((EntityLiving)e).isDead())
+						e.consume();
 				}
 			}
-			super.update(ms);
 		}
 		if (this.getPosition().getX() > Stage.WIDTH) {
 			this.getPosition().setX(Stage.WIDTH);
@@ -156,9 +167,12 @@ public class Player extends Starship {
 		if (this.getPosition().getY() < 0) {
 			this.getPosition().setY(0);
 		}
-		chargeLevel += ms/5;
-		if (chargeLevel > Player.FULLCHARGE) {
-			chargeLevel = Player.FULLCHARGE;
+		boolean hasAugmentedCharge = this.getCharge() > this.getMaxCharge();
+		if (!hasAugmentedCharge) {
+			chargeLevel += ms/5;
+			if (chargeLevel > Player.FULLCHARGE) {
+				chargeLevel = Player.FULLCHARGE;
+			}
 		}
 	}
 

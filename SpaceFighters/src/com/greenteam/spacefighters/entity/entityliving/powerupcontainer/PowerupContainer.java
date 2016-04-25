@@ -12,7 +12,6 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 
 import com.greenteam.spacefighters.common.Vec2;
-import com.greenteam.spacefighters.entity.Entity;
 import com.greenteam.spacefighters.entity.entityliving.EntityLiving;
 import com.greenteam.spacefighters.entity.entityliving.starship.player.Player;
 import com.greenteam.spacefighters.stage.Stage;
@@ -70,26 +69,27 @@ public abstract class PowerupContainer extends EntityLiving {
 	
 	@Override
 	public void update(int ms) {
-		Stage stage = this.getStage();
-		time -= ms;
-		if (time <= 0) {
-			time = SELECT_NEW_POSITION_INTERVAL;
-			randpos = new Vec2(Stage.WIDTH * Math.random(), Stage.HEIGHT * Math.random());
-		}
-		this.setVelocity(randpos.subtract(this.getPosition()).normalize().scale(SPEED));
-		if (this.getHealth() <= 0) {
-			stage.getPlayer().setScore(stage.getPlayer().getScore() + this.getPointValue());
-		}
-		for (Entity e : this.getStage().getEntities()) {
-			if (e == this) continue;
-			if ((e.getPosition().distance(this.getPosition()) < this.getRadius() + e.getRadius()) &&
-					(e instanceof Player)) {
-				this.setHealth(-1);
-			}
-		}
-		timeRemaining -= ms;
-		if (timeRemaining <= 0) this.remove();
 		super.update(ms);
+		if (!this.isDead()) {
+			Stage stage = this.getStage();
+			Player pl = stage.getPlayer();
+			time -= ms;
+			if (time <= 0) {
+				time = SELECT_NEW_POSITION_INTERVAL;
+				randpos = new Vec2(Stage.WIDTH * Math.random(), Stage.HEIGHT * Math.random());
+			}
+			this.setVelocity(randpos.subtract(this.getPosition()).normalize().scale(SPEED));
+			if (this.getHealth() <= 0) {
+				stage.getPlayer().setScore(stage.getPlayer().getScore() + this.getPointValue());
+			}
+			if (pl.getPosition().distance(this.getPosition()) < this.getRadius() + pl.getRadius()) {
+				this.setHealth(-1);
+				System.out.println("hi2");
+			}
+			timeRemaining -= ms;
+			if (timeRemaining <= 0)
+				this.remove();
+		}
 	}
 	
 	@Override
