@@ -13,7 +13,7 @@ import com.greenteam.spacefighters.stage.Stage;
 public class ForceFieldPowerup extends Powerup {
 	private static final double RADIUS = 50;
 	private static final int BEGIN_FADING_TIME = 2000;
-	private final Color COLOR = new Color(49, 11, 210);
+	private final Color COLOR = new Color(59, 21, 220);
 	
 	public ForceFieldPowerup(Stage s, Player pl) {
 		super(s, pl);
@@ -33,7 +33,7 @@ public class ForceFieldPowerup extends Powerup {
 		g2.setPaint(grad);
 		
 		if ((timeRemaining <= BEGIN_FADING_TIME) && (timeRemaining >= 0)) {
-			float opacity = (float) ((Math.sin(4.5f * Math.PI * timeRemaining / BEGIN_FADING_TIME) + 1) / 2.0f);
+			float opacity = (float)((Math.exp(-timeRemaining/BEGIN_FADING_TIME*5)*(Math.sin(4.5f * Math.PI * timeRemaining / BEGIN_FADING_TIME) + 3) / 2.0f)/2);
 			Composite oldComposite = ((Graphics2D)g).getComposite();
 			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
 			g2.fillOval((int)(pos.getX() - RADIUS), (int)(pos.getY() - RADIUS), (int)(2 * RADIUS), (int)(2 * RADIUS));

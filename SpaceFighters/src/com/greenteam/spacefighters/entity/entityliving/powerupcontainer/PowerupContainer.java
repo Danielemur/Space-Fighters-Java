@@ -84,7 +84,6 @@ public abstract class PowerupContainer extends EntityLiving {
 			}
 			if (pl.getPosition().distance(this.getPosition()) < this.getRadius() + pl.getRadius()) {
 				this.setHealth(-1);
-				System.out.println("hi2");
 			}
 			timeRemaining -= ms;
 			if (timeRemaining <= 0)

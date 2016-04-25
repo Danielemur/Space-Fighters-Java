@@ -47,7 +47,7 @@ public abstract class Entity {
 				} else {
 					System.err.println("Entity placement failed!");
 					System.err.println("Player:\t" + entityPos);
-						System.err.println("Entity:\t" + spawnPos);
+					System.err.println("Entity:\t" + spawnPos);
 					spawnPos = Vec2.ZERO;
 					break;
 				}

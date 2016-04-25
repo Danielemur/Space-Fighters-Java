@@ -53,7 +53,6 @@ public class TrackerEnemy extends Enemy {
 				Vec2 direction = target.getPosition().subtract(getPosition()).normalize();
 				setAcceleration(direction.scale(ACCELERATION).subtract(getVelocity().scale(drag)));
 				this.setOrientation(direction);
-				//System.out.println("" + target.getPosition().subtract(getPosition()).normalize().scale(ACCELERATION).subtract(getVelocity().scale(drag)));
 			} else {
 				double speed = getVelocity().magnitude();
 				double drag = speed * speed * DRAG;

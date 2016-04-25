@@ -133,8 +133,6 @@ public class Player extends Starship {
 					boolean augmentHealthPowerup = e instanceof HealthBoostPowerupContainer;
 					boolean augmentChargePowerup = e instanceof ChargeBoostPowerupContainer;
 					if (!(hasForceField() && !addHealth)) {
-						if (augmentHealthPowerup)
-							System.out.println("hi " + ((EntityLiving)e).isDead());
 						if (hasAugmentedHealth && addHealth) {
 							if (augmentHealthPowerup)
 								this.setHealth(this.getMaxHealth() - damage);
