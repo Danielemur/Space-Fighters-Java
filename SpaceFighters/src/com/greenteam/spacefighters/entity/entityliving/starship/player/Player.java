@@ -11,6 +11,7 @@ import javax.imageio.ImageIO;
 import com.greenteam.spacefighters.common.Vec2;
 import com.greenteam.spacefighters.entity.Entity;
 import com.greenteam.spacefighters.entity.entityliving.EntityLiving;
+import com.greenteam.spacefighters.entity.entityliving.Explosion;
 import com.greenteam.spacefighters.entity.entityliving.obstacle.Obstacle;
 import com.greenteam.spacefighters.entity.entityliving.powerup.ForceFieldPowerup;
 import com.greenteam.spacefighters.entity.entityliving.powerup.Powerup;
@@ -211,6 +212,8 @@ public class Player extends Starship {
 					}
 					chargeLevel -= HomingProjectile.getEnergyCost()*MISSILE_SPREAD_COUNT;
 				}
+				Explosion e = new Explosion(stage, this.getPosition(), 1000);
+				stage.add(e);
 			}
 			break;
 			case 2 :
