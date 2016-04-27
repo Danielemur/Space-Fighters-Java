@@ -6,13 +6,11 @@ import com.greenteam.spacefighters.stage.Stage;
 public abstract class EntityLiving extends Entity {
 	private int maxHealth;
 	private int health;
-	private boolean dead;
 
 	public EntityLiving(Stage s, int maxHealth, int health) {
 		super(s);
 		this.maxHealth = maxHealth;
 		this.health = health;
-		dead = false;
 	}
 
 	public int getHealth() {
@@ -39,15 +37,17 @@ public abstract class EntityLiving extends Entity {
 	}
 	
 	public boolean isDead() {
-		return dead;
+		return health <= 0;
 	}
+	
+	public void uponDeath() {}
 
 	@Override
 	public void update(int ms) {
 		super.update(ms);
-		if (health <= 0) {
+		if (this.isDead()) {
+			this.uponDeath();
 			this.getStage().remove(this);
-			dead = true;
 		}
 	}
 	

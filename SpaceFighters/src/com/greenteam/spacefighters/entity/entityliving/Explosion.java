@@ -4,6 +4,9 @@ import java.awt.AlphaComposite;
 import java.awt.Composite;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -43,6 +46,16 @@ public class Explosion extends EntityLiving {
 		opacity = (float)Math.pow(opacity, 0.25);
 		Composite oldComposite = ((Graphics2D)g).getComposite();
 		((Graphics2D)g).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
+		
+		//Vec2 pos = this.getPosition();
+		//double angle = this.getVelocity().normalize().multiply(new Vec2(1, -1)).angle();
+		//double imagemidx = this.getTexture().getWidth(null)/2;
+		//double imagemidy = this.getTexture().getHeight(null)/2;
+		//AffineTransform tf = AffineTransform.getRotateInstance(angle, imagemidx, imagemidy);
+		//tf.rotate(angle, imagemidx, imagemidy);
+		//AffineTransformOp op = new AffineTransformOp(tf, AffineTransformOp.TYPE_BILINEAR);
+		//g.drawImage(op.filter((BufferedImage)this.getTexture(), null), (int)(pos.getX()-imagemidx), (int)(pos.getY()-imagemidy), null);
+		g.drawImage(this.getTexture(), (int)(this.getPosition().getX()-this.getTexture().getWidth(null)/2), (int)(this.getPosition().getY()-this.getTexture().getHeight(null)/2), null);
 		((Graphics2D)g).setComposite(oldComposite);
 	}
 	

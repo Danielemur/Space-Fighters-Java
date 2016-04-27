@@ -10,6 +10,7 @@ import javax.imageio.ImageIO;
 import com.greenteam.spacefighters.common.Vec2;
 import com.greenteam.spacefighters.entity.Entity;
 import com.greenteam.spacefighters.entity.entityliving.EntityLiving;
+import com.greenteam.spacefighters.entity.entityliving.Explosion;
 import com.greenteam.spacefighters.entity.entityliving.obstacle.Obstacle;
 import com.greenteam.spacefighters.entity.entityliving.starship.Starship;
 import com.greenteam.spacefighters.entity.entityliving.starship.player.Player;
@@ -67,6 +68,12 @@ public abstract class Enemy extends Starship {
 	@Override
 	public Class<?> getSource() {
 		return Enemy.class;
+	}
+	
+	@Override
+	public void uponDeath() {
+		Explosion e = new Explosion(this.getStage(), this.getPosition(), 100);
+		this.getStage().add(e);
 	}
 	
 	public static BufferedImage getTexFromEnum(EnemyShipColor color) {

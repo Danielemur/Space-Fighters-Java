@@ -212,8 +212,6 @@ public class Player extends Starship {
 					}
 					chargeLevel -= HomingProjectile.getEnergyCost()*MISSILE_SPREAD_COUNT;
 				}
-				Explosion e = new Explosion(stage, this.getPosition(), 1000);
-				stage.add(e);
 			}
 			break;
 			case 2 :
@@ -236,6 +234,12 @@ public class Player extends Starship {
 			default :
 				break;
 		}
+	}
+	
+	@Override
+	public void uponDeath() {
+		Explosion e = new Explosion(this.getStage(), this.getPosition(), 100);
+		this.getStage().add(e);
 	}
 	
 	public void addPowerup(Powerup p) {
