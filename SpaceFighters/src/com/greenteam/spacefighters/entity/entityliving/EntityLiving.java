@@ -26,12 +26,24 @@ public abstract class EntityLiving extends Entity {
 	}
 	
 	public void damage(int damage) {
-		this.health -= damage;
-		this.health = Math.min(maxHealth, health);
+		boolean augmentedHealth = health > maxHealth;
+		if (!augmentedHealth || (augmentedHealth && damage > 0))
+			this.health -= damage;
+		if (!augmentedHealth)
+			this.health = Math.min(maxHealth, health);
 	}
 	
 	public void damage(int damage, boolean noCap) {
-		this.health -= damage;
+		boolean augmentedHealth = health > maxHealth;
+		if (!augmentedHealth || (augmentedHealth && damage > 0))
+			this.health -= damage;
+		else if (augmentedHealth && damage <= 0)
+			this.health = Math.min(maxHealth, health);
+		
+		
+		
+		if (damage > 0 || health <= maxHealth)
+			this.health -= damage;
 		if (!noCap)
 			this.health = Math.min(maxHealth, health);
 	}

@@ -42,19 +42,21 @@ public abstract class Enemy extends Starship {
 			g.fillRect((int)pos.getX(), (int)pos.getY(), width, height);
 		}
 	}
+	
+	protected boolean isOppositeFaction(Entity e) {
+		return (Player.class.isAssignableFrom(e.getSource()) || Obstacle.class.isAssignableFrom(e.getSource()));
+	}
 
 	@Override
 	public void update(int ms) {
 		super.update(ms);
-		if (!this.isDead()) {
-			for (Entity e : this.getStage().getEntities()) {
-				if (e == this) continue;
-				if ((e.getPosition().distance(this.getPosition()) < this.getRadius() + e.getRadius()) &&
-					(e instanceof EntityLiving) &&
-					!((EntityLiving)e).isDead() &&
-					((Obstacle.class.isAssignableFrom(e.getSource())) || ((Player.class.isAssignableFrom(e.getSource()))))) {
-					((EntityLiving)e).damage(this.getDamage());
-				}
+		for (Entity e : this.getStage().getEntities()) {
+			if (e == this) continue;
+			if ((e.getPosition().distance(this.getPosition()) < this.getRadius() + e.getRadius()) &&
+				(e instanceof EntityLiving) &&
+				!((EntityLiving)e).isDead() &&
+				this.isOppositeFaction(e)) {
+				((EntityLiving)e).damage(this.getDamage());
 			}
 		}
 	}

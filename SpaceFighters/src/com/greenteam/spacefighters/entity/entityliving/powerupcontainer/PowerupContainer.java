@@ -74,22 +74,20 @@ public abstract class PowerupContainer extends EntityLiving {
 	@Override
 	public void update(int ms) {
 		super.update(ms);
-		if (!this.isDead()) {
-			Stage stage = this.getStage();
-			Player pl = stage.getPlayer();
-			time -= ms;
-			if (time <= 0) {
-				time = SELECT_NEW_POSITION_INTERVAL;
-				randpos = new Vec2(Stage.WIDTH * Math.random(), Stage.HEIGHT * Math.random());
-			}
-			this.setVelocity(randpos.subtract(this.getPosition()).normalize().scale(SPEED));
-			if (pl.getPosition().distance(this.getPosition()) < this.getRadius() + pl.getRadius()) {
-				pl.damage(this.getDamage(), this.exceedCap());
-			}
-			timeRemaining -= ms;
-			if (timeRemaining <= 0)
-				this.remove();
+		Stage stage = this.getStage();
+		Player pl = stage.getPlayer();
+		time -= ms;
+		if (time <= 0) {
+			time = SELECT_NEW_POSITION_INTERVAL;
+			randpos = new Vec2(Stage.WIDTH * Math.random(), Stage.HEIGHT * Math.random());
 		}
+		this.setVelocity(randpos.subtract(this.getPosition()).normalize().scale(SPEED));
+		if (pl.getPosition().distance(this.getPosition()) < this.getRadius() + pl.getRadius()) {
+			pl.damage(this.getDamage(), this.exceedCap());
+		}
+		timeRemaining -= ms;
+		if (timeRemaining <= 0)
+			this.remove();
 	}
 	
 	@Override

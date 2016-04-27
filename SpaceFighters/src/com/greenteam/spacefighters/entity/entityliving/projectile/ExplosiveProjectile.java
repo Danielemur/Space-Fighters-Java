@@ -32,14 +32,6 @@ public class ExplosiveProjectile extends Projectile {
 	}
 	
 	@Override
-	protected boolean isOppositeFaction(Entity e) {
-		if (isExploding)
-			return true;
-		else
-			return super.isOppositeFaction(e);
-	}
-	
-	@Override
 	public double getRadius() {
 		return hitRadius;
 	}
