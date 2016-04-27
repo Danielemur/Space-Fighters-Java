@@ -48,32 +48,30 @@ public abstract class Enemy extends Starship {
 	public void update(int ms) {
 		super.update(ms);
 		if (!this.isDead()) {
-			Stage stage = this.getStage();
 			for (Entity e : this.getStage().getEntities()) {
 				if (e == this) continue;
 				if ((e.getPosition().distance(this.getPosition()) < this.getRadius() + e.getRadius()) &&
-						((Obstacle.class.isAssignableFrom(e.getSource())) || ((Player.class.isAssignableFrom(e.getSource()))))) {
-					if ((!(e instanceof EntityLiving) || !((EntityLiving)e).isDead())) {
-						this.setHealth(this.getHealth() - ((EntityLiving)e).getDamage());
-					}
+					(e instanceof EntityLiving) &&
+					!((EntityLiving)e).isDead() &&
+					((Obstacle.class.isAssignableFrom(e.getSource())) || ((Player.class.isAssignableFrom(e.getSource()))))) {
+					((EntityLiving)e).damage(this.getDamage());
 				}
-			}
-			if (this.getHealth() <= 0) {
-				stage.getPlayer().setScore(stage.getPlayer().getScore() + this.getPointValue());
-				stage.getPlayer().setMoney(stage.getPlayer().getMoney() + this.getPointValue()/10);
 			}
 		}
 	}
 	
 	@Override
-	public Class<?> getSource() {
-		return Enemy.class;
+	public void uponDeath() {
+		Stage stage = this.getStage();
+		stage.getPlayer().setScore(stage.getPlayer().getScore() + this.getPointValue());
+		stage.getPlayer().setMoney(stage.getPlayer().getMoney() + this.getPointValue()/10);
+		Explosion e = new Explosion(this.getStage(), this.getPosition(), 100);
+		this.getStage().add(e);
 	}
 	
 	@Override
-	public void uponDeath() {
-		Explosion e = new Explosion(this.getStage(), this.getPosition(), 100);
-		this.getStage().add(e);
+	public Class<?> getSource() {
+		return Enemy.class;
 	}
 	
 	public static BufferedImage getTexFromEnum(EnemyShipColor color) {

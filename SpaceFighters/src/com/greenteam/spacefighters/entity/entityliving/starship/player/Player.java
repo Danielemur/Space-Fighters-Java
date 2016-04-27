@@ -13,10 +13,8 @@ import com.greenteam.spacefighters.entity.Entity;
 import com.greenteam.spacefighters.entity.entityliving.EntityLiving;
 import com.greenteam.spacefighters.entity.entityliving.Explosion;
 import com.greenteam.spacefighters.entity.entityliving.obstacle.Obstacle;
-import com.greenteam.spacefighters.entity.entityliving.powerup.ForceFieldPowerup;
 import com.greenteam.spacefighters.entity.entityliving.powerup.Powerup;
 import com.greenteam.spacefighters.entity.entityliving.powerupcontainer.ChargeBoostPowerupContainer;
-import com.greenteam.spacefighters.entity.entityliving.powerupcontainer.HealthBoostPowerupContainer;
 import com.greenteam.spacefighters.entity.entityliving.powerupcontainer.PowerupContainer;
 import com.greenteam.spacefighters.entity.entityliving.projectile.ExplosiveProjectile;
 import com.greenteam.spacefighters.entity.entityliving.projectile.HomingProjectile;
@@ -96,14 +94,6 @@ public class Player extends Starship {
 		}
 	}
 	
-	private boolean hasForceField() {
-		for (Powerup powerup : powerups) {
-			if (powerup instanceof ForceFieldPowerup)
-				return true;
-		}
-		return false;
-	}
-	
 	@Override
 	public void update(int ms) {
 		super.update(ms);
@@ -112,8 +102,6 @@ public class Player extends Starship {
 			stage.gameOver();
 		}
 		time += ms;
-		
-		boolean hasAugmentedHealth = this.getHealth() > this.getMaxHealth();
 		
 		if (time > HEALTH_REGEN_TIME) {
 			if (this.getHealth() < this.getMaxHealth()) {
@@ -125,29 +113,14 @@ public class Player extends Starship {
 			if (e == this) continue;
 			if ((e.getPosition().distance(this.getPosition()) < this.getRadius() + e.getRadius()) &&
 				(Obstacle.class.isAssignableFrom(e.getSource()) ||
-				 Enemy.class.isAssignableFrom(e.getSource()) 	||
-				 PowerupContainer.class.isAssignableFrom(e.getSource()))) {
-				if ((!(e instanceof EntityLiving) || !((EntityLiving)e).isDead())) {
-					int damage = ((EntityLiving)e).getDamage();
-					boolean addHealth = damage < 0;
-					boolean augmentHealthPowerup = e instanceof HealthBoostPowerupContainer;
+				Enemy.class.isAssignableFrom(e.getSource()) 	||
+				PowerupContainer.class.isAssignableFrom(e.getSource())) &&
+				e instanceof EntityLiving && !((EntityLiving)e).isDead()) {
+				((EntityLiving)e).damage(this.getDamage());
 					boolean augmentChargePowerup = e instanceof ChargeBoostPowerupContainer;
-					if (!(hasForceField() && !addHealth)) {
-						if (hasAugmentedHealth && addHealth) {
-							if (augmentHealthPowerup)
-								this.setHealth(this.getMaxHealth() - damage);
-						} else {
-							this.setHealth(this.getHealth() - damage);
-						}
-					}
-					if (this.getHealth() > this.getMaxHealth() &&
-							!(augmentHealthPowerup) &&
-							!hasAugmentedHealth) {
-						this.setHealth(this.getMaxHealth());
-					}
 					if (augmentChargePowerup) {
 						chargeLevel = Math.min(chargeLevel + Player.FULLCHARGE, 2 * Player.FULLCHARGE);
-					}
+
 				}
 			}
 		}

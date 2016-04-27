@@ -17,11 +17,6 @@ public class ForceFieldPowerupContainer extends PowerupContainer {
 	}
 	
 	@Override
-	public int getDamage() {
-		return 0;
-	}
-	
-	@Override
 	public void update(int ms) {
 		super.update(ms);
 		if (!this.isDead()) {

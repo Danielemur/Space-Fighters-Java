@@ -67,6 +67,10 @@ public abstract class PowerupContainer extends EntityLiving {
 		}
 	}
 	
+	public boolean exceedCap() {
+		return false;
+	}
+	
 	@Override
 	public void update(int ms) {
 		super.update(ms);
@@ -79,16 +83,24 @@ public abstract class PowerupContainer extends EntityLiving {
 				randpos = new Vec2(Stage.WIDTH * Math.random(), Stage.HEIGHT * Math.random());
 			}
 			this.setVelocity(randpos.subtract(this.getPosition()).normalize().scale(SPEED));
-			if (this.getHealth() <= 0) {
-				stage.getPlayer().setScore(stage.getPlayer().getScore() + this.getPointValue());
-			}
 			if (pl.getPosition().distance(this.getPosition()) < this.getRadius() + pl.getRadius()) {
-				this.setHealth(-1);
+				pl.damage(this.getDamage(), this.exceedCap());
 			}
 			timeRemaining -= ms;
 			if (timeRemaining <= 0)
 				this.remove();
 		}
+	}
+	
+	@Override
+	public int getDamage() {
+		return 0;
+	}
+	
+	@Override
+	public void uponDeath() {
+		Stage stage = this.getStage();
+		stage.getPlayer().setScore(stage.getPlayer().getScore() + this.getPointValue());
 	}
 	
 	@Override
