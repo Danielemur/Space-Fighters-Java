@@ -7,11 +7,11 @@ Hull upgrades
 Scoreboard for high scores
 Add asteroids
 levels
+lives
 max enemy count
-	chain weapon powerup
+chain weapon powerup
 stun weapon
-	force field
-	augmented charge bar
+augmented charge bar
+augmented heallth bar
 remove/reduce health regen?
 hud for forcefield timer
-lives
