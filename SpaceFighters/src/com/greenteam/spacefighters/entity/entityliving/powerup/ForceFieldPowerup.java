@@ -73,7 +73,7 @@ public class ForceFieldPowerup extends Powerup {
 		this.setPosition(player.getPosition());
 		for (Entity e : this.getStage().getEntities()) {
 			if (e == this) continue;
-			if ((e.getPosition().distance(this.getPosition()) < this.getRadius() + e.getRadius()) &&
+			if (this.overlaps(e) &&
 				(e instanceof EntityLiving) &&
 				!((EntityLiving)e).isDead() &&
 				this.isOppositeFaction(e)) {

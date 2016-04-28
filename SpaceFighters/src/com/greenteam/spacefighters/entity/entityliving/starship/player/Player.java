@@ -110,7 +110,7 @@ public class Player extends Starship {
 		}
 		for (Entity e : this.getStage().getEntities()) {
 			if (e == this) continue;
-			if ((e.getPosition().distance(this.getPosition()) < this.getRadius() + e.getRadius()) &&
+			if (this.overlaps(e) &&
 				(Obstacle.class.isAssignableFrom(e.getSource()) ||
 				Enemy.class.isAssignableFrom(e.getSource()) 	||
 				PowerupContainer.class.isAssignableFrom(e.getSource())) &&

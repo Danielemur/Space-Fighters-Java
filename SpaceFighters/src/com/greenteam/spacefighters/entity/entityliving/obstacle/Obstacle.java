@@ -24,7 +24,7 @@ public abstract class Obstacle extends EntityLiving {
 		super.update(ms);
 		for (Entity e : this.getStage().getEntities()) {
 			if (e == this) continue;
-			if ((e.getPosition().distance(this.getPosition()) < this.getRadius() + e.getRadius()) &&
+			if (this.overlaps(e) &&
 				e instanceof EntityLiving &&
 				this.isOppositeFaction(e)) {
 				((EntityLiving)e).damage(this.getDamage());

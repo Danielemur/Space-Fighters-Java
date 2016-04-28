@@ -66,6 +66,9 @@ public class ExplosiveProjectile extends Projectile {
 	}
 	
 	@Override
+	public void damage(int damage) {}
+	
+	@Override
 	public void update(int ms) {
 		super.update(ms);
 		countdown -= ms;

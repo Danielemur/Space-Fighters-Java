@@ -57,7 +57,7 @@ public abstract class Projectile extends EntityLiving {
 		}
 		for (Entity e : this.getStage().getEntities()) {
 			if (e == this) continue;
-			if ((e.getPosition().distance(this.getPosition()) < this.getRadius() + e.getRadius()) &&
+			if (this.overlaps(e) &&
 				this.isOppositeFaction(e) &&
 				e instanceof EntityLiving &&
 				!((EntityLiving)e).isDead()) {

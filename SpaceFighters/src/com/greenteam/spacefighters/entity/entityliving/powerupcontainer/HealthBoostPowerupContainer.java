@@ -1,5 +1,6 @@
 package com.greenteam.spacefighters.entity.entityliving.powerupcontainer;
 
+import com.greenteam.spacefighters.entity.entityliving.starship.player.Player;
 import com.greenteam.spacefighters.stage.Stage;
 
 public class HealthBoostPowerupContainer extends PowerupContainer {
@@ -20,8 +21,9 @@ public class HealthBoostPowerupContainer extends PowerupContainer {
 	}
 	
 	@Override
-	public boolean exceedCap() {
-		return true;
+	protected void playerHealthUpdateAndCap(Player pl) {
+		pl.damage(this.getDamage());
+		pl.setHealth(Math.min(pl.getMaxHealth() - this.getDamage(), pl.getHealth()));
 	}
 
 	@Override
