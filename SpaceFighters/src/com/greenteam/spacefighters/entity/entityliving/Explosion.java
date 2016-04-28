@@ -43,7 +43,7 @@ public class Explosion extends EntityLiving {
 	@Override
 	public void render(Graphics g) {
 		float opacity = (timeRemaining < 0 ? 0 : timeRemaining) / (float)maxTime;
-		opacity = (float)Math.pow(opacity, 0.25);
+		opacity = (float)Math.pow(opacity, 0.7);
 		Composite oldComposite = ((Graphics2D)g).getComposite();
 		((Graphics2D)g).setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
 		
