@@ -48,10 +48,10 @@ public class HUD {
 			f = new Font(Font.MONOSPACED, Font.BOLD, 42);
 			g.setFont(f);
 			
-			g.drawString(String.format("GAME OVER", health, p.getMaxHealth()), 180, 270);
+			g.drawString(String.format("GAME OVER", health, p.getMaxHealth()), stage.getBounds().width/2-120, stage.getBounds().height/2-30);
 			f = new Font(Font.MONOSPACED, Font.BOLD, 28);
 			g.setFont(f);
-			g.drawString(String.format("Your ship has exploded.", health, p.getMaxHealth()), 110, 350);
+			g.drawString(String.format("Your ship has exploded.", health, p.getMaxHealth()), stage.getBounds().width/2-190, stage.getBounds().height/2+50);
 		}
 	}
 	

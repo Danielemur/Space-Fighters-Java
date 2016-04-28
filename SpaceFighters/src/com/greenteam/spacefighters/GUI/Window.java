@@ -1,6 +1,7 @@
 package com.greenteam.spacefighters.GUI;
 
 import java.awt.CardLayout;
+import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -42,7 +43,8 @@ public class Window extends JFrame implements WindowListener {
 		
 		this.setTitle("SpaceFighters");
 		this.setIconImage(Player.getTexFromEnum(PlayerShipColor.RED));
-		this.setResizable(false);
+		//this.setResizable(false);
+		this.setMinimumSize(new Dimension(Window.WIDTH, Window.HEIGHT));
 		this.setLocationRelativeTo(null);
 		this.setContentPane(contentPane);
 		this.setVisible(true);

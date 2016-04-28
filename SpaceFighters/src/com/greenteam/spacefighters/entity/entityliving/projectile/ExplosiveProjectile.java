@@ -7,12 +7,16 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
 import com.greenteam.spacefighters.common.Vec2;
 import com.greenteam.spacefighters.entity.Entity;
 import com.greenteam.spacefighters.stage.Stage;
 
 public class ExplosiveProjectile extends Projectile {
-	private final static double PROJECTILERADIUS = 5.0D;
+	private final static double PROJECTILERADIUS = 50.0D;
 	private final static double BLASTRADIUS = 200.0D;
 	private final static int DAMAGE = 15;
 	private final static int COUNTDOWNTIME = 500;
@@ -20,6 +24,7 @@ public class ExplosiveProjectile extends Projectile {
 	private double hitRadius;
 	private int countdown;
 	private boolean isExploding;
+	private boolean textureChanged;
 	
 	public ExplosiveProjectile(Stage s, int health, int damage, Vec2 position, Vec2 velocity, Class<?> source) {
 		super(s, health, damage, position, velocity, source);
@@ -29,6 +34,7 @@ public class ExplosiveProjectile extends Projectile {
 		hitRadius = PROJECTILERADIUS;
 		countdown = COUNTDOWNTIME;
 		isExploding = false;
+		textureChanged = false;
 	}
 	
 	@Override
@@ -81,7 +87,13 @@ public class ExplosiveProjectile extends Projectile {
 				this.getStage().remove(this);
 			}
 		}
-		
+		if (isExploding && !textureChanged) {
+			try {
+				this.setTexture(ImageIO.read(Projectile.class.getResource("/com/greenteam/spacefighters/assets/explosion-0.png")));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 		if (isExploding) {
 			hitRadius = PROJECTILERADIUS + (BLASTRADIUS - PROJECTILERADIUS) * (1 - (countdown / (float)EXPLOSIONDURATION));
 		}
