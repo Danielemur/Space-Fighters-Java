@@ -110,6 +110,10 @@ public abstract class Entity {
 		return 5;
 	}
 	
+	public boolean overlaps(Entity e) {
+		return this.getPosition().distance(e.getPosition()) < this.getRadius() + e.getRadius();
+	}
+	
 	public abstract Class<?> getSource();
 	
 	public int getPointValue() {

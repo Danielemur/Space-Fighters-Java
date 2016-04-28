@@ -32,14 +32,6 @@ public class ExplosiveProjectile extends Projectile {
 	}
 	
 	@Override
-	protected boolean isOppositeFaction(Entity e) {
-		if (isExploding)
-			return true;
-		else
-			return super.isOppositeFaction(e);
-	}
-	
-	@Override
 	public double getRadius() {
 		return hitRadius;
 	}
@@ -72,6 +64,9 @@ public class ExplosiveProjectile extends Projectile {
 				null);
 		((Graphics2D)g).setComposite(oldComposite);
 	}
+	
+	@Override
+	public void damage(int damage) {}
 	
 	@Override
 	public void update(int ms) {

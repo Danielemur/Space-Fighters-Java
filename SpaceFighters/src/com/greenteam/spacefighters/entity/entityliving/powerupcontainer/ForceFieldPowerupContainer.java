@@ -19,11 +19,9 @@ public class ForceFieldPowerupContainer extends PowerupContainer {
 	@Override
 	public void update(int ms) {
 		super.update(ms);
-		if (!this.isDead()) {
-			Player pl = this.getStage().getPlayer();
-			if ((pl.getPosition().distance(this.getPosition()) < this.getRadius() + pl.getRadius())) {
-				new ForceFieldPowerup(this.getStage(), this.getStage().getPlayer());
-			}
+		Player pl = this.getStage().getPlayer();
+		if ((pl.getPosition().distance(this.getPosition()) < this.getRadius() + pl.getRadius())) {
+			new ForceFieldPowerup(this.getStage(), this.getStage().getPlayer());
 		}
 	}
 

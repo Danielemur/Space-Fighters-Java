@@ -11,6 +11,7 @@ import com.greenteam.spacefighters.common.Vec2;
 import com.greenteam.spacefighters.entity.Entity;
 import com.greenteam.spacefighters.entity.entityliving.EntityLiving;
 import com.greenteam.spacefighters.entity.entityliving.obstacle.Obstacle;
+import com.greenteam.spacefighters.entity.entityliving.starship.enemy.Enemy;
 import com.greenteam.spacefighters.entity.entityliving.starship.player.Player;
 import com.greenteam.spacefighters.stage.Stage;
 
@@ -61,25 +62,28 @@ public class ForceFieldPowerup extends Powerup {
 		return 50;
 	}
 	
+	protected boolean isOppositeFaction(Entity e) {
+		return (Enemy.class.isAssignableFrom(e.getSource()) ||
+				Obstacle.class.isAssignableFrom(e.getSource()));
+	}
+	
 	@Override
 	public void update(int ms) {
 		super.update(ms);
 		this.setPosition(player.getPosition());
-		if (!this.isDead()) {
-			for (Entity e : this.getStage().getEntities()) {
-				if (e == this) continue;
-				if ((e.getPosition().distance(this.getPosition()) < this.getRadius() + e.getRadius()) &&
-					(e instanceof EntityLiving) &&
-					!((EntityLiving)e).isDead() &&
-					((Obstacle.class.isAssignableFrom(e.getSource())) || ((Player.class.isAssignableFrom(e.getSource()))))) {
-					((EntityLiving)e).damage(this.getDamage());
-				}
+		for (Entity e : this.getStage().getEntities()) {
+			if (e == this) continue;
+			if (this.overlaps(e) &&
+				(e instanceof EntityLiving) &&
+				!((EntityLiving)e).isDead() &&
+				this.isOppositeFaction(e)) {
+				((EntityLiving)e).damage(this.getDamage());
 			}
 		}
 	}
 
 	@Override
 	public Class<?> getSource() {
-		return Player.class;
+		return Powerup.class;
 	}
 }

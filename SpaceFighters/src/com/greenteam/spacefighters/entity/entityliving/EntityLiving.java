@@ -17,8 +17,12 @@ public abstract class EntityLiving extends Entity {
 		return health;
 	}
 
-	protected void setHealth(int health) {
+	public void setHealth(int health) {
 		this.health = health;
+	}
+	
+	public boolean healthIsAugmented() {
+		return this.getHealth() > this.getMaxHealth();
 	}
 	
 	public int getDamage() {
@@ -26,14 +30,11 @@ public abstract class EntityLiving extends Entity {
 	}
 	
 	public void damage(int damage) {
-		this.health -= damage;
-		this.health = Math.min(maxHealth, health);
+			this.health -= damage;
 	}
 	
-	public void damage(int damage, boolean noCap) {
-		this.health -= damage;
-		if (!noCap)
-			this.health = Math.min(maxHealth, health);
+	public int getMaxHealth() {
+		return maxHealth;
 	}
 	
 	public boolean isDead() {
