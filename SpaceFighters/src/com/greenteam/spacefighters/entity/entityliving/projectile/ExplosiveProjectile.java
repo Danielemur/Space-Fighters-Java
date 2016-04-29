@@ -8,7 +8,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import com.greenteam.spacefighters.common.Vec2;
-import com.greenteam.spacefighters.entity.Entity;
 import com.greenteam.spacefighters.stage.Stage;
 
 public class ExplosiveProjectile extends Projectile {
@@ -42,7 +41,10 @@ public class ExplosiveProjectile extends Projectile {
 	
 	@Override
 	public int getDamage() {
-		return DAMAGE;
+		if (!isExploding)
+			return 0;
+		else
+			return DAMAGE;
 	}
 	
 	@Override

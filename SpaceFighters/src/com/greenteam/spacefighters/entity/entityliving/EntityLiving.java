@@ -41,6 +41,10 @@ public abstract class EntityLiving extends Entity {
 		return health <= 0;
 	}
 	
+	public void kill() {
+		health = 0;
+	}
+	
 	public void uponDeath() {}
 
 	@Override
