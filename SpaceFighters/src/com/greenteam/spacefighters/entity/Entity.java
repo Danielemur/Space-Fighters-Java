@@ -11,6 +11,7 @@ public abstract class Entity {
 	private Vec2 velocity;
 	private Vec2 acceleration;
 	private Vec2 orientation;
+	private boolean updatable;
 	protected Image texture;
 	private Stage stage;
 	
@@ -19,6 +20,7 @@ public abstract class Entity {
 		velocity = new Vec2(0, 0);
 		acceleration = new Vec2(0, 0);
 		orientation = new Vec2(0, 1);
+		updatable = true;
 		texture = null;
 		stage = s;
 	}
@@ -28,6 +30,14 @@ public abstract class Entity {
 	public void update(int ms) {
 		velocity = velocity.add(acceleration.scale(((double)ms)/1000));
 		position = position.add(velocity.scale(((double)ms)/1000));
+	}
+	
+	public void setUpdatable(boolean updatable) {
+		this.updatable = updatable;
+	}
+	
+	public boolean isUpdatable() {
+		return updatable;
 	}
 	
 	public Vec2 randSpawnPos(Entity e, double minDist) {

@@ -202,7 +202,8 @@ public class Stage extends JPanel implements ActionListener {
 				}
 			}
 			for (Entity e : entities) {
-				e.update((int)(700 / Window.FPS));
+				if (e.isUpdatable())
+					e.update((int)(700 / Window.FPS));
 			}
 			this.repaint();
 		}

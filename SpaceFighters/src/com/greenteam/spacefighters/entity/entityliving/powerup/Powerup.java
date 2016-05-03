@@ -5,7 +5,7 @@ import com.greenteam.spacefighters.entity.entityliving.EntityLiving;
 import com.greenteam.spacefighters.entity.entityliving.starship.player.Player;
 import com.greenteam.spacefighters.stage.Stage;
 
-public abstract class Powerup extends EntityLiving{
+public abstract class Powerup extends EntityLiving {
 	private static final int DURATION = 20000;
 	
 	protected Player player;
@@ -39,4 +39,10 @@ public abstract class Powerup extends EntityLiving{
 	public double getTimerFraction() {
 		return timeRemaining / this.getDuration();
 	}
+
+	@Override
+	public Class<?> getSource() {
+		return Powerup.class;
+	}
+	
 }
