@@ -3,6 +3,8 @@ package com.greenteam.spacefighters.stage;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.MouseInfo;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -42,6 +44,10 @@ public class Stage extends JPanel implements ActionListener {
 	
 	private static final String PRESSED = " pressed";
 	private static final String RELEASED = " released";
+	
+	private static final double ALL_MOVEMENT_DEAD_ZONE = 20;
+	private static final double LINEAR_MOVEMENT_DEAD_ZONE = 80;
+	private static final double ROTATION_DEAD_ZONE_SECTOR_SIZE = 0.5; //radians
 
 	
 	private CopyOnWriteArrayList<Entity> entities;
@@ -58,11 +64,13 @@ public class Stage extends JPanel implements ActionListener {
 	private boolean downKeyPressed;
 	private boolean leftKeyPressed;
 	private boolean rightKeyPressed;
+	private boolean mouseEnabled;
 	
 	public Stage(int width, int height, Player player) {
 		this.entities = new CopyOnWriteArrayList<Entity>();
 		this.player = player;
 		this.hud = null;
+		this.mouseEnabled = true;
 		this.backgroundOffsets = new double[STARFIELD_LAYERS];
 		this.starfields = new BufferedImage[STARFIELD_LAYERS];
 		for (int i = 0; i < STARFIELD_LAYERS; ++i) {
@@ -177,9 +185,50 @@ public class Stage extends JPanel implements ActionListener {
 	
 	public List<Entity> getEntities() {return entities;}
 
+	private Vec2 getPlayerOffset() {
+		Vec2 offsetMax = new Vec2(WIDTH - this.getWidth(), HEIGHT - this.getHeight());
+		Vec2 offsetMin = Vec2.ZERO;
+		
+		Vec2 offset = new Vec2(player.getPosition().getX() - this.getWidth() / 2,
+							   player.getPosition().getY() - this.getHeight() / 2);
+		
+		offset = offset.min(offsetMax).max(offsetMin);
+		return new Vec2((player.getPosition().getX()-offset.getX()),(player.getPosition().getY()-offset.getY()));
+	}
+	
+	private Vec2 convertMousePosition() {
+		Point p = getMousePosition();
+		if (p==null) {
+			return null;
+		}
+		else {
+			return new Vec2(p.x, p.y);
+		}
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent ev) {
 		if (ev.getSource() == timer) {
+			if (mouseEnabled) {
+				Vec2 playerPos = this.getPlayerOffset();
+				Vec2 mousePos = this.convertMousePosition();
+				if ((playerPos != null) && (mousePos != null)) {
+					Vec2 relativeMousePosition = playerPos.subtract(mousePos);
+					if (relativeMousePosition.magnitude() > ALL_MOVEMENT_DEAD_ZONE) {
+						Vec2 transformedPosition = relativeMousePosition.rotate(Vec2.ZERO, player.getOrientation().angle());
+						System.out.println(transformedPosition);
+						if (relativeMousePosition.magnitude() > LINEAR_MOVEMENT_DEAD_ZONE) {
+							upKeyPressed = true;
+							doUpKey();
+							System.out.println(transformedPosition);
+						}
+						else {
+							player.setVelocity(Vec2.ZERO);
+							upKeyPressed = false;
+						}
+					}
+				}
+			}
 			if (leftKeyPressed && !rightKeyPressed) {
 				player.setOrientation(player.getOrientation().rotate(Vec2.ZERO, Math.PI / 32));
 				if (upKeyPressed && !downKeyPressed) {
