@@ -42,6 +42,9 @@ public abstract class PowerupContainer extends EntityLiving {
 	public abstract java.awt.Color noTextureColor();
 	
 	@Override
+	public void damage(int damage) {}
+	
+	@Override
 	public void render(Graphics g) {
 		Vec2 pos = this.getPosition();
 		if (couldLoadImage) {
@@ -87,6 +90,7 @@ public abstract class PowerupContainer extends EntityLiving {
 		this.setVelocity(randpos.subtract(this.getPosition()).normalize().scale(SPEED));
 		if (this.overlaps(pl)) {
 			this.playerHealthUpdateAndCap(pl);
+			this.remove();
 		}
 		timeRemaining -= ms;
 		if (timeRemaining <= 0)
