@@ -14,14 +14,14 @@ public abstract class Powerup extends EntityLiving{
 	public Powerup(Stage s, Player pl) {
 		super(s, 1, 1);
 		this.player = pl;
-		timeRemaining = getDuration ();
+		timeRemaining = this.getDuration();
 		this.setAcceleration(Vec2.ZERO);
 		this.setVelocity(Vec2.ZERO);
 		player.addPowerup(this);
 	}
 
 	public void resetTime() {
-		timeRemaining = getDuration ();
+		timeRemaining = this.getDuration();
 	}
 	
 	@Override
@@ -32,7 +32,11 @@ public abstract class Powerup extends EntityLiving{
 			player.removePowerup(this);
 	}
 
-	public int getDuration () {
+	protected int getDuration() {
 		return DURATION;
+	}
+	
+	public double getTimerFraction() {
+		return timeRemaining / this.getDuration();
 	}
 }

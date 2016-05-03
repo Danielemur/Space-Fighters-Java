@@ -12,7 +12,6 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import com.greenteam.spacefighters.common.Vec2;
-import com.greenteam.spacefighters.entity.Entity;
 import com.greenteam.spacefighters.stage.Stage;
 
 public class ExplosiveProjectile extends Projectile {
@@ -48,7 +47,10 @@ public class ExplosiveProjectile extends Projectile {
 	
 	@Override
 	public int getDamage() {
-		return DAMAGE;
+		if (!isExploding)
+			return 0;
+		else
+			return DAMAGE;
 	}
 	
 	@Override
