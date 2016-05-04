@@ -7,6 +7,8 @@ import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -15,6 +17,7 @@ import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 import com.greenteam.spacefighters.GUI.HUD;
@@ -23,7 +26,7 @@ import com.greenteam.spacefighters.common.Vec2;
 import com.greenteam.spacefighters.entity.Entity;
 import com.greenteam.spacefighters.entity.entityliving.starship.player.Player;
 
-public class Stage extends JPanel implements ActionListener {
+public class Stage extends JPanel implements ActionListener, MouseListener {
 	public static final int WIDTH = 2400;
 	public static final int HEIGHT= 2400;
 	private static final long serialVersionUID = -2937557151448523567L;
@@ -46,8 +49,8 @@ public class Stage extends JPanel implements ActionListener {
 	private static final String RELEASED = " released";
 	
 	private static final double ALL_MOVEMENT_DEAD_ZONE = 20;
-	private static final double LINEAR_MOVEMENT_DEAD_ZONE = 80;
-	private static final double ROTATION_DEAD_ZONE_SECTOR_SIZE = 0.5; //radians
+	private static final double LINEAR_MOVEMENT_DEAD_ZONE = 120;
+	private static final double ROTATION_DEAD_ZONE_SECTOR_SIZE = 0.2; //radians
 
 	
 	private CopyOnWriteArrayList<Entity> entities;
@@ -124,6 +127,8 @@ public class Stage extends JPanel implements ActionListener {
 		
 		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("pressed SPACE"),PAUSE+PRESSED);
 		this.getActionMap().put(PAUSE+PRESSED, new PauseAction());
+		
+		this.addMouseListener(this);
 		
 		firePrimaryTimer = new Timer((int)(2000/Window.FPS), this);
 		firePrimaryTimer.setInitialDelay(0);
@@ -215,12 +220,25 @@ public class Stage extends JPanel implements ActionListener {
 				if ((playerPos != null) && (mousePos != null)) {
 					Vec2 relativeMousePosition = playerPos.subtract(mousePos);
 					if (relativeMousePosition.magnitude() > ALL_MOVEMENT_DEAD_ZONE) {
-						Vec2 transformedPosition = relativeMousePosition.rotate(Vec2.ZERO, player.getOrientation().angle());
-						System.out.println(transformedPosition);
+						Vec2 transformedPosition = relativeMousePosition.rotate(Vec2.ZERO, -player.getOrientation().angle());
+						double angle = transformedPosition.angle();
+						if (Math.abs(angle) > ROTATION_DEAD_ZONE_SECTOR_SIZE) {
+							if (angle > 0) {
+								leftKeyPressed = true;
+								rightKeyPressed = false;
+							}
+							else {
+								rightKeyPressed = true;
+								leftKeyPressed = false;
+							}
+						}
+						else {
+							leftKeyPressed = false;
+							rightKeyPressed = false;
+						}
 						if (relativeMousePosition.magnitude() > LINEAR_MOVEMENT_DEAD_ZONE) {
 							upKeyPressed = true;
 							doUpKey();
-							System.out.println(transformedPosition);
 						}
 						else {
 							player.setVelocity(Vec2.ZERO);
@@ -340,7 +358,7 @@ public class Stage extends JPanel implements ActionListener {
 	    		if (distance < bestDistance) {
 	                nearestEntity = testEntity;
 	                bestDistance = distance;
-	            }	
+	            }
 	    	}
 	    }
 	    return nearestEntity;
@@ -514,5 +532,69 @@ public class Stage extends JPanel implements ActionListener {
 	
 	private enum FireKey {
 		PRIMARY, SECONDARY, TERTIARY, QUATERNARY
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent arg0) {
+		//do nothing
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		//do nothing
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		//do nothing
+	}
+
+	@Override
+	public void mousePressed(MouseEvent ev) {
+		if (mouseEnabled) {
+			switch (ev.getButton()) {
+			case 1: //left mouse button (primary)
+				if (!firePrimaryTimer.isRunning()) {
+					firePrimaryTimer.restart();
+					firePrimaryTimer.start();
+				}
+				break;
+			case 2: //middle mouse button (secondary)
+				if (!fireSecondaryTimer.isRunning()) {
+					fireSecondaryTimer.restart();
+					fireSecondaryTimer.start();
+				}
+				break;
+			case 3: //right mouse button (tertiary)
+				if (!fireTertiaryTimer.isRunning()) {
+					fireTertiaryTimer.restart();
+					fireTertiaryTimer.start();
+				}
+				break;
+			default: break; //do nothing
+			}
+		}
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent ev) {
+		if (mouseEnabled) {
+			switch (ev.getButton()) {
+			case 1: //left mouse button (primary)
+				firePrimaryTimer.stop();
+				break;
+			case 2: //middle mouse button (secondary)
+				fireSecondaryTimer.stop();
+				break;
+			case 3: //right mouse button (tertiary)
+				fireTertiaryTimer.stop();
+				break;
+			default: break; //do nothing
+			}
+		}
+	}
+	
+	public void setMouseEnabled(boolean mouseEnabled) {
+		this.mouseEnabled = mouseEnabled;
 	}
 }

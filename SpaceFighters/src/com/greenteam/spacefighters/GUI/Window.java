@@ -47,6 +47,7 @@ public class Window extends JFrame implements WindowListener {
 		this.setMinimumSize(new Dimension(Window.WIDTH, Window.HEIGHT));
 		this.setLocationRelativeTo(null);
 		this.setContentPane(contentPane);
+		stage.pause();
 		this.setVisible(true);
 	}
 	
@@ -76,5 +77,15 @@ public class Window extends JFrame implements WindowListener {
 	
 	public void setCard(String card) {
 		((CardLayout)this.getContentPane().getLayout()).show(this.getContentPane(), card);
+		if (card.equals(STAGE_CARDLAYOUT_NAME)) {
+			stage.resume();
+		}
+		else {
+			stage.pause();
+		}
+	}
+	
+	public Stage getStage() {
+		return stage;
 	}
 }
