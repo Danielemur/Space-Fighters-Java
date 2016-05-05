@@ -1,17 +1,17 @@
 package com.greenteam.spacefighters.entity.entityliving.powerup;
 
-import java.awt.AlphaComposite;
-import java.awt.Composite;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.RadialGradientPaint;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.Set;
+import java.util.TreeSet;
 
 import com.greenteam.spacefighters.common.Color;
 import com.greenteam.spacefighters.common.Vec2;
 import com.greenteam.spacefighters.entity.Entity;
 import com.greenteam.spacefighters.entity.entityliving.EntityLiving;
-import com.greenteam.spacefighters.entity.entityliving.obstacle.Obstacle;
 import com.greenteam.spacefighters.entity.entityliving.starship.enemy.Enemy;
 import com.greenteam.spacefighters.entity.entityliving.starship.player.Player;
 import com.greenteam.spacefighters.stage.Stage;
@@ -19,42 +19,81 @@ import com.greenteam.spacefighters.stage.Stage;
 public class ChainBeamPowerup extends Powerup {
 	private static final int DURATION = Integer.MAX_VALUE;
 	private static final double TRAVELDISTANCE= 1000;
-	private static final int SCANINTERVAL = 250;
-	private ArrayList<Enemy> targets;
+	private static final int SCANINTERVAL = 100;
+	private static final double INNERRADIUS = 30;
+	private static final double OUTERRADIUS = 40;
+	private static final double INNERWIDTH = 40;
+	private static final double OUTERWIDTH = 60;
+	private final Color INNERCOLOR = new Color(178, 21, 220, 127);
+	private final Color OUTERCOLOR = new Color(178, 21, 220, 63);
+	private TreeSet<Entity> targets;
 	private double remainingDistance;
 	private int elapsedTime;
+	private boolean fired;
 	
 	public ChainBeamPowerup(Stage s, Player pl) {
 		super(s, pl);
-		targets = new ArrayList<Enemy>();
+		targets = new TreeSet<Entity>();
 		remainingDistance = TRAVELDISTANCE;
 		elapsedTime = SCANINTERVAL;
 	}
 
 	@Override
 	public void render(Graphics g) {
-		//TODO:this
-//		Vec2 pos = this.getPosition();
-//		Color centerColor = new Color(COLOR);
-//		centerColor.setAlpha(0.2f);
-//		Color edgeColor = new Color(COLOR);
-//		edgeColor.setAlpha(0.4f);
-//		float[] fractions = new float[]{0.5f, 1.0f};
-//		java.awt.Color[] colors = new java.awt.Color[]{centerColor.toAWTColor(), edgeColor.toAWTColor()};
-//		Graphics2D g2 = (Graphics2D) g;
-//		RadialGradientPaint grad = new RadialGradientPaint((float)pos.getX(), (float)pos.getY(), (float)RADIUS, fractions, colors);
-//		g2.setPaint(grad);
-//		
-//		if ((timeRemaining <= BEGIN_FADING_TIME) && (timeRemaining >= 0)) {
-//			float opacity = (float)((Math.exp(-timeRemaining/BEGIN_FADING_TIME*5)*(Math.sin(4.5f * Math.PI * timeRemaining / BEGIN_FADING_TIME) + 3) / 2.0f)/2);
-//			Composite oldComposite = ((Graphics2D)g).getComposite();
-//			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity));
-//			g2.fillOval((int)(pos.getX() - RADIUS), (int)(pos.getY() - RADIUS), (int)(2 * RADIUS), (int)(2 * RADIUS));
-//			g2.setComposite(oldComposite);
-//		}
-//		else {
-//			g2.fillOval((int)(pos.getX() - RADIUS), (int)(pos.getY() - RADIUS), (int)(2 * RADIUS), (int)(2 * RADIUS));	
-//		}
+		if (fired) {
+			Graphics2D g2 = ((Graphics2D) g);
+			ArrayList<Entity> entities = new ArrayList<Entity>();
+			entities.add(this.player);
+			entities.addAll(targets);
+
+			Vec2 entPos = entities.get(0).getPosition();
+
+			g2.setColor(OUTERCOLOR.toAWTColor());
+			g.fillOval((int)(entPos.getX() - OUTERRADIUS), (int)(entPos.getY() - OUTERRADIUS), (int)(2 * OUTERRADIUS), (int)(2 * OUTERRADIUS));
+
+			for(int i = 0; i < entities.size() - 1; i++) {
+				Entity e1 = entities.get(i);
+				Entity e2 = entities.get(i + 1);
+				Vec2 pos1 = e1.getPosition();
+				Vec2 pos2 = e2.getPosition();
+				g.fillOval((int)(pos2.getX() - OUTERRADIUS), (int)(pos2.getY() - OUTERRADIUS), (int)(2 * OUTERRADIUS), (int)(2 * OUTERRADIUS));
+
+				Vec2 dir = pos2.subtract(pos1).normalize();
+				Vec2 midPt = pos2.midpoint(pos1);
+				double angle = dir.angle();
+				double length = pos2.distance(pos1);
+
+				Rectangle2D rect = new Rectangle2D.Double(-OUTERWIDTH/2, -length/2, OUTERWIDTH, length);
+				AffineTransform tr = new AffineTransform();
+				tr.rotate(angle);
+				tr.translate(midPt.getX(), midPt.getY());
+
+				g2.draw(tr.createTransformedShape(rect));
+			}
+
+			g2.setColor(INNERCOLOR.toAWTColor());
+			g.fillOval((int)(entPos.getX() - INNERRADIUS), (int)(entPos.getY() - INNERRADIUS), (int)(2 * INNERRADIUS), (int)(2 * INNERRADIUS));
+
+			for(int i = 0; i < entities.size() - 1; i++) {
+				Entity e1 = entities.get(i);
+				Entity e2 = entities.get(i + 1);
+				Vec2 pos1 = e1.getPosition();
+				Vec2 pos2 = e2.getPosition();
+				g.fillOval((int)(pos2.getX() - INNERRADIUS), (int)(pos2.getY() - INNERRADIUS), (int)(2 * INNERRADIUS), (int)(2 * INNERRADIUS));
+
+				Vec2 dir = pos2.subtract(pos1).normalize();
+				Vec2 midPt = pos2.midpoint(pos1);
+				double angle = dir.angle();
+				double length = pos2.distance(pos1);
+
+				Rectangle2D rect = new Rectangle2D.Double(-INNERWIDTH/2, -length/2, INNERWIDTH, length);
+				AffineTransform tr = new AffineTransform();
+				tr.rotate(angle);
+				tr.translate(-midPt.getX(), -midPt.getY());
+
+				g2.fill(tr.createTransformedShape(rect));
+			}
+		}
 
 	}
 	
@@ -76,27 +115,43 @@ public class ChainBeamPowerup extends Powerup {
 		return DURATION;
 	}
 	
+	public void fire() {
+		fired = true;
+	}
+	
 	@Override
 	public void update(int ms) {
 		super.update(ms);
 		this.setPosition(player.getPosition());
-		elapsedTime += ms;
+		if (fired) {
+			elapsedTime += ms;
 		
-		if (elapsedTime >= SCANINTERVAL) {
-			elapsedTime = 0;
-			Stage s = this.getStage();
-			Enemy target = (Enemy)s.getNearestEntity(targets.get(targets.size()), Enemy.class);
-			double dist = this.getPosition().distance(target.getPosition()); 
-			if (dist <= remainingDistance) {
-				remainingDistance -= dist;
-				target.setUpdatable(false);
-				targets.add(target);
-			} else {
-				for (Enemy e : targets) {
-					e.damage(this.getDamage());
-					e.setUpdatable(true);
+			if (elapsedTime >= SCANINTERVAL) {
+				elapsedTime = 0;
+				Stage s = this.getStage();
+				
+				Entity currentTarget;
+				
+				if (targets.size() > 0) {
+					currentTarget = targets.last();
+				} else {
+					currentTarget = this;
 				}
-				player.removePowerup(this);
+				
+				Enemy target = (Enemy)s.getNearestEntity(currentTarget, (Set<Entity>)targets, Enemy.class);
+				
+				double dist = this.getPosition().distance(target.getPosition()); 
+				if (dist <= remainingDistance) {
+					remainingDistance -= dist;
+					target.setUpdatable(false);
+					targets.add(target);
+				} else {
+					for (Entity e : targets) {
+						((EntityLiving)e).damage(this.getDamage());
+						e.setUpdatable(true);
+					}
+					player.removePowerup(this);
+				}
 			}
 		}
 	}

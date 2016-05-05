@@ -12,6 +12,7 @@ import com.greenteam.spacefighters.common.Vec2;
 import com.greenteam.spacefighters.entity.Entity;
 import com.greenteam.spacefighters.entity.entityliving.EntityLiving;
 import com.greenteam.spacefighters.entity.entityliving.obstacle.Obstacle;
+import com.greenteam.spacefighters.entity.entityliving.powerup.ChainBeamPowerup;
 import com.greenteam.spacefighters.entity.entityliving.powerup.Powerup;
 import com.greenteam.spacefighters.entity.entityliving.powerupcontainer.ChargeBoostPowerupContainer;
 import com.greenteam.spacefighters.entity.entityliving.powerupcontainer.PowerupContainer;
@@ -72,7 +73,7 @@ public class Player extends Starship {
 	}
 
 	@Override
-	public void remove() {
+	public void uponDeath() {
 		//TODO: do something special like a game over
 	}
 
@@ -203,6 +204,14 @@ public class Player extends Starship {
 					chargeLevel -= ExplosiveProjectile.getEnergyCost();
 				}
 			}
+			break;
+			case 4 :
+			{
+				if (hasPowerup(ChainBeamPowerup.class)) {
+					((ChainBeamPowerup)getPowerup(ChainBeamPowerup.class)).fire();
+				}
+			}
+			break;
 			default :
 				break;
 		}
@@ -219,9 +228,20 @@ public class Player extends Starship {
 		this.getStage().add(p);
 	}
 	
+	public Powerup getPowerup(Class<?> cl) {
+		for (Powerup p : powerups)
+			if (cl.isInstance(p))
+				return p;
+		return null;
+	}
+	
 	public void removePowerup(Powerup p) {
 		powerups.remove(p);
 		p.remove();
+	}
+	
+	private boolean hasPowerup(Class<?> cl) {
+		return getPowerup(cl) != null;
 	}
 	
 	public void setMaxHealth(int max) {
