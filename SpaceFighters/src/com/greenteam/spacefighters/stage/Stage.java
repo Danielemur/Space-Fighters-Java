@@ -238,14 +238,24 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 						}
 						if (relativeMousePosition.magnitude() > LINEAR_MOVEMENT_DEAD_ZONE) {
 							upKeyPressed = true;
+							downKeyPressed = false;
 							doUpKey();
 						}
 						else {
 							player.setVelocity(Vec2.ZERO);
 							upKeyPressed = false;
+							downKeyPressed = false;
 						}
 					}
 				}
+				/*
+				else if ((mousePos == null) && (playerPos != null)) {
+					player.setVelocity(Vec2.ZERO);
+					upKeyPressed = false;
+					leftKeyPressed = false;
+					rightKeyPressed = false;
+				}
+				*/
 			}
 			if (leftKeyPressed && !rightKeyPressed) {
 				player.setOrientation(player.getOrientation().rotate(Vec2.ZERO, Math.PI / 32));
