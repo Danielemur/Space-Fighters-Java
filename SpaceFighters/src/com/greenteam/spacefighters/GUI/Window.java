@@ -24,26 +24,31 @@ public class Window extends JFrame implements WindowListener {
 	public static final double FPS = 60;
 	public static final String TITLE_SCREEN_CARDLAYOUT_NAME = "TITLE";
 	public static final String STAGE_CARDLAYOUT_NAME = "STAGE";
+	public static final String STORESCREEN_CARDLAYOUT_NAME = "STORESCREEN";
 	
 	private Stage stage;
 	private LevelLoader loader;
+	private StoreScreen store;
 	
 	Window() {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		stage = new Stage(Window.WIDTH, Window.HEIGHT, null);
+		store = new StoreScreen(stage);
 		
 		final JPanel contentPane = new JPanel();
 		contentPane.setLayout(new CardLayout());
 		contentPane.add(new TitleScreen(this), TITLE_SCREEN_CARDLAYOUT_NAME);
 		contentPane.add(stage, STAGE_CARDLAYOUT_NAME);
 		contentPane.setBounds(new Rectangle(Window.WIDTH, Window.HEIGHT));
+		contentPane.add(store, STORESCREEN_CARDLAYOUT_NAME);
+		
+		
 		this.setBounds(new Rectangle(Window.WIDTH, Window.HEIGHT));
 		
-		new TestLevelLoader(stage, null);
+		loader = new TestLevelLoader(stage, null);
 		
 		this.setTitle("SpaceFighters");
 		this.setIconImage(Player.getTexFromEnum(PlayerShipColor.RED));
-		//this.setResizable(false);
 		this.setMinimumSize(new Dimension(Window.WIDTH, Window.HEIGHT));
 		this.setLocationRelativeTo(null);
 		this.setContentPane(contentPane);

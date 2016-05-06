@@ -159,14 +159,15 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 		
 		offset = offset.min(offsetMax).max(offsetMin);
 		g.translate(-(int)offset.getX(), -(int)offset.getY());
-		player.render(g);
-		
 		for (int i = 0; i < STARFIELD_LAYERS; ++i) {
 			if (starfields[i] != null) {
 				g.drawImage(starfields[i], 0, 0, null);
 				g.drawImage(starfields[i], 0, 0, null);
 			}
 		}
+		
+		player.render(g);
+		
 		for (Entity e : entities) {
 			if (e != player) {
 				e.render(g);

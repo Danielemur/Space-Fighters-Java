@@ -1,5 +1,6 @@
 package com.greenteam.spacefighters.stage;
 
+import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -7,6 +8,7 @@ import java.io.File;
 import javax.swing.Timer;
 
 import com.greenteam.spacefighters.GUI.HUD;
+import com.greenteam.spacefighters.GUI.Window;
 import com.greenteam.spacefighters.common.Vec2;
 import com.greenteam.spacefighters.entity.entityliving.powerupcontainer.*;
 import com.greenteam.spacefighters.entity.entityliving.starship.enemy.*;
@@ -82,6 +84,8 @@ public class TestLevelLoader extends LevelLoader implements ActionListener {
 		}
 		if (stage.getPlayer().getScore() >= LEVEL_SCORE_THRESHOLD*(level+1)) {
 			if (level < LEVEL_INTERVAL_RATIOS.length-1) {
+				stage.pause();
+				((CardLayout)stage.getParent().getLayout()).show(stage.getParent(), Window.STORESCREEN_CARDLAYOUT_NAME);
 				++level;
 			}
 		}
