@@ -2,11 +2,12 @@ package com.greenteam.spacefighters.entity.entityliving.powerup;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 import com.greenteam.spacefighters.common.Color;
 import com.greenteam.spacefighters.common.Vec2;
@@ -19,23 +20,43 @@ import com.greenteam.spacefighters.stage.Stage;
 public class ChainBeamPowerup extends Powerup {
 	private static final int DURATION = Integer.MAX_VALUE;
 	private static final double TRAVELDISTANCE= 1000;
-	private static final int SCANINTERVAL = 100;
+	private static final int SCANINTERVAL = 25;
 	private static final double INNERRADIUS = 30;
 	private static final double OUTERRADIUS = 40;
 	private static final double INNERWIDTH = 40;
 	private static final double OUTERWIDTH = 60;
 	private final Color INNERCOLOR = new Color(178, 21, 220, 127);
 	private final Color OUTERCOLOR = new Color(178, 21, 220, 63);
-	private TreeSet<Entity> targets;
+	private LinkedHashSet<Entity> targets;
 	private double remainingDistance;
 	private int elapsedTime;
 	private boolean fired;
 	
 	public ChainBeamPowerup(Stage s, Player pl) {
 		super(s, pl);
-		targets = new TreeSet<Entity>();
+		targets = new LinkedHashSet<Entity>();
 		remainingDistance = TRAVELDISTANCE;
 		elapsedTime = SCANINTERVAL;
+	}
+	
+	private Shape rectBetween(Vec2 p1, Vec2 p2, double width) {
+		Vec2 dir = p2.subtract(p1).normalize();
+		Vec2 midPt = p2.midpoint(p1);
+		double angle = dir.multiply(new Vec2(1.0, -1.0)).angle();
+		double length = p2.distance(p1);
+
+		Rectangle2D rect = new Rectangle2D.Double(midPt.getX() - width / 2, midPt.getY() - length /2, width, length);
+		AffineTransform tr = new AffineTransform();
+		tr.rotate(angle, midPt.getX(), midPt.getY());
+		System.out.println("P1:\t" + p1 +
+						   "\nP2:\t" + p2 +
+						   "\nWidth:\t" + width +
+						   "\nDir:\t" + dir +
+						   "\nMidPt:\t" + midPt +
+						   "\nAngle:\t" + angle +
+						   "\nLength:\t" + length);
+		return tr.createTransformedShape(rect);
+		//return rect;
 	}
 
 	@Override
@@ -58,17 +79,7 @@ public class ChainBeamPowerup extends Powerup {
 				Vec2 pos2 = e2.getPosition();
 				g.fillOval((int)(pos2.getX() - OUTERRADIUS), (int)(pos2.getY() - OUTERRADIUS), (int)(2 * OUTERRADIUS), (int)(2 * OUTERRADIUS));
 
-				Vec2 dir = pos2.subtract(pos1).normalize();
-				Vec2 midPt = pos2.midpoint(pos1);
-				double angle = dir.angle();
-				double length = pos2.distance(pos1);
-
-				Rectangle2D rect = new Rectangle2D.Double(-OUTERWIDTH/2, -length/2, OUTERWIDTH, length);
-				AffineTransform tr = new AffineTransform();
-				tr.rotate(angle);
-				tr.translate(midPt.getX(), midPt.getY());
-
-				g2.draw(tr.createTransformedShape(rect));
+				g2.fill(rectBetween(pos1, pos2, OUTERWIDTH));
 			}
 
 			g2.setColor(INNERCOLOR.toAWTColor());
@@ -81,17 +92,7 @@ public class ChainBeamPowerup extends Powerup {
 				Vec2 pos2 = e2.getPosition();
 				g.fillOval((int)(pos2.getX() - INNERRADIUS), (int)(pos2.getY() - INNERRADIUS), (int)(2 * INNERRADIUS), (int)(2 * INNERRADIUS));
 
-				Vec2 dir = pos2.subtract(pos1).normalize();
-				Vec2 midPt = pos2.midpoint(pos1);
-				double angle = dir.angle();
-				double length = pos2.distance(pos1);
-
-				Rectangle2D rect = new Rectangle2D.Double(-INNERWIDTH/2, -length/2, INNERWIDTH, length);
-				AffineTransform tr = new AffineTransform();
-				tr.rotate(angle);
-				tr.translate(-midPt.getX(), -midPt.getY());
-
-				g2.fill(tr.createTransformedShape(rect));
+				g2.fill(rectBetween(pos1, pos2, INNERWIDTH));
 			}
 		}
 
@@ -133,7 +134,7 @@ public class ChainBeamPowerup extends Powerup {
 				Entity currentTarget;
 				
 				if (targets.size() > 0) {
-					currentTarget = targets.last();
+					currentTarget = (Entity)targets.toArray()[targets.size() - 1];
 				} else {
 					currentTarget = this;
 				}
