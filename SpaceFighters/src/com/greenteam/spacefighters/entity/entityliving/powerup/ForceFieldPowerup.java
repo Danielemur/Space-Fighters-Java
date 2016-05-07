@@ -48,8 +48,6 @@ public class ForceFieldPowerup extends Powerup {
 			g2.fillOval((int)(pos.getX() - RADIUS), (int)(pos.getY() - RADIUS), (int)(2 * RADIUS), (int)(2 * RADIUS));	
 		}
 		
-		
-		
 	}
 	
 	@Override
@@ -81,9 +79,5 @@ public class ForceFieldPowerup extends Powerup {
 			}
 		}
 	}
-
-	@Override
-	public Class<?> getSource() {
-		return Powerup.class;
-	}
+	
 }

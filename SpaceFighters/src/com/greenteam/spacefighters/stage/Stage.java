@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.swing.AbstractAction;
@@ -43,6 +44,7 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 	private static final String FIRE_SECONDARY = "FIRESECONDARY";
 	private static final String FIRE_TERTIARY = "FIRETERTIARY";
 	private static final String FIRE_QUATERNARY = "FIREQUATERNARY";
+	private static final String FIRE_CHAIN_BEAM = "FIRECHAINBEAM";
 	private static final String PAUSE = "PAUSE";
 	
 	private static final String PRESSED = " pressed";
@@ -114,6 +116,8 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 		this.getActionMap().put(FIRE_TERTIARY+PRESSED, new FireKeyPressed(FireKey.TERTIARY));
 		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("pressed F"),FIRE_QUATERNARY+PRESSED);
 		this.getActionMap().put(FIRE_QUATERNARY+PRESSED, new FireKeyPressed(FireKey.QUATERNARY));
+		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("pressed V"),FIRE_CHAIN_BEAM+PRESSED);
+		this.getActionMap().put(FIRE_CHAIN_BEAM+PRESSED, new FireKeyPressed(FireKey.CHAINBEAM));
 		
 		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("released Z"),FIRE_PRIMARY+RELEASED);
 		this.getActionMap().put(FIRE_PRIMARY+RELEASED, new FireKeyReleased(FireKey.PRIMARY));
@@ -280,7 +284,8 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 				}
 			}
 			for (Entity e : entities) {
-				e.update((int)(700 / Window.FPS));
+				if (e.isUpdatable())
+					e.update((int)(700 / Window.FPS));
 			}
 			this.repaint();
 		}
@@ -365,6 +370,36 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 	    Entity nearestEntity = null;
 	    for (Entity testEntity : entities) {
 	    	if (testEntity != entity && cl.isInstance(testEntity)) {
+	    		double distance = entity.getPosition().distance(testEntity.getPosition()); 
+	    		if (distance < bestDistance) {
+	                nearestEntity = testEntity;
+	                bestDistance = distance;
+	            }	
+	    	}
+	    }
+	    return nearestEntity;
+	}
+	
+	public Entity getNearestEntity(Entity entity, Set<Entity> ignore) {
+	    double bestDistance = Double.POSITIVE_INFINITY;
+	    Entity nearestEntity = null;
+	    for (Entity testEntity : entities) {
+	    	if (testEntity != entity && !ignore.contains(testEntity)) {
+	    		double distance = entity.getPosition().distance(testEntity.getPosition());
+	    		if (distance < bestDistance) {
+	                nearestEntity = testEntity;
+	                bestDistance = distance;
+	            }	
+	    	}
+	    }
+	    return nearestEntity;
+	}
+	
+	public Entity getNearestEntity(Entity entity, Set<Entity> ignore, Class<?> cl) {
+	    double bestDistance = Double.POSITIVE_INFINITY;
+	    Entity nearestEntity = null;
+	    for (Entity testEntity : entities) {
+	    	if (testEntity != entity && cl.isInstance(testEntity) && !ignore.contains(testEntity)) {
 	    		double distance = entity.getPosition().distance(testEntity.getPosition()); 
 	    		if (distance < bestDistance) {
 	                nearestEntity = testEntity;
@@ -485,6 +520,9 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 					fireQuaternaryTimer.start();
 				}
 				break;
+			case CHAINBEAM:
+				player.fire(4);
+				break;
 			default:
 				break;
 			}
@@ -542,7 +580,7 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 	}
 	
 	private enum FireKey {
-		PRIMARY, SECONDARY, TERTIARY, QUATERNARY
+		PRIMARY, SECONDARY, TERTIARY, QUATERNARY, CHAINBEAM
 	}
 
 	@Override

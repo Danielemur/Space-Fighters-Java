@@ -170,6 +170,15 @@ public class Vec2 {
 		return this.normalize().scale(s);
 	}
 	
+	public Vec2 getCWPerp() {
+		return new Vec2(-y, x);
+	}
+	
+	public Vec2 getCCWPerp() {
+		return new Vec2(y, -x);
+		
+	}
+	
 	public static Vec2 fromAngle(double angle) {
 	    return new Vec2(Math.cos(angle), Math.sin(angle));
 	}
