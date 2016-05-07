@@ -27,8 +27,8 @@ public class ChainBeamPowerup extends Powerup {
 	private static final double OUTERRADIUS = 40;
 	private static final double INNERWIDTH = 20;
 	private static final double OUTERWIDTH = 40;
-	private final Color INNERCOLOR = new Color(138, 21, 200, 127);
-	private final Color OUTERCOLOR = new Color(138, 21, 200, 63);
+	private final Color INNERCOLOR = new Color(148, 91, 250, 127);
+	private final Color OUTERCOLOR = new Color(148, 91, 250, 63);
 	private LinkedHashSet<Entity> targets;
 	private double remainingDistance;
 	private int elapsedTime;

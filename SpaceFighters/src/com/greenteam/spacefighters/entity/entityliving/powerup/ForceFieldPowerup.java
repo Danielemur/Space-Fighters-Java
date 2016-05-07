@@ -18,7 +18,7 @@ import com.greenteam.spacefighters.stage.Stage;
 public class ForceFieldPowerup extends Powerup {
 	private static final double RADIUS = 50;
 	private static final int BEGIN_FADING_TIME = 2000;
-	private final Color COLOR = new Color(59, 21, 220);
+	private final Color COLOR = new Color(20, 101, 255);
 	
 	public ForceFieldPowerup(Stage s, Player pl) {
 		super(s, pl);
