@@ -70,7 +70,7 @@ public abstract class PowerupContainer extends EntityLiving {
 		}
 	}
 	
-	protected void playerHealthUpdateAndCap(Player pl) {
+	protected void applyPowerup(Player pl) {
 		if (!pl.healthIsAugmented()) {
 			pl.damage(this.getDamage());
 			pl.setHealth(Math.min(pl.getMaxHealth(), pl.getHealth()));
@@ -89,7 +89,7 @@ public abstract class PowerupContainer extends EntityLiving {
 		}
 		this.setVelocity(randpos.subtract(this.getPosition()).normalize().scale(SPEED));
 		if (this.overlaps(pl)) {
-			this.playerHealthUpdateAndCap(pl);
+			this.applyPowerup(pl);
 			this.remove();
 		}
 		timeRemaining -= ms;
