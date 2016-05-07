@@ -6,7 +6,7 @@ import com.greenteam.spacefighters.entity.entityliving.starship.player.Player;
 import com.greenteam.spacefighters.stage.Stage;
 
 public abstract class Powerup extends EntityLiving {
-	private static final int DURATION = 20000;
+	private static final int DURATION = 10000;
 	
 	protected Player player;
 	protected int timeRemaining;
