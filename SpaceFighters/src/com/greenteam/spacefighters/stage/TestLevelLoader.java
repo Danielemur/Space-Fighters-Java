@@ -10,6 +10,7 @@ import javax.swing.Timer;
 import com.greenteam.spacefighters.GUI.HUD;
 import com.greenteam.spacefighters.GUI.Window;
 import com.greenteam.spacefighters.common.Vec2;
+import com.greenteam.spacefighters.entity.entityliving.obstacle.asteroid.Asteroid;
 import com.greenteam.spacefighters.entity.entityliving.powerupcontainer.*;
 import com.greenteam.spacefighters.entity.entityliving.starship.enemy.*;
 import com.greenteam.spacefighters.entity.entityliving.starship.player.Player;
@@ -17,11 +18,14 @@ import com.greenteam.spacefighters.entity.entityliving.starship.player.Player.Pl
 
 public class TestLevelLoader extends LevelLoader implements ActionListener {
 	private static final double[] LEVEL_INTERVAL_RATIOS = {1.0, 0.9, 0.8, 0.6, 0.5};
-	
+	private static final int ASTEROID_COUNT = 50;
+	private static final int ASTEROID_MAXSIZE = 50;
+	private static final int ASTEROID_MINSIZE = 20;
 	private static final int TESTENEMY_SPAWNINTERVAL = 800;
 	private static final int ERRATICENEMY_SPAWNINTERVAL = 1040;
 	private static final int SHOOTINGENEMY_SPAWNINTERVAL = 1080;
 	private static final int TRACKERENEMY_SPAWNINTERVAL = 1400;
+	private static final int ASTEROID_SPAWNINTERVAL = 1600;
 	private static final int POWERUP_SPAWNINTERVAL = 10000; //remove this after implementing powerup spawning in Enemy
 	private static final int POWERUP_TYPENUMBER = 5;
 	
@@ -43,6 +47,10 @@ public class TestLevelLoader extends LevelLoader implements ActionListener {
 		player.setPosition(new Vec2(Stage.WIDTH / 2 , Stage.HEIGHT / 2));
 		stage.setPlayer(player);
 		stage.setHUD(new HUD(stage));
+		for (int i = 0; i < ASTEROID_COUNT; i++) {
+			int size = (int)((ASTEROID_MAXSIZE - ASTEROID_MINSIZE) * Math.random()) + ASTEROID_MINSIZE;
+			stage.add(new Asteroid(stage, size));
+		}
 		stage.resume();
 	}
 	
@@ -61,6 +69,10 @@ public class TestLevelLoader extends LevelLoader implements ActionListener {
 			}
 			if ((time % (int)(TRACKERENEMY_SPAWNINTERVAL*LEVEL_INTERVAL_RATIOS[level])) == 0) {
 				stage.add(new TrackerEnemy(stage));
+			}
+			if ((time % (int)(ASTEROID_SPAWNINTERVAL*LEVEL_INTERVAL_RATIOS[level])) == 0) {
+				int size = (int)((ASTEROID_MAXSIZE - ASTEROID_MINSIZE) * Math.random()) + ASTEROID_MINSIZE;
+				stage.add(new Asteroid(stage, size));
 			}
 			if ((time % (int)(POWERUP_SPAWNINTERVAL*LEVEL_INTERVAL_RATIOS[level])) == 0) {
 				switch((int)(Math.random() * POWERUP_TYPENUMBER)) {

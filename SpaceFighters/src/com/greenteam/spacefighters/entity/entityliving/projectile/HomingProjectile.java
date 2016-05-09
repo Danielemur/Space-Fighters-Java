@@ -3,6 +3,7 @@ package com.greenteam.spacefighters.entity.entityliving.projectile;
 import com.greenteam.spacefighters.common.Vec2;
 import com.greenteam.spacefighters.entity.Entity;
 import com.greenteam.spacefighters.entity.entityliving.EntityLiving;
+import com.greenteam.spacefighters.entity.entityliving.starship.enemy.Enemy;
 import com.greenteam.spacefighters.stage.Stage;
 
 public class HomingProjectile extends Projectile {
@@ -22,28 +23,15 @@ public class HomingProjectile extends Projectile {
 
 	}
 	
-	private Entity closestEntity() {
-		double shortestDistance = 99999;
-		Entity shortest = null;
-		for (Entity e : this.getStage().getEntities()) {
-			if (isOppositeFaction(e)) {
-				if (e.getPosition().distance(this.getPosition()) < shortestDistance) {
-					shortestDistance = e.getPosition().distance(this.getPosition());
-					shortest = e;
-				}
-			}
-		}
-		return shortest;
-	}
-	
 	@Override
 	public void update(int ms) {
 		super.update(ms);
+		Stage s = this.getStage();
 		startTrackDelay -= ms;
 		if (startTrackDelay <= 0) {
 			if (target != null) {
 				if (((EntityLiving)target).getHealth() <= 0) {
-					target = closestEntity();
+					target = s.getNearestEntity(this, Enemy.class);
 				}
 			}
 			if (target != null) {
@@ -51,7 +39,7 @@ public class HomingProjectile extends Projectile {
 				this.setVelocity(vectorToTarget);
 			}
 			if (target == null) {
-				target = closestEntity();
+				target = s.getNearestEntity(this, Enemy.class);
 			}
 		}
 	}
