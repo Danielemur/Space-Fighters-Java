@@ -21,7 +21,7 @@ import com.greenteam.spacefighters.stage.Stage;
 
 public class ChainBeamPowerup extends Powerup {
 	private static final int DURATION = Integer.MAX_VALUE;
-	private static final double TRAVELDISTANCE= 2000;
+	private static final double TRAVELDISTANCE= 4000;
 	private static final int SCANINTERVAL = 25;
 	private static final double INNERRADIUS = 30;
 	private static final double OUTERRADIUS = 40;
