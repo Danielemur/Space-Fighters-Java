@@ -29,7 +29,7 @@ public class TestLevelLoader extends LevelLoader implements ActionListener {
 	private static final int POWERUP_SPAWNINTERVAL = 10000; //remove this after implementing powerup spawning in Enemy
 	private static final int POWERUP_TYPENUMBER = 5;
 	
-	private static final int LEVEL_SCORE_THRESHOLD = 10000;
+	private static final int LEVEL_SCORE_THRESHOLD = 1000;
 	
 	private Stage stage;
 	private Timer timer;
@@ -39,6 +39,7 @@ public class TestLevelLoader extends LevelLoader implements ActionListener {
 	public TestLevelLoader(Stage s, File f) {
 		super(s, f);
 		stage = s;
+		stage.getEntities().clear();
 		timer = stage.getTimer();
 		timer.addActionListener(this);
 		level = 0;
@@ -101,6 +102,10 @@ public class TestLevelLoader extends LevelLoader implements ActionListener {
 			if (level < LEVEL_INTERVAL_RATIOS.length-1) {
 				stage.pause();
 				((CardLayout)stage.getParent().getLayout()).show(stage.getParent(), Window.STORESCREEN_CARDLAYOUT_NAME);
+				Player p = stage.getPlayer();
+				stage.getEntities().clear();
+				stage.add(p);
+				p.setPosition(new Vec2(Stage.WIDTH / 2 , Stage.HEIGHT / 2));
 				++level;
 			}
 		}

@@ -33,6 +33,7 @@ public class LinearProjectile extends Projectile {
 	public void update(int ms) {
 		super.update(ms);
 		if (decayCount < 0) {
+			diedDueToOutofRange = true;
 			this.setHealth(0);
 		} else {
 			decayCount -= ms;
