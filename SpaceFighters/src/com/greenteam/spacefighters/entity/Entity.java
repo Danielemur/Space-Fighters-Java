@@ -27,6 +27,10 @@ public abstract class Entity {
 	
 	public abstract void render(Graphics g);
 	
+	public int getDefaultLayer() {
+		return 0;
+	}
+	
 	public void update(int ms) {
 		velocity = velocity.add(acceleration.scale(((double)ms)/1000));
 		position = position.add(velocity.scale(((double)ms)/1000));

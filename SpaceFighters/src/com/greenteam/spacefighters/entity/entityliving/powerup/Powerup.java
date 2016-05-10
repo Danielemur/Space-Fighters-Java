@@ -39,6 +39,11 @@ public abstract class Powerup extends EntityLiving {
 	public double getTimerFraction() {
 		return timeRemaining / this.getDuration();
 	}
+	
+	@Override
+	public int getDefaultLayer() {
+		return 0;
+	}
 
 	@Override
 	public Class<?> getSource() {

@@ -11,8 +11,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.swing.AbstractAction;
@@ -55,7 +58,7 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 	private static final double ROTATION_DEAD_ZONE_SECTOR_SIZE = 0.2; //radians
 
 	
-	private CopyOnWriteArrayList<Entity> entities;
+	private Map<Integer, CopyOnWriteArrayList<Entity>> entities;
 	private Timer timer;
 	private Player player;
 	private HUD hud;
@@ -72,7 +75,10 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 	private boolean mouseEnabled;
 	
 	public Stage(int width, int height, Player player) {
-		this.entities = new CopyOnWriteArrayList<Entity>();
+		this.entities = Collections.synchronizedSortedMap(new TreeMap<Integer, CopyOnWriteArrayList<Entity>>());//CopyOnWriteArrayList<Entity>();
+		entities.put(-1, new CopyOnWriteArrayList<Entity>());
+		entities.put(0, new CopyOnWriteArrayList<Entity>());
+		entities.put(1, new CopyOnWriteArrayList<Entity>());
 		this.player = player;
 		this.hud = null;
 		this.mouseEnabled = true;

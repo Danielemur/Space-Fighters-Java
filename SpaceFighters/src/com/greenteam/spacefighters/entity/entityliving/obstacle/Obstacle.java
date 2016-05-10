@@ -31,6 +31,11 @@ public abstract class Obstacle extends EntityLiving {
 			}
 		}
 	}
+	
+	@Override
+	public int getDefaultLayer() {
+		return -1;
+	}
 
 	@Override
 	public Class<?> getSource() {
