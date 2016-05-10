@@ -10,6 +10,7 @@ import javax.imageio.ImageIO;
 import com.greenteam.spacefighters.common.Vec2;
 import com.greenteam.spacefighters.entity.Entity;
 import com.greenteam.spacefighters.entity.entityliving.EntityLiving;
+import com.greenteam.spacefighters.entity.entityliving.Explosion;
 import com.greenteam.spacefighters.entity.entityliving.obstacle.Obstacle;
 import com.greenteam.spacefighters.entity.entityliving.starship.enemy.Enemy;
 import com.greenteam.spacefighters.entity.entityliving.starship.player.Player;
@@ -18,6 +19,7 @@ import com.greenteam.spacefighters.stage.Stage;
 public abstract class Projectile extends EntityLiving {
 	private Class<?> source;
 	private int damage;
+	protected boolean diedDueToOutofRange = false;
 	
 	public Projectile(Stage s, int health, int damage, Vec2 position, Vec2 velocity, Class<?> source) {
 		super(s, health, health);
@@ -53,6 +55,7 @@ public abstract class Projectile extends EntityLiving {
 				(this.getPosition().getX() < 0) ||
 				(this.getPosition().getY() > Stage.HEIGHT) ||
 				(this.getPosition().getY() < 0)) {
+			diedDueToOutofRange = true;
 			this.getStage().remove(this);
 		}
 		for (Entity e : this.getStage().getEntities()) {
@@ -81,6 +84,13 @@ public abstract class Projectile extends EntityLiving {
 	@Override
 	public int getDamage() {
 		return damage;
+	}
+	
+	@Override
+	public void uponDeath() {
+		if (!diedDueToOutofRange) {
+			this.getStage().add(new Explosion(this.getStage(), this.getPosition(), 10, 100));
+		}
 	}
 
 	public static int getEnergyCost() {
