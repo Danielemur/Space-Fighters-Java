@@ -11,8 +11,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -179,13 +179,16 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 			}
 		}
 		
-		player.render(g);
-		
-		for (Entity e : entities) {
-			if (e != player) {
-				e.render(g);
+		for (CopyOnWriteArrayList<Entity> array : entities.values()) {
+			for (Entity e : array) {
+				if (e != player) {
+					e.render(g);
+				}
 			}
 		}
+		
+		player.render(g);
+		
 		g.translate((int)offset.getX(), (int)offset.getY());
 		if (hud != null) {
 			hud.render(g);
@@ -202,7 +205,7 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 		player.setVelocity(orientation.scale(-Player.MOVEMENT_SPEED).multiply(new Vec2(1, -1)));
 	}
 	
-	public List<Entity> getEntities() {return entities;}
+	public Map<Integer, CopyOnWriteArrayList<Entity>> getEntities() {return entities;}
 
 	private Vec2 getPlayerOffset() {
 		Vec2 offsetMax = new Vec2(WIDTH - this.getWidth(), HEIGHT - this.getHeight());
@@ -292,9 +295,12 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 					backgroundOffsets[i] = 0;
 				}
 			}
-			for (Entity e : entities) {
-				if (e.isUpdatable())
-					e.update((int)(700 / Window.FPS));
+			
+			for (CopyOnWriteArrayList<Entity> array : entities.values()) {
+				for (Entity e : array) {
+					if (e.isUpdatable())
+						e.update((int)(700 / Window.FPS));
+				}
 			}
 			this.repaint();
 		}
@@ -313,11 +319,15 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 	}
 
 	public void remove(Entity entity) {
-		entities.remove(entity);
+		for (CopyOnWriteArrayList<Entity> arr : entities.values())
+			if (arr.contains(entity))
+				arr.remove(entity);
 	}
 	
 	public void add(Entity entity) {
-		entities.add(entity);
+//		CopyOnWriteArrayList<Entity> arr = entities.get(entity.getDefaultLayer());
+//		for (CopyOnWriteArrayList<Entity> arrs : entities.values())
+			System.out.println("" + entities.isEmpty());
 	}
 
 	public Player getPlayer() {
@@ -362,13 +372,15 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 	public Entity getNearestEntity(Entity entity) {
 	    double bestDistance = Double.POSITIVE_INFINITY;
 	    Entity nearestEntity = null;
-	    for (Entity testEntity : entities) {
-	    	if (testEntity != entity) {
-	    		double distance = entity.getPosition().distance(testEntity.getPosition());
-	    		if (distance < bestDistance) {
-	                nearestEntity = testEntity;
-	                bestDistance = distance;
-	            }	
+	    for (CopyOnWriteArrayList<Entity> array : entities.values()) {
+	    	for (Entity testEntity : array) {
+	    		if (testEntity != entity) {
+	    			double distance = entity.getPosition().distance(testEntity.getPosition());
+	    			if (distance < bestDistance) {
+	    				nearestEntity = testEntity;
+	    				bestDistance = distance;
+	    			}	
+	    		}
 	    	}
 	    }
 	    return nearestEntity;
@@ -377,45 +389,51 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 	public Entity getNearestEntity(Entity entity, Class<?> cl) {
 	    double bestDistance = Double.POSITIVE_INFINITY;
 	    Entity nearestEntity = null;
-	    for (Entity testEntity : entities) {
-	    	if (testEntity != entity && cl.isInstance(testEntity)) {
-	    		double distance = entity.getPosition().distance(testEntity.getPosition()); 
-	    		if (distance < bestDistance) {
-	                nearestEntity = testEntity;
-	                bestDistance = distance;
-	            }	
-	    	}
-	    }
+		for (CopyOnWriteArrayList<Entity> array : entities.values()) {
+			for (Entity testEntity : array) {
+				if (testEntity != entity && cl.isInstance(testEntity)) {
+					double distance = entity.getPosition().distance(testEntity.getPosition()); 
+					if (distance < bestDistance) {
+						nearestEntity = testEntity;
+						bestDistance = distance;
+					}	
+				}
+			}
+		}
 	    return nearestEntity;
 	}
 	
 	public Entity getNearestEntity(Entity entity, Set<Entity> ignore) {
 	    double bestDistance = Double.POSITIVE_INFINITY;
 	    Entity nearestEntity = null;
-	    for (Entity testEntity : entities) {
-	    	if (testEntity != entity && !ignore.contains(testEntity)) {
-	    		double distance = entity.getPosition().distance(testEntity.getPosition());
-	    		if (distance < bestDistance) {
-	                nearestEntity = testEntity;
-	                bestDistance = distance;
-	            }	
-	    	}
-	    }
+		for (CopyOnWriteArrayList<Entity> array : entities.values()) {
+			for (Entity testEntity : array) {
+				if (testEntity != entity && !ignore.contains(testEntity)) {
+					double distance = entity.getPosition().distance(testEntity.getPosition());
+					if (distance < bestDistance) {
+						nearestEntity = testEntity;
+						bestDistance = distance;
+					}	
+				}
+			}
+		}
 	    return nearestEntity;
 	}
 	
 	public Entity getNearestEntity(Entity entity, Set<Entity> ignore, Class<?> cl) {
 	    double bestDistance = Double.POSITIVE_INFINITY;
 	    Entity nearestEntity = null;
-	    for (Entity testEntity : entities) {
-	    	if (testEntity != entity && cl.isInstance(testEntity) && !ignore.contains(testEntity)) {
-	    		double distance = entity.getPosition().distance(testEntity.getPosition()); 
-	    		if (distance < bestDistance) {
-	                nearestEntity = testEntity;
-	                bestDistance = distance;
-	            }
-	    	}
-	    }
+		for (CopyOnWriteArrayList<Entity> array : entities.values()) {
+			for (Entity testEntity : array) {
+				if (testEntity != entity && cl.isInstance(testEntity) && !ignore.contains(testEntity)) {
+					double distance = entity.getPosition().distance(testEntity.getPosition()); 
+					if (distance < bestDistance) {
+						nearestEntity = testEntity;
+						bestDistance = distance;
+					}
+				}
+			}
+		}
 	    return nearestEntity;
 	}
 	

@@ -1,5 +1,7 @@
 package com.greenteam.spacefighters.entity.entityliving.obstacle;
 
+import java.util.concurrent.CopyOnWriteArrayList;
+
 import com.greenteam.spacefighters.entity.Entity;
 import com.greenteam.spacefighters.entity.entityliving.EntityLiving;
 import com.greenteam.spacefighters.entity.entityliving.projectile.Projectile;
@@ -22,12 +24,14 @@ public abstract class Obstacle extends EntityLiving {
 	@Override
 	public void update(int ms) {
 		super.update(ms);
-		for (Entity e : this.getStage().getEntities()) {
-			if (e == this) continue;
-			if (this.overlaps(e) &&
-				e instanceof EntityLiving &&
-				this.isOppositeFaction(e)) {
-				((EntityLiving)e).damage(this.getDamage());
+	    for (CopyOnWriteArrayList<Entity> array : this.getStage().getEntities().values()) {
+	    	for (Entity e : array) {
+	    		if (e == this) continue;
+	    		if (this.overlaps(e) &&
+	    			e instanceof EntityLiving &&
+	    			this.isOppositeFaction(e)) {
+	    			((EntityLiving)e).damage(this.getDamage());
+	    		}
 			}
 		}
 	}

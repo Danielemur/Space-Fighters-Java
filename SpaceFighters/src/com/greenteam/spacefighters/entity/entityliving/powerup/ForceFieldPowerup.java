@@ -5,6 +5,7 @@ import java.awt.Composite;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RadialGradientPaint;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.greenteam.spacefighters.common.Color;
 import com.greenteam.spacefighters.common.Vec2;
@@ -69,13 +70,15 @@ public class ForceFieldPowerup extends Powerup {
 	public void update(int ms) {
 		super.update(ms);
 		this.setPosition(player.getPosition());
-		for (Entity e : this.getStage().getEntities()) {
-			if (e == this) continue;
-			if (this.overlaps(e) &&
-				(e instanceof EntityLiving) &&
-				!((EntityLiving)e).isDead() &&
-				this.isOppositeFaction(e)) {
-				((EntityLiving)e).damage(this.getDamage());
+	    for (CopyOnWriteArrayList<Entity> array : this.getStage().getEntities().values()) {
+	    	for (Entity e : array) {
+	    		if (e == this) continue;
+	    		if (this.overlaps(e) &&
+	    		   (e instanceof EntityLiving) &&
+	    			!((EntityLiving)e).isDead() &&
+	    			this.isOppositeFaction(e)) {
+	    			((EntityLiving)e).damage(this.getDamage());
+	    		}
 			}
 		}
 	}

@@ -5,6 +5,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.util.HashSet;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.imageio.ImageIO;
 
@@ -105,18 +106,19 @@ public class Player extends Starship {
 			}
 			time = 0;
 		}
-		for (Entity e : this.getStage().getEntities()) {
-			if (e == this) continue;
-			if (this.overlaps(e) &&
-				(Obstacle.class.isAssignableFrom(e.getSource()) ||
-				Enemy.class.isAssignableFrom(e.getSource()) 	||
-				PowerupContainer.class.isAssignableFrom(e.getSource())) &&
-				e instanceof EntityLiving && !((EntityLiving)e).isDead()) {
-				((EntityLiving)e).damage(this.getDamage());
-					boolean augmentChargePowerup = e instanceof ChargeBoostPowerupContainer;
-					if (augmentChargePowerup) {
-						chargeLevel = Math.min(chargeLevel + Player.FULLCHARGE, 2 * Player.FULLCHARGE);
-
+	    for (CopyOnWriteArrayList<Entity> array : this.getStage().getEntities().values()) {
+	    	for (Entity e : array) {
+	    		if (e == this) continue;
+	    		if (this.overlaps(e) &&
+	    			(Obstacle.class.isAssignableFrom(e.getSource()) ||
+	    			 Enemy.class.isAssignableFrom(e.getSource()) 	||
+	    			 PowerupContainer.class.isAssignableFrom(e.getSource())) &&
+	    			e instanceof EntityLiving && !((EntityLiving)e).isDead()) {
+	    			((EntityLiving)e).damage(this.getDamage());
+	    			boolean augmentChargePowerup = e instanceof ChargeBoostPowerupContainer;
+	    			if (augmentChargePowerup) {
+	    				chargeLevel = Math.min(chargeLevel + Player.FULLCHARGE, 2 * Player.FULLCHARGE);
+	    			}
 				}
 			}
 		}

@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.imageio.ImageIO;
 
@@ -69,13 +70,16 @@ public class Asteroid extends Obstacle {
 	@Override
 	public void update(int ms) {
 		super.update(ms);
-		for (Entity e : this.getStage().getEntities()) {
-			if (e == this) continue;
-			if (this.overlaps(e) &&
-				(e instanceof EntityLiving) &&
-				!((EntityLiving)e).isDead() &&
-				this.isOppositeFaction(e)) {
-				((EntityLiving)e).damage(this.getDamage());
+
+	    for (CopyOnWriteArrayList<Entity> array : this.getStage().getEntities().values()) {
+	    	for (Entity e : array) {
+	    		if (e == this) continue;
+	    		if (this.overlaps(e) &&
+	    		   (e instanceof EntityLiving) &&
+	    			!((EntityLiving)e).isDead() &&
+	    			this.isOppositeFaction(e)) {
+	    			((EntityLiving)e).damage(this.getDamage());
+	    		}
 			}
 		}
 	}
