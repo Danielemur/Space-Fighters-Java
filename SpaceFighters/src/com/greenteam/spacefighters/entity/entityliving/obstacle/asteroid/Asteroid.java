@@ -2,9 +2,7 @@ package com.greenteam.spacefighters.entity.entityliving.obstacle.asteroid;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Shape;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
@@ -44,7 +42,7 @@ public class Asteroid extends Obstacle {
 	public void render(Graphics g) {
 		Vec2 pos = this.getPosition();
 		if (couldLoadImage) {
-			double angle = this.getOrientation().angle();
+			//double angle = this.getOrientation().angle();
 			AffineTransform tf = new AffineTransform();
 			//tf.rotate(angle, size / 2, size / 2);
 			AffineTransformOp op = new AffineTransformOp(tf, AffineTransformOp.TYPE_BILINEAR);
@@ -84,7 +82,6 @@ public class Asteroid extends Obstacle {
 	
 	@Override
 	public void uponDeath() {
-		Stage stage = this.getStage();
 		Explosion e = new Explosion(this.getStage(), this.getPosition(), size, 100);
 		this.getStage().add(e);
 	}

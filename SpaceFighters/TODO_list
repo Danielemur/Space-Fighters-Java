@@ -9,9 +9,10 @@ Add asteroids
 levels
 lives
 max enemy count
-chain weapon powerup
 stun weapon
-augmented charge bar
-augmented heallth bar
 remove/reduce health regen?
 hud for forcefield timer
+Implement rendering layers
+make faster
+create explosion graphic
+problem with charge boost?
