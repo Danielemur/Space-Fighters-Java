@@ -30,7 +30,7 @@ public class Window extends JFrame implements WindowListener {
 	private LevelLoader loader;
 	private StoreScreen store;
 	
-	Window() {
+	public Window() {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		stage = new Stage(Window.WIDTH, Window.HEIGHT, null);
 		store = new StoreScreen(stage);
@@ -52,6 +52,7 @@ public class Window extends JFrame implements WindowListener {
 		this.setContentPane(contentPane);
 		stage.pause();
 		this.setVisible(true);
+		this.createBufferStrategy(2);
 	}
 	
     public static void main(String[] args) {

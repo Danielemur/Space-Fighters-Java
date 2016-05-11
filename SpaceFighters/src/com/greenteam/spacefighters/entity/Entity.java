@@ -1,7 +1,12 @@
 package com.greenteam.spacefighters.entity;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 
 import com.greenteam.spacefighters.common.Vec2;
 import com.greenteam.spacefighters.stage.Stage;
@@ -117,7 +122,24 @@ public abstract class Entity {
 	}
 
 	protected void setTexture(Image texture) {
-		this.texture = texture;
+		
+		GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+	    GraphicsDevice device = env.getDefaultScreenDevice();
+	    GraphicsConfiguration config = device.getDefaultConfiguration();
+	    BufferedImage image = (BufferedImage)texture;
+		
+		
+	    if (image.getColorModel().equals(config.getColorModel())) {
+	        this.texture = image;
+	    } else {
+	    	final BufferedImage new_image = config.createCompatibleImage(image.getWidth(), image.getHeight(), image.getTransparency());
+
+	    	final Graphics2D g2d = (Graphics2D) new_image.getGraphics();
+	    	g2d.drawImage(image, 0, 0, null);
+	    	g2d.dispose();
+
+	    	this.texture = new_image;
+	    }
 	}
 	
 	public double getRadius() {

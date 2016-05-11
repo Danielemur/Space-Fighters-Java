@@ -179,6 +179,13 @@ public class Vec2 {
 		
 	}
 	
+	public boolean withinBounds(Vec2 min, Vec2 max) {
+		return (this.x > min.x &&
+				this.y > min.y &&
+				this.x < max.x &&
+				this.y < max.y);
+	}
+	
 	public static Vec2 fromAngle(double angle) {
 	    return new Vec2(Math.cos(angle), Math.sin(angle));
 	}

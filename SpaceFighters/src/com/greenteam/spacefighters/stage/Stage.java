@@ -3,6 +3,9 @@ package com.greenteam.spacefighters.stage;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.RenderingHints;
@@ -82,9 +85,13 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 		this.hud = null;
 		this.mouseEnabled = true;
 		this.backgroundOffsets = new double[STARFIELD_LAYERS];
+		
 		this.starfields = new BufferedImage[STARFIELD_LAYERS];
+		GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+	    GraphicsDevice device = env.getDefaultScreenDevice();
+	    GraphicsConfiguration config = device.getDefaultConfiguration();
 		for (int i = 0; i < STARFIELD_LAYERS; ++i) {
-			starfields[i] = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
+			starfields[i] = config.createCompatibleImage(WIDTH, HEIGHT);
 			Graphics g = starfields[i].getGraphics();
 			g.setColor(java.awt.Color.WHITE);
 			for (int j = 0; j < Stage.NUM_STARS; ++j) {
@@ -171,6 +178,7 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 		
 		offset = offset.min(offsetMax).max(offsetMin);
 		g.translate(-(int)offset.getX(), -(int)offset.getY());
+		g.setClip((int)(offset.getX()), (int)(offset.getY()), (int)(offset.getX() + this.getWidth()), (int)(offset.getY() + this.getHeight()));
 		for (int i = 0; i < STARFIELD_LAYERS; ++i) {
 			if (starfields[i] != null) {
 				g.drawImage(starfields[i], 0, 0, null);
