@@ -4,12 +4,14 @@ import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.swing.Timer;
 
 import com.greenteam.spacefighters.GUI.HUD;
 import com.greenteam.spacefighters.GUI.Window;
 import com.greenteam.spacefighters.common.Vec2;
+import com.greenteam.spacefighters.entity.Entity;
 import com.greenteam.spacefighters.entity.entityliving.obstacle.asteroid.Asteroid;
 import com.greenteam.spacefighters.entity.entityliving.powerupcontainer.*;
 import com.greenteam.spacefighters.entity.entityliving.starship.enemy.*;
@@ -39,7 +41,8 @@ public class TestLevelLoader extends LevelLoader implements ActionListener {
 	public TestLevelLoader(Stage s, File f) {
 		super(s, f);
 		stage = s;
-		stage.getEntities().clear();
+		for (CopyOnWriteArrayList<Entity> array : s.getEntities().values())
+			array.clear();
 		timer = stage.getTimer();
 		timer.addActionListener(this);
 		level = 0;
@@ -103,7 +106,8 @@ public class TestLevelLoader extends LevelLoader implements ActionListener {
 				stage.pause();
 				((CardLayout)stage.getParent().getLayout()).show(stage.getParent(), Window.STORESCREEN_CARDLAYOUT_NAME);
 				Player p = stage.getPlayer();
-				stage.getEntities().clear();
+				for (CopyOnWriteArrayList<Entity> array : stage.getEntities().values())
+					array.clear();
 				stage.add(p);
 				p.setPosition(new Vec2(Stage.WIDTH / 2 , Stage.HEIGHT / 2));
 				++level;

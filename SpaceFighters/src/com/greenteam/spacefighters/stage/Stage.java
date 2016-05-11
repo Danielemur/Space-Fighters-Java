@@ -11,7 +11,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
@@ -325,9 +324,7 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 	}
 	
 	public void add(Entity entity) {
-//		CopyOnWriteArrayList<Entity> arr = entities.get(entity.getDefaultLayer());
-//		for (CopyOnWriteArrayList<Entity> arrs : entities.values())
-			System.out.println("" + entities.isEmpty());
+		entities.get(entity.getDefaultLayer()).add(entity);
 	}
 
 	public Player getPlayer() {

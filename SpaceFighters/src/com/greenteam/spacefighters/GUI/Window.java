@@ -42,11 +42,9 @@ public class Window extends JFrame implements WindowListener {
 		contentPane.setBounds(new Rectangle(Window.WIDTH, Window.HEIGHT));
 		contentPane.add(store, STORESCREEN_CARDLAYOUT_NAME);
 		
-		
 		this.setBounds(new Rectangle(Window.WIDTH, Window.HEIGHT));
 		
 		loader = new TestLevelLoader(stage, null);
-		
 		this.setTitle("SpaceFighters");
 		this.setIconImage(Player.getTexFromEnum(PlayerShipColor.RED));
 		this.setMinimumSize(new Dimension(Window.WIDTH, Window.HEIGHT));
