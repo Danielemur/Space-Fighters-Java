@@ -72,6 +72,11 @@ public class Explosion extends EntityLiving {
 	}
 	
 	@Override
+	public int getDefaultLayer() {
+		return 1;
+	}
+	
+	@Override
 	public int getDamage() {
 		return 0;
 	}

@@ -125,7 +125,7 @@ public abstract class Projectile extends EntityLiving {
 	}
 	
 	public int getDefaultLayer() {
-		return 1;
+		return 3;
 	}
 	
 	public enum ProjectileColor {

@@ -16,6 +16,7 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -185,16 +186,15 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 				g.drawImage(starfields[i], 0, 0, null);
 			}
 		}
-		
-		for (CopyOnWriteArrayList<Entity> array : entities.values()) {
-			for (Entity e : array) {
+		for (Entry<Integer, CopyOnWriteArrayList<Entity>> entry : entities.entrySet()) {
+			for (Entity e : entry.getValue()) {
 				if (e != player) {
 					e.render(g);
 				}
 			}
+			if (entry.getKey() == player.getDefaultLayer())
+				player.render(g);
 		}
-		
-		player.render(g);
 		
 		g.translate((int)offset.getX(), (int)offset.getY());
 		if (hud != null) {
