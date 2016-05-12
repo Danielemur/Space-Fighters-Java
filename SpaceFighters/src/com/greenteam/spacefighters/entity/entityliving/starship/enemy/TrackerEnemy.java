@@ -77,18 +77,18 @@ public class TrackerEnemy extends Enemy {
 		Stage stage = this.getStage();
 		if (chargeLevel >= FIREDRAIN) {
 			int damage = 10 * (getWeaponryMultiplier() + 1);
-			Projectile proj = new LinearProjectile(stage, DEFAULTWEAPONRYHEALTH, damage/2, this.getPosition(), this.getOrientation().scale(PROJECTILESPEED), this.getSource());
+			Projectile proj = new LinearProjectile(stage, DEFAULTWEAPONRYHEALTH, damage/2, this.getPosition(), this.getOrientation().scale(PROJECTILESPEED), this);
 			stage.add(proj);
-			proj = new LinearProjectile(stage, DEFAULTWEAPONRYHEALTH, damage/2, this.getPosition(), this.getOrientation().scale(PROJECTILESPEED).rotate(new Vec2(0,0), -0.04), this.getSource());
+			proj = new LinearProjectile(stage, DEFAULTWEAPONRYHEALTH, damage/2, this.getPosition(), this.getOrientation().scale(PROJECTILESPEED).rotate(new Vec2(0,0), -0.04), this);
 			stage.add(proj);
-			proj = new LinearProjectile(stage, DEFAULTWEAPONRYHEALTH, damage/2, this.getPosition(), this.getOrientation().scale(PROJECTILESPEED).rotate(new Vec2(0,0), 0.04), this.getSource());
+			proj = new LinearProjectile(stage, DEFAULTWEAPONRYHEALTH, damage/2, this.getPosition(), this.getOrientation().scale(PROJECTILESPEED).rotate(new Vec2(0,0), 0.04), this);
 			stage.add(proj);
 			chargeLevel -= FIREDRAIN;
 		}
 	}
 
 	@Override
-	public Class<?> getSource() {
+	public Class<?> getSourceClass() {
 		return Enemy.class;
 	}
 	

@@ -62,8 +62,8 @@ public class ForceFieldPowerup extends Powerup {
 	}
 	
 	protected boolean isOppositeFaction(Entity e) {
-		return (Enemy.class.isAssignableFrom(e.getSource()) ||
-				Obstacle.class.isAssignableFrom(e.getSource()));
+		return (Enemy.class.isAssignableFrom(e.getSourceClass()) ||
+				Obstacle.class.isAssignableFrom(e.getSourceClass()));
 	}
 	
 	@Override
@@ -77,7 +77,7 @@ public class ForceFieldPowerup extends Powerup {
 	    		   (e instanceof EntityLiving) &&
 	    			!((EntityLiving)e).isDead() &&
 	    			this.isOppositeFaction(e)) {
-	    			((EntityLiving)e).damage(this.getDamage());
+	    			((EntityLiving)e).damage(this, this.getDamage());
 	    		}
 			}
 		}

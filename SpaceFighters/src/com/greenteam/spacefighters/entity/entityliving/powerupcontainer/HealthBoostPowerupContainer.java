@@ -22,7 +22,7 @@ public class HealthBoostPowerupContainer extends PowerupContainer {
 	
 	@Override
 	protected void applyPowerup(Player pl) {
-		pl.damage(this.getDamage());
+		pl.damage(this, this.getDamage());
 		pl.setHealth(Math.min(pl.getMaxHealth() - this.getDamage(), pl.getHealth()));
 	}
 

@@ -18,11 +18,11 @@ import com.greenteam.spacefighters.entity.entityliving.starship.player.Player;
 import com.greenteam.spacefighters.stage.Stage;
 
 public abstract class Projectile extends EntityLiving {
-	private Class<?> source;
+	private Entity source;
 	private int damage;
 	protected boolean diedDueToOutofRange = false;
 	
-	public Projectile(Stage s, int health, int damage, Vec2 position, Vec2 velocity, Class<?> source) {
+	public Projectile(Stage s, int health, int damage, Vec2 position, Vec2 velocity, Entity source) {
 		super(s, health, health);
 		this.damage = damage;
 		this.source = source;
@@ -31,19 +31,19 @@ public abstract class Projectile extends EntityLiving {
 	}
 	
 	protected boolean isOppositeFaction(Entity e) {
-		if (this.getSource() == Enemy.class) {
+		if (this.getSourceClass() == Enemy.class) {
 			if (!(e instanceof Projectile)) {
-				if (Player.class.isAssignableFrom(e.getSource())|| Obstacle.class.isAssignableFrom(e.getSource())) return true;
+				if (Player.class.isAssignableFrom(e.getSourceClass())|| Obstacle.class.isAssignableFrom(e.getSourceClass())) return true;
 			}
 		}
-		else if (this.getSource() == Player.class) {
+		else if (this.getSourceClass() == Player.class) {
 			if (!(e instanceof Projectile)) {
-				if (Enemy.class.isAssignableFrom(e.getSource()) || Obstacle.class.isAssignableFrom(e.getSource())) return true;
+				if (Enemy.class.isAssignableFrom(e.getSourceClass()) || Obstacle.class.isAssignableFrom(e.getSourceClass())) return true;
 			}
 		}
-		else if (this.getSource() == Obstacle.class) {
+		else if (this.getSourceClass() == Obstacle.class) {
 			if (!(e instanceof Projectile)) {
-				if (Enemy.class.isAssignableFrom(e.getSource()) || Player.class.isAssignableFrom(e.getSource())) return true;
+				if (Enemy.class.isAssignableFrom(e.getSourceClass()) || Player.class.isAssignableFrom(e.getSourceClass())) return true;
 			}
 		}
 		return false;
@@ -66,7 +66,7 @@ public abstract class Projectile extends EntityLiving {
 					this.isOppositeFaction(e) &&
 					e instanceof EntityLiving &&
 					!((EntityLiving)e).isDead()) {
-					((EntityLiving)e).damage(this.getDamage());
+					((EntityLiving)e).damage(this, this.getDamage());
 				}
 			}
 		}
@@ -101,7 +101,12 @@ public abstract class Projectile extends EntityLiving {
 	}
 	
 	@Override
-	public Class<?> getSource() {
+	public Class<?> getSourceClass() {
+		return source.getClass();
+	}
+	
+	@Override
+	public Entity getSource() {
 		return source;
 	}
 	

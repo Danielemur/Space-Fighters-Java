@@ -46,7 +46,7 @@ public abstract class Enemy extends Starship {
 	}
 	
 	protected boolean isOppositeFaction(Entity e) {
-		return (Player.class.isAssignableFrom(e.getSource()) || Obstacle.class.isAssignableFrom(e.getSource()));
+		return (Player.class.isAssignableFrom(e.getSourceClass()) || Obstacle.class.isAssignableFrom(e.getSourceClass()));
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public abstract class Enemy extends Starship {
 	    		   (e instanceof EntityLiving) &&
 	    			!((EntityLiving)e).isDead() &&
 	    			this.isOppositeFaction(e)) {
-	    			((EntityLiving)e).damage(this.getDamage());
+	    			((EntityLiving)e).damage(this, this.getDamage());
 	    		}
 			}
 		}
@@ -68,14 +68,18 @@ public abstract class Enemy extends Starship {
 	@Override
 	public void uponDeath() {
 		Stage stage = this.getStage();
-		stage.getPlayer().setScore(stage.getPlayer().getScore() + this.getPointValue());
-		stage.getPlayer().setMoney(stage.getPlayer().getMoney() + this.getPointValue()/10);
+		Entity lastAttacker = this.getLastAttacker();
+		if (lastAttacker != null && lastAttacker instanceof Player) {
+			Player pl = ((Player)lastAttacker);
+			pl.setScore(stage.getPlayer().getScore() + this.getPointValue());
+			pl.setMoney(stage.getPlayer().getMoney() + this.getPointValue()/10);
+		}
 		Explosion e = new Explosion(this.getStage(), this.getPosition(), 100);
 		this.getStage().add(e);
 	}
 	
 	@Override
-	public Class<?> getSource() {
+	public Class<?> getSourceClass() {
 		return Enemy.class;
 	}
 	

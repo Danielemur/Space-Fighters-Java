@@ -103,7 +103,7 @@ public class ChainBeamPowerup extends Powerup {
 	}
 	
 	protected boolean isOppositeFaction(Entity e) {
-		return (Enemy.class.isAssignableFrom(e.getSource()));
+		return (Enemy.class.isAssignableFrom(e.getSourceClass()));
 	}
 
 	protected int getDuration() {
@@ -145,7 +145,7 @@ public class ChainBeamPowerup extends Powerup {
 					targets.add(target);
 				} else {
 					for (Entity e : targets) {
-						((EntityLiving)e).damage(this.getDamage());
+						((EntityLiving)e).damage(this, this.getDamage());
 						e.setUpdatable(true);
 					}
 					player.removePowerup(this);

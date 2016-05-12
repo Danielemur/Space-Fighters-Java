@@ -12,6 +12,7 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 
 import com.greenteam.spacefighters.common.Vec2;
+import com.greenteam.spacefighters.entity.Entity;
 import com.greenteam.spacefighters.entity.entityliving.EntityLiving;
 import com.greenteam.spacefighters.entity.entityliving.starship.player.Player;
 import com.greenteam.spacefighters.stage.Stage;
@@ -42,7 +43,7 @@ public abstract class PowerupContainer extends EntityLiving {
 	public abstract java.awt.Color noTextureColor();
 	
 	@Override
-	public void damage(int damage) {}
+	public void damage(Entity attacker, int damage) {}
 	
 	@Override
 	public void render(Graphics g) {
@@ -72,7 +73,7 @@ public abstract class PowerupContainer extends EntityLiving {
 	
 	protected void applyPowerup(Player pl) {
 		if (!pl.healthIsAugmented()) {
-			pl.damage(this.getDamage());
+			pl.damage(this, this.getDamage());
 			pl.setHealth(Math.min(pl.getMaxHealth(), pl.getHealth()));
 		}
 	}
@@ -105,7 +106,11 @@ public abstract class PowerupContainer extends EntityLiving {
 	@Override
 	public void uponDeath() {
 		Stage stage = this.getStage();
-		stage.getPlayer().setScore(stage.getPlayer().getScore() + this.getPointValue());
+		Entity lastAttacker = this.getLastAttacker();
+		if (lastAttacker != null && lastAttacker instanceof Player) {
+			Player pl = ((Player)lastAttacker);
+			pl.setScore(stage.getPlayer().getScore() + this.getPointValue());
+		}
 	}
 	
 	@Override
@@ -114,7 +119,7 @@ public abstract class PowerupContainer extends EntityLiving {
 	}
 	
 	@Override
-	public Class<?> getSource() {
+	public Class<?> getSourceClass() {
 		return PowerupContainer.class;
 	}
 	

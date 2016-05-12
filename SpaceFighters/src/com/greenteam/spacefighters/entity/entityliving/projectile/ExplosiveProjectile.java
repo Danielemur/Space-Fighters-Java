@@ -12,6 +12,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import com.greenteam.spacefighters.common.Vec2;
+import com.greenteam.spacefighters.entity.Entity;
 import com.greenteam.spacefighters.stage.Stage;
 
 public class ExplosiveProjectile extends Projectile {
@@ -25,7 +26,7 @@ public class ExplosiveProjectile extends Projectile {
 	private boolean isExploding;
 	private boolean textureChanged;
 	
-	public ExplosiveProjectile(Stage s, int health, int damage, Vec2 position, Vec2 velocity, Class<?> source) {
+	public ExplosiveProjectile(Stage s, int health, int damage, Vec2 position, Vec2 velocity, Entity source) {
 		super(s, health, damage, position, velocity, source);
 		
 		this.setTexture(Projectile.getTexFromEnum(ProjectileColor.RED));
@@ -74,7 +75,7 @@ public class ExplosiveProjectile extends Projectile {
 	}
 	
 	@Override
-	public void damage(int damage) {}
+	public void damage(Entity attacker, int damage) {}
 	
 	@Override
 	public void update(int ms) {

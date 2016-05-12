@@ -150,7 +150,11 @@ public abstract class Entity {
 		return this.getPosition().distance(e.getPosition()) < this.getRadius() + e.getRadius();
 	}
 	
-	public abstract Class<?> getSource();
+	public abstract Class<?> getSourceClass();
+	
+	public Entity getSource() {
+		return this;
+	}
 	
 	public int getPointValue() {
 		return 100; //default

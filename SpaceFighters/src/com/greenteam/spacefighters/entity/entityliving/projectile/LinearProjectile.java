@@ -5,13 +5,14 @@ import java.awt.Composite;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import com.greenteam.spacefighters.common.Vec2;
+import com.greenteam.spacefighters.entity.Entity;
 import com.greenteam.spacefighters.stage.Stage;
 
 public class LinearProjectile extends Projectile {
 	private static final int DECAYCOUNTDOWN = 1000;
 	private int decayCount;
 
-	public LinearProjectile(Stage s, int health, int damage, Vec2 position, Vec2 velocity, Class<?> source) {
+	public LinearProjectile(Stage s, int health, int damage, Vec2 position, Vec2 velocity, Entity source) {
 		super(s, health, damage, position, velocity, source);
 		
 		this.setTexture(Projectile.getTexFromEnum(ProjectileColor.YELLOW));

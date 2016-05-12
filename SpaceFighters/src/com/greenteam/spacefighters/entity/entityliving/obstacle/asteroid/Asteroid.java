@@ -14,9 +14,6 @@ import com.greenteam.spacefighters.entity.Entity;
 import com.greenteam.spacefighters.entity.entityliving.EntityLiving;
 import com.greenteam.spacefighters.entity.entityliving.Explosion;
 import com.greenteam.spacefighters.entity.entityliving.obstacle.Obstacle;
-import com.greenteam.spacefighters.entity.entityliving.projectile.Projectile;
-import com.greenteam.spacefighters.entity.entityliving.starship.enemy.Enemy;
-import com.greenteam.spacefighters.entity.entityliving.starship.player.Player;
 import com.greenteam.spacefighters.stage.Stage;
 
 public class Asteroid extends Obstacle {
@@ -61,12 +58,6 @@ public class Asteroid extends Obstacle {
 		return 5;
 	}
 	
-	protected boolean isOppositeFaction(Entity e) {
-		return (Player.class.isAssignableFrom(e.getSource()) ||
-				Enemy.class.isAssignableFrom(e.getSource()) ||
-				Projectile.class.isAssignableFrom(e.getSource()));
-	}
-	
 	@Override
 	public void update(int ms) {
 		super.update(ms);
@@ -78,7 +69,7 @@ public class Asteroid extends Obstacle {
 	    		   (e instanceof EntityLiving) &&
 	    			!((EntityLiving)e).isDead() &&
 	    			this.isOppositeFaction(e)) {
-	    			((EntityLiving)e).damage(this.getDamage());
+	    			((EntityLiving)e).damage(this, this.getDamage());
 	    		}
 			}
 		}
@@ -96,7 +87,7 @@ public class Asteroid extends Obstacle {
 	}
 
 	@Override
-	public Class<?> getSource() {
+	public Class<?> getSourceClass() {
 		return Obstacle.class;
 	}
 	

@@ -52,7 +52,7 @@ public class ErraticEnemy extends Enemy {
 	}
 
 	@Override
-	public Class<?> getSource() {
+	public Class<?> getSourceClass() {
 		return Enemy.class;
 	}
 

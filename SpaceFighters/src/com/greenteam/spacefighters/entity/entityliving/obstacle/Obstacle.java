@@ -16,9 +16,9 @@ public abstract class Obstacle extends EntityLiving {
 	}
 	
 	protected boolean isOppositeFaction(Entity e) {
-		return (Enemy.class.isAssignableFrom(e.getSource()) ||
-				Player.class.isAssignableFrom(e.getSource()) ||
-				Projectile.class.isAssignableFrom(e.getSource()));
+		return (Enemy.class.isAssignableFrom(e.getSourceClass()) ||
+				Player.class.isAssignableFrom(e.getSourceClass()) ||
+				Projectile.class.isAssignableFrom(e.getSourceClass()));
 	}
 	
 	@Override
@@ -30,7 +30,7 @@ public abstract class Obstacle extends EntityLiving {
 	    		if (this.overlaps(e) &&
 	    			e instanceof EntityLiving &&
 	    			this.isOppositeFaction(e)) {
-	    			((EntityLiving)e).damage(this.getDamage());
+	    			((EntityLiving)e).damage(this, this.getDamage());
 	    		}
 			}
 		}
@@ -42,7 +42,7 @@ public abstract class Obstacle extends EntityLiving {
 	}
 
 	@Override
-	public Class<?> getSource() {
+	public Class<?> getSourceClass() {
 		return this.getClass();
 	}
 }

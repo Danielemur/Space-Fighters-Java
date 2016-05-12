@@ -13,7 +13,7 @@ public class HomingProjectile extends Projectile {
 	private Entity target;
 	private int startTrackDelay;
 	
-	public HomingProjectile(Stage s, int health, int damage, Vec2 position, Vec2 velocity, Class<?> source) {
+	public HomingProjectile(Stage s, int health, int damage, Vec2 position, Vec2 velocity, Entity source) {
 		super(s, health, damage, position, velocity, source);
 		speed = velocity.magnitude();
 		target = null;

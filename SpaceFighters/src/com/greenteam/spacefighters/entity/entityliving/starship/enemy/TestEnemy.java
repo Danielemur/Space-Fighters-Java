@@ -41,7 +41,7 @@ public class TestEnemy extends Enemy {
 	}
 
 	@Override
-	public Class<?> getSource() {
+	public Class<?> getSourceClass() {
 		return Enemy.class;
 	}
 

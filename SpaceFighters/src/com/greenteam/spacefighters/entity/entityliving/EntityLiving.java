@@ -6,11 +6,13 @@ import com.greenteam.spacefighters.stage.Stage;
 public abstract class EntityLiving extends Entity {
 	private int maxHealth;
 	private int health;
+	private Entity lastAttacker;
 
 	public EntityLiving(Stage s, int maxHealth, int health) {
 		super(s);
 		this.maxHealth = maxHealth;
 		this.health = health;
+		this.lastAttacker = null;
 	}
 
 	public int getHealth() {
@@ -29,8 +31,9 @@ public abstract class EntityLiving extends Entity {
 		return 5; //is only a default, override if you want something different
 	}
 	
-	public void damage(int damage) {
+	public void damage(Entity attacker, int damage) {
 			this.health -= damage;
+			this.lastAttacker = attacker.getSource();
 	}
 	
 	public int getMaxHealth() {
@@ -43,6 +46,10 @@ public abstract class EntityLiving extends Entity {
 	
 	public void kill() {
 		health = 0;
+	}
+	
+	public Entity getLastAttacker() {
+		return lastAttacker;
 	}
 	
 	public void uponDeath() {}

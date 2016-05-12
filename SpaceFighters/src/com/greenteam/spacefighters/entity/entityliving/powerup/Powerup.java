@@ -46,7 +46,7 @@ public abstract class Powerup extends EntityLiving {
 	}
 
 	@Override
-	public Class<?> getSource() {
+	public Class<?> getSourceClass() {
 		return Powerup.class;
 	}
 	

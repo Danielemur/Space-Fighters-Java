@@ -87,7 +87,7 @@ public class Explosion extends EntityLiving {
 	}
 
 	@Override
-	public Class<?> getSource() {
+	public Class<?> getSourceClass() {
 		return Object.class;
 	}
 }
