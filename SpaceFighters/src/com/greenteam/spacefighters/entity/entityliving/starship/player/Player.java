@@ -30,7 +30,6 @@ public class Player extends Starship {
 	private static final int DEFAULTARMORLEVEL = 0;
 	private static final int DEFAULTWEAPONRYLEVEL= 0;
 	private static final int DEFAULTWEAPONRYHEALTH = 2;
-	private static final int FIREDRAIN = 15;
 	private static final int FULLCHARGE = 500;
 	public static final int MOVEMENT_SPEED = 500;
 	private static final int PLAYER_PROJECTILE_SPEED = 1200;
@@ -38,7 +37,7 @@ public class Player extends Starship {
 	private static final int EXPLOSIVE_SPEED = 400;
 	private static final int HEALTH_REGEN_TIME = 1600;
 	private static final int GUN_TO_MISSILE_RATIO = 5;
-	private static final int MISSILE_SPREAD_COUNT = 12;
+	private static final int MISSILE_SPREAD_COUNT = 6;
 	
 	private int timetofiremissile;
 	private int chargeLevel;
@@ -161,7 +160,7 @@ public class Player extends Starship {
 		switch(type) {
 			case 0 :
 			{
-				if (chargeLevel >= FIREDRAIN) {
+				if (chargeLevel >= LinearProjectile.getEnergyCost()) {
 					--timetofiremissile;
 					Projectile proj = new LinearProjectile(stage, DEFAULTWEAPONRYHEALTH, damage, this.getPosition(), getOrientation().scale(PLAYER_PROJECTILE_SPEED).multiply(new Vec2(1, -1)).add(playerVel), this);
 					stage.add(proj);
@@ -170,7 +169,7 @@ public class Player extends Starship {
 						stage.add(proj);
 						timetofiremissile = GUN_TO_MISSILE_RATIO;
 					}
-					chargeLevel -= FIREDRAIN;
+					chargeLevel -= LinearProjectile.getEnergyCost();
 				}
 			}
 			break;

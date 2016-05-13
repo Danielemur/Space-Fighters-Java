@@ -45,6 +45,6 @@ public class HomingProjectile extends Projectile {
 	}
 	
 	public static int getEnergyCost() {
-		return 25;
+		return 50;
 	}
 }

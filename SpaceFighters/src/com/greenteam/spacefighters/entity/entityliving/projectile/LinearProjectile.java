@@ -19,6 +19,10 @@ public class LinearProjectile extends Projectile {
 		
 		decayCount = DECAYCOUNTDOWN;
 	}
+
+	public static int getEnergyCost() {
+		return 20;
+	}
 	
 	@Override
 	public void render(Graphics g) {
