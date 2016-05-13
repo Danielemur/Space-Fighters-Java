@@ -1,6 +1,8 @@
 package com.greenteam.spacefighters.stage;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
@@ -196,6 +198,13 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 		if (hud != null) {
 			hud.render(g);
 		}
+		
+		if (this.isPaused()) {
+			g.setColor(Color.YELLOW);
+			Font f = new Font(Font.MONOSPACED, Font.BOLD, 72);
+			g.setFont(f);
+			g.drawString("PAUSE", this.getBounds().width/2-105, this.getBounds().height/2+20);
+		}
 	}
 	
 	private void doUpKey() {
@@ -353,6 +362,7 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 	
 	public void pause() {
 		timer.stop();
+		this.repaint();
 	}
 	
 	public void resume() {
