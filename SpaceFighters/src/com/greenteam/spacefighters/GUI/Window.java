@@ -28,16 +28,18 @@ public class Window extends JFrame implements WindowListener {
 	
 	private Stage stage;
 	private LevelLoader loader;
+	private TitleScreen title;
 	private StoreScreen store;
 	
 	public Window() {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		stage = new Stage(Window.WIDTH, Window.HEIGHT, null);
 		store = new StoreScreen(stage);
+		title = new TitleScreen(this);
 		
 		final JPanel contentPane = new JPanel();
 		contentPane.setLayout(new CardLayout());
-		contentPane.add(new TitleScreen(this), TITLE_SCREEN_CARDLAYOUT_NAME);
+		contentPane.add(title, TITLE_SCREEN_CARDLAYOUT_NAME);
 		contentPane.add(stage, STAGE_CARDLAYOUT_NAME);
 		contentPane.setBounds(new Rectangle(Window.WIDTH, Window.HEIGHT));
 		contentPane.add(store, STORESCREEN_CARDLAYOUT_NAME);
@@ -91,5 +93,13 @@ public class Window extends JFrame implements WindowListener {
 	
 	public Stage getStage() {
 		return stage;
+	}
+	
+	public TitleScreen getTitleScreen() {
+		return title;
+	}
+	
+	public StoreScreen getStoreScreen() {
+		return store;
 	}
 }
