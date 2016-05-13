@@ -31,17 +31,17 @@ public abstract class Projectile extends EntityLiving {
 	}
 	
 	protected boolean isOppositeFaction(Entity e) {
-		if (this.getSourceClass() == Enemy.class) {
+		if (Enemy.class.isAssignableFrom(this.getSourceClass())) {
 			if (!(e instanceof Projectile)) {
 				if (Player.class.isAssignableFrom(e.getSourceClass())|| Obstacle.class.isAssignableFrom(e.getSourceClass())) return true;
 			}
 		}
-		else if (this.getSourceClass() == Player.class) {
+		else if (Player.class.isAssignableFrom(this.getSourceClass())) {
 			if (!(e instanceof Projectile)) {
 				if (Enemy.class.isAssignableFrom(e.getSourceClass()) || Obstacle.class.isAssignableFrom(e.getSourceClass())) return true;
 			}
 		}
-		else if (this.getSourceClass() == Obstacle.class) {
+		else if (Obstacle.class.isAssignableFrom(this.getSourceClass())) {
 			if (!(e instanceof Projectile)) {
 				if (Enemy.class.isAssignableFrom(e.getSourceClass()) || Player.class.isAssignableFrom(e.getSourceClass())) return true;
 			}
