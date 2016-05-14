@@ -50,7 +50,6 @@ public class Window extends JFrame implements WindowListener {
 		this.setMinimumSize(new Dimension(Window.WIDTH, Window.HEIGHT));
 		this.setLocationRelativeTo(null);
 		this.setContentPane(contentPane);
-		stage.pause();
 		this.setVisible(true);
 		this.createBufferStrategy(2);
 	}

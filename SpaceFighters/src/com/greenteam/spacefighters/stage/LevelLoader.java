@@ -54,7 +54,6 @@ public class LevelLoader implements ActionListener {
 			int size = (int)((ASTEROID_MAXSIZE - ASTEROID_MINSIZE) * Math.random()) + ASTEROID_MINSIZE;
 			stage.add(new Asteroid(stage, size));
 		}
-		stage.resume();
 	}
 	
 	public void startLevel() {

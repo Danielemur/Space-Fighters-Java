@@ -24,7 +24,7 @@ public class StoreScreen extends JPanel implements ActionListener {
 	private Stage stage;
 	private JList upgradeJList;
 
-	StoreScreen(Stage stage) {
+	public StoreScreen(Stage stage) {
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 		returnToGame = new JButton("Return to Game");
