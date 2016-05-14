@@ -117,7 +117,7 @@ public abstract class Entity {
 		this.stage = stage;
 	}
 	
-	protected Image getTexture() {
+	public Image getTexture() {
 		return texture;
 	}
 

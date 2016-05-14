@@ -52,14 +52,16 @@ public abstract class EntityLiving extends Entity {
 		return lastAttacker;
 	}
 	
-	public void uponDeath() {}
+	public void uponDeath() {
+		this.getStage().remove(this);
+	}
+		
 
 	@Override
 	public void update(int ms) {
 		super.update(ms);
 		if (this.isDead()) {
 			this.uponDeath();
-			this.getStage().remove(this);
 		}
 	}
 	

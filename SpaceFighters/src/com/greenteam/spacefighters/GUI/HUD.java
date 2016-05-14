@@ -3,6 +3,8 @@ package com.greenteam.spacefighters.GUI;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 
 import com.greenteam.spacefighters.entity.entityliving.starship.player.Player;
 import com.greenteam.spacefighters.stage.Stage;
@@ -30,8 +32,17 @@ public class HUD {
 		Font f = new Font(Font.MONOSPACED, Font.BOLD, 18);
 		
 		g.setFont(f);
-		g.drawString(String.format("Score: %d", stage.getPlayer().getScore()), 10, 23);
-		g.drawString(String.format("Money: $%d", stage.getPlayer().getMoney()), 10, 50);
+		g.drawString(String.format("Score: %d", p.getScore()), 10, 23);
+		g.drawString(String.format("Money: $%d", p.getMoney()), 10, 50);
+		String livesText = "Lives:";
+		g.drawString(livesText, 10, 77);
+		Image tex = p.getTexture();
+		int height = 24;
+		int width= (int)(tex.getWidth(null) * height / tex.getHeight(null));
+		int texOffsetX = 16 + g.getFontMetrics().stringWidth(livesText);
+		for (int i = 0; i < p.getLives(); i++) {
+			g.drawImage(tex, texOffsetX + i * (width + width / 2), 59, width, height, null);	
+		}
 		g.drawString("CHARGE", 215, 50);
 		
 		int health = p.getHealth();

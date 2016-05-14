@@ -12,9 +12,7 @@ import javax.swing.JPanel;
 import com.greenteam.spacefighters.entity.entityliving.starship.player.Player;
 import com.greenteam.spacefighters.entity.entityliving.starship.player.Player.PlayerShipColor;
 import com.greenteam.spacefighters.stage.LevelLoader;
-//import com.greenteam.spacefighters.stage.LevelLoader;
 import com.greenteam.spacefighters.stage.Stage;
-import com.greenteam.spacefighters.stage.TestLevelLoader;
 
 public class Window extends JFrame implements WindowListener {
 	private static final long serialVersionUID = 8514984102701282740L;
@@ -33,7 +31,8 @@ public class Window extends JFrame implements WindowListener {
 	
 	public Window() {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		stage = new Stage(Window.WIDTH, Window.HEIGHT, null);
+		loader = new LevelLoader(Window.WIDTH, Window.HEIGHT, null);
+		stage = loader.getStage();
 		store = new StoreScreen(stage);
 		title = new TitleScreen(this);
 		
@@ -45,8 +44,7 @@ public class Window extends JFrame implements WindowListener {
 		contentPane.add(store, STORESCREEN_CARDLAYOUT_NAME);
 		
 		this.setBounds(new Rectangle(Window.WIDTH, Window.HEIGHT));
-		
-		loader = new TestLevelLoader(stage, null);
+
 		this.setTitle("SpaceFighters");
 		this.setIconImage(Player.getTexFromEnum(PlayerShipColor.RED));
 		this.setMinimumSize(new Dimension(Window.WIDTH, Window.HEIGHT));

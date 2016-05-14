@@ -111,6 +111,7 @@ public abstract class PowerupContainer extends EntityLiving {
 			Player pl = ((Player)lastAttacker);
 			pl.setScore(stage.getPlayer().getScore() + this.getPointValue());
 		}
+		super.uponDeath();
 	}
 	
 	@Override

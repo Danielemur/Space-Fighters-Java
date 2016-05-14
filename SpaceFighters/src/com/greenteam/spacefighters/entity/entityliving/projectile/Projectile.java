@@ -94,6 +94,7 @@ public abstract class Projectile extends EntityLiving {
 		if (!diedDueToOutofRange) {
 			this.getStage().add(new Explosion(this.getStage(), this.getPosition(), 10, 100));
 		}
+		super.uponDeath();
 	}
 
 	public static int getEnergyCost() {

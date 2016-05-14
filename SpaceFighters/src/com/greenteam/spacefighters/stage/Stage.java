@@ -66,6 +66,7 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 	private Timer timer;
 	private Player player;
 	private HUD hud;
+	private LevelLoader loader;
 	private Timer firePrimaryTimer;
 	private Timer fireSecondaryTimer;
 	private Timer fireTertiaryTimer;
@@ -78,10 +79,10 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 	private boolean rightKeyPressed;
 	private boolean mouseEnabled;
 	
-	public Stage(int width, int height, Player player) {
+	public Stage(int width, int height, LevelLoader levelLoader) {
 		this.entities = new ConcurrentHashMap<Integer, CopyOnWriteArrayList<Entity>>();
-		this.player = player;
 		this.hud = null;
+		this.loader = levelLoader;
 		this.mouseEnabled = true;
 		this.backgroundOffsets = new double[STARFIELD_LAYERS];
 		
@@ -158,6 +159,10 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 		downKeyPressed = false;
 		leftKeyPressed = false;
 		rightKeyPressed = false;
+	}
+	
+	public LevelLoader getLevelLoader() {
+		return loader;
 	}
 	
 	@Override

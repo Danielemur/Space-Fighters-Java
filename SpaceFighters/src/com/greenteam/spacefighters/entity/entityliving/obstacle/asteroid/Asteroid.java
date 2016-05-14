@@ -79,6 +79,7 @@ public class Asteroid extends Obstacle {
 	public void uponDeath() {
 		Explosion e = new Explosion(this.getStage(), this.getPosition(), size, 100);
 		this.getStage().add(e);
+		super.uponDeath();
 	}
 	
 	@Override

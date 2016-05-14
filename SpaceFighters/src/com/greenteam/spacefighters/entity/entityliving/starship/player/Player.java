@@ -38,6 +38,7 @@ public class Player extends Starship {
 	private static final int HEALTH_REGEN_TIME = 1600;
 	private static final int GUN_TO_MISSILE_RATIO = 5;
 	private static final int MISSILE_SPREAD_COUNT = 6;
+	private static final int DEFAULT_LIVES = 3;
 	
 	private int timetofiremissile;
 	private int chargeLevel;
@@ -45,15 +46,16 @@ public class Player extends Starship {
 	private int height;
 	private boolean couldLoadImage;
 	private java.awt.Color noTexColor;
-	private int maxhealth;
+	private int maxHealth;
 	private int time;
 	private int score;
 	private int money;
 	private HashSet<Powerup> powerups;
+	private int lives;
 
 	public Player(Stage s, int maxHealth, int health, PlayerShipColor color) {
 		super(s, maxHealth, health, DEFAULTARMORLEVEL, DEFAULTWEAPONRYLEVEL);
-		maxhealth = health;
+		this.maxHealth = health;
 		time = 0;
 		timetofiremissile = GUN_TO_MISSILE_RATIO;
 		money = 0;
@@ -71,6 +73,23 @@ public class Player extends Starship {
 		}
 		chargeLevel = FULLCHARGE;
 		powerups = new HashSet<Powerup>();
+		lives = DEFAULT_LIVES;
+	}
+	
+	public void setCharge(int charge) {
+		this.chargeLevel = charge;
+	}
+	
+	public void setFullHealth() {
+		this.setHealth(maxHealth);
+	}
+	
+	public void setFullCharge() {
+		this.setCharge(FULLCHARGE);
+	}
+	
+	public int getLives() {
+		return lives;
 	}
 
 	@Override
@@ -93,10 +112,6 @@ public class Player extends Starship {
 	@Override
 	public void update(int ms) {
 		super.update(ms);
-		Stage stage = this.getStage();
-		if (this.getHealth() <= 0) {
-			stage.gameOver();
-		}
 		time += ms;
 		
 		if (time > HEALTH_REGEN_TIME) {
@@ -216,8 +231,18 @@ public class Player extends Starship {
 	
 	@Override
 	public void uponDeath() {
+		Stage stage = this.getStage();
 		Explosion e = new Explosion(this.getStage(), this.getPosition(), 100);
-		this.getStage().add(e);
+		stage.add(e);
+		lives--;
+		if (lives <=0) {
+			System.out.println("Final Death");
+			stage.gameOver();
+			super.uponDeath();
+		} else {
+			System.out.println("Lost Life");
+			stage.getLevelLoader().startLevel();
+		}
 	}
 	
 	public void addPowerup(Powerup p) {
@@ -248,11 +273,11 @@ public class Player extends Starship {
 	}
 	
 	public void setMaxHealth(int max) {
-		this.maxhealth = max;
+		this.maxHealth = max;
 	}
 	
 	public int getMaxHealth() {
-		return maxhealth;
+		return maxHealth;
 	}
 	
 	public int getCharge() {

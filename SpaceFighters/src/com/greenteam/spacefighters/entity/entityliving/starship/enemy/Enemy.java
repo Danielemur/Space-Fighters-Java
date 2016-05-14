@@ -76,6 +76,7 @@ public abstract class Enemy extends Starship {
 		}
 		Explosion e = new Explosion(this.getStage(), this.getPosition(), 100);
 		this.getStage().add(e);
+		super.uponDeath();
 	}
 	
 	@Override
