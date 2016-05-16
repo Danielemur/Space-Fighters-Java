@@ -15,13 +15,4 @@ public class EnemiesTutorialScreen extends TutorialScreen {
 		super(w);
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent ev) {
-		if (ev.getSource() == prevScreen) {
-			((CardLayout)this.getParent().getLayout()).next(this.getParent());
-		} else if (ev.getSource() == nextScreen) {
-			((CardLayout)this.getParent().getLayout()).previous(this.getParent());
-		}
-	}
-
 }

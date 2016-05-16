@@ -236,11 +236,9 @@ public class Player extends Starship {
 		stage.add(e);
 		lives--;
 		if (lives <=0) {
-			System.out.println("Final Death");
 			stage.gameOver();
 			super.uponDeath();
 		} else {
-			System.out.println("Lost Life");
 			stage.getLevelLoader().startLevel();
 		}
 	}
