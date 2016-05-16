@@ -62,6 +62,13 @@ public class HUD {
 			g.setFont(f);
 			g.drawString(String.format("Your ship has exploded.", health, p.getMaxHealth()), stage.getBounds().width/2-190, stage.getBounds().height/2+50);
 		}
+		
+		if (stage.isPaused() && ((stage.getPlayer() == null) || (stage.getPlayer().getHealth() > 0))) {
+			g.setColor(Color.YELLOW);
+			f = new Font(Font.MONOSPACED, Font.BOLD, 72);
+			g.setFont(f);
+			g.drawString("PAUSE", stage.getBounds().width/2-105, stage.getBounds().height/2+20);
+		}
 	}
 	
 	public void setGameOver(boolean gameOver) {

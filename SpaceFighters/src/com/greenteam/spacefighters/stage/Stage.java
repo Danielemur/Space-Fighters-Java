@@ -203,13 +203,6 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 		if (hud != null) {
 			hud.render(g);
 		}
-		
-		if (this.isPaused() && ((player == null) || (player.getHealth() > 0))) {
-			g.setColor(Color.YELLOW);
-			Font f = new Font(Font.MONOSPACED, Font.BOLD, 72);
-			g.setFont(f);
-			g.drawString("PAUSE", this.getBounds().width/2-105, this.getBounds().height/2+20);
-		}
 	}
 	
 	private void doUpKey() {
