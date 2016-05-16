@@ -59,7 +59,7 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 	
 	private static final double ALL_MOVEMENT_DEAD_ZONE = 20;
 	private static final double LINEAR_MOVEMENT_DEAD_ZONE = 120;
-	private static final double ROTATION_DEAD_ZONE_SECTOR_SIZE = 0.2; //radians
+	private static final double ROTATION_DEAD_ZONE_SECTOR_SIZE = 0.05; //radians
 
 	
 	private ConcurrentHashMap<Integer, CopyOnWriteArrayList<Entity>> entities;
@@ -663,6 +663,7 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 				if (!fireTertiaryTimer.isRunning()) {
 					fireTertiaryTimer.restart();
 					fireTertiaryTimer.start();
+					player.fire(4);
 				}
 				break;
 			default: break; //do nothing
