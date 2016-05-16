@@ -204,7 +204,7 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 			hud.render(g);
 		}
 		
-		if (this.isPaused()) {
+		if (this.isPaused() && ((player == null) || (player.getHealth() > 0))) {
 			g.setColor(Color.YELLOW);
 			Font f = new Font(Font.MONOSPACED, Font.BOLD, 72);
 			g.setFont(f);
@@ -611,7 +611,7 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 
 		@Override
 		public void actionPerformed(ActionEvent ev) {
-			if (Stage.this.isPaused()) {
+			if (Stage.this.isPaused() && ((Stage.this.player == null) || (Stage.this.player.getHealth()>0))) {
 				Stage.this.resume();
 			}
 			else {
