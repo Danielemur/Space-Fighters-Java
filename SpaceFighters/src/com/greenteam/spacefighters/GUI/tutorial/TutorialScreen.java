@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -18,6 +19,7 @@ public abstract class TutorialScreen extends JPanel implements ActionListener{
 	private static final int NUM_STARS = 120;
 	
 	protected Window window;
+	protected JPanel centerGrid;
 	protected JButton prevScreen;
 	protected JButton nextScreen;
 
@@ -27,6 +29,7 @@ public abstract class TutorialScreen extends JPanel implements ActionListener{
 	public TutorialScreen(Window w) {
 		window = w;
 		this.setLayout(new BorderLayout());
+		centerGrid = new JPanel(new GridBagLayout());
 		JPanel buttonPanel = new JPanel();
 		prevScreen = new JButton("Back");
 		nextScreen = new JButton("next");

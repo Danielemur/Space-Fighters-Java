@@ -41,7 +41,7 @@ public class StoreScreen extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent ev) {
 		if (ev.getSource() == returnToGame) {
 			stage.resume();
-			((CardLayout)this.getParent().getLayout()).show(this.getParent(), Window.STAGE_CARDLAYOUT_NAME);
+			((CardLayout)this.getParent().getLayout()).show(this.getParent(), Window.STAGE);
 		}
 	}
 }

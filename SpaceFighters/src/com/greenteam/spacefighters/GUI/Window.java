@@ -13,6 +13,7 @@ import com.greenteam.spacefighters.entity.entityliving.starship.player.Player;
 import com.greenteam.spacefighters.entity.entityliving.starship.player.Player.PlayerShipColor;
 import com.greenteam.spacefighters.stage.LevelLoader;
 import com.greenteam.spacefighters.stage.Stage;
+import com.greenteam.spacefighters.GUI.tutorial.*;
 
 public class Window extends JFrame implements WindowListener {
 	private static final long serialVersionUID = 8514984102701282740L;
@@ -20,14 +21,22 @@ public class Window extends JFrame implements WindowListener {
 	private static final int HEIGHT = 600;
 	
 	public static final double FPS = 60;
-	public static final String TITLE_SCREEN_CARDLAYOUT_NAME = "TITLE";
-	public static final String STAGE_CARDLAYOUT_NAME = "STAGE";
-	public static final String STORESCREEN_CARDLAYOUT_NAME = "STORESCREEN";
+	public static final String TITLE_SCREEN = "TITLE";
+	public static final String STAGE = "STAGE";
+	public static final String STORESCREEN = "STORESCREEN";
+	public static final String MOVEMENT_TUTORIAL = "MOVEMENT";
+	public static final String PROJECTILE_TUTORIAL = "PROJECTILE";
+	public static final String ENEMY_TUTORIAL = "ENEMY";
+	public static final String POWERUPTUTORIAL = "POWERUP";
 	
 	private Stage stage;
 	private LevelLoader loader;
 	private TitleScreen title;
 	private StoreScreen store;
+	private MovementTutorialScreen movementTutorial; 
+	private ProjectileTutorialScreen projectileTutorial; 
+	private EnemyTutorialScreen enemyTutorial; 
+	private PowerupTutorialScreen powerupTutorial; 
 	
 	public Window() {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -35,13 +44,21 @@ public class Window extends JFrame implements WindowListener {
 		stage = loader.getStage();
 		store = new StoreScreen(stage);
 		title = new TitleScreen(this);
+		movementTutorial = new MovementTutorialScreen(this);
+		projectileTutorial = new ProjectileTutorialScreen(this); 
+		enemyTutorial = new EnemyTutorialScreen(this);
+		powerupTutorial = new PowerupTutorialScreen(this);
 		
 		final JPanel contentPane = new JPanel();
 		contentPane.setLayout(new CardLayout());
-		contentPane.add(title, TITLE_SCREEN_CARDLAYOUT_NAME);
-		contentPane.add(stage, STAGE_CARDLAYOUT_NAME);
+		contentPane.add(title, TITLE_SCREEN);
+		contentPane.add(movementTutorial, MOVEMENT_TUTORIAL);
+		contentPane.add(projectileTutorial, PROJECTILE_TUTORIAL);
+		contentPane.add(enemyTutorial, ENEMY_TUTORIAL);
+		contentPane.add(powerupTutorial, POWERUPTUTORIAL);
+		contentPane.add(stage, STAGE);
 		contentPane.setBounds(new Rectangle(Window.WIDTH, Window.HEIGHT));
-		contentPane.add(store, STORESCREEN_CARDLAYOUT_NAME);
+		contentPane.add(store, STORESCREEN);
 		
 		this.setBounds(new Rectangle(Window.WIDTH, Window.HEIGHT));
 
@@ -80,7 +97,7 @@ public class Window extends JFrame implements WindowListener {
 	
 	public void setCard(String card) {
 		((CardLayout)this.getContentPane().getLayout()).show(this.getContentPane(), card);
-		if (card.equals(STAGE_CARDLAYOUT_NAME)) {
+		if (card.equals(STAGE)) {
 			stage.resume();
 		}
 		else {

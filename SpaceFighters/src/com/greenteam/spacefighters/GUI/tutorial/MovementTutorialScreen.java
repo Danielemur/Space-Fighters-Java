@@ -1,11 +1,13 @@
 package com.greenteam.spacefighters.GUI.tutorial;
 
-import java.awt.CardLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 
 import javax.swing.JButton;
-import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.JTextArea;
 
 import com.greenteam.spacefighters.GUI.Window;
 
@@ -13,15 +15,6 @@ public class MovementTutorialScreen extends TutorialScreen {
 	
 	public MovementTutorialScreen(Window w) {
 		super(w);
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent ev) {
-		if (ev.getSource() == prevScreen) {
-			((CardLayout)this.getParent().getLayout()).next(this.getParent());
-		} else if (ev.getSource() == nextScreen) {
-			((CardLayout)this.getParent().getLayout()).previous(this.getParent());
-		}
 	}
 
 }

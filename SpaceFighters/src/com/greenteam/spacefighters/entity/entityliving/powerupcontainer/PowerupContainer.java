@@ -148,7 +148,7 @@ public abstract class PowerupContainer extends EntityLiving {
 	}
 	
 	public enum PowerupColor {
-		BLUE, PURPLE, ORANGE, RED, GREEN, YELLOW
+		RED, GREEN, YELLOW, BLUE, PURPLE, ORANGE
 	}
 
 }

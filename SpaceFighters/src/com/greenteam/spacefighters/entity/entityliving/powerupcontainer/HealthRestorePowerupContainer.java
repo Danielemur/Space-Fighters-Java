@@ -16,7 +16,7 @@ public class HealthRestorePowerupContainer extends PowerupContainer {
 	
 	@Override
 	public int getDamage() {
-		return -20;
+		return -25;
 	}
 
 	@Override

@@ -3,13 +3,8 @@ package com.greenteam.spacefighters.GUI;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.GraphicsConfiguration;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,7 +13,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.Timer;
 
 
 public class TitleScreen extends JPanel implements ActionListener {
@@ -28,7 +22,7 @@ public class TitleScreen extends JPanel implements ActionListener {
 	
 	private JLabel title;
 	private JButton startButtonKeyboardInput;
-	private JButton startButtonMouseInput;
+	private JButton tutorialButton;
 	private Window window;
 
 	private double[] xpositions;
@@ -96,9 +90,9 @@ public class TitleScreen extends JPanel implements ActionListener {
 		gbc.gridy = 2;
 		gbc.weightx = 1;
 		gbc.weighty = 1;
-		startButtonMouseInput = new JButton("Start (Mouse input)");
-		startButtonMouseInput.addActionListener(this);
-		this.add(startButtonMouseInput, gbc);
+		tutorialButton = new JButton("Tutorial");
+		tutorialButton.addActionListener(this);
+		this.add(tutorialButton, gbc);
 		
 		xpositions = new double[TitleScreen.NUM_STARS];
 		ypositions = new double[TitleScreen.NUM_STARS];
@@ -112,11 +106,11 @@ public class TitleScreen extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent ev) {
 		if (ev.getSource() == startButtonKeyboardInput) {
 			window.getStage().setMouseEnabled(false);
-			window.setCard(Window.STAGE_CARDLAYOUT_NAME);
+			window.setCard(Window.STAGE);
 		}
-		else if (ev.getSource() == startButtonMouseInput) {
+		else if (ev.getSource() == tutorialButton) {
 			window.getStage().setMouseEnabled(true);
-			window.setCard(Window.STAGE_CARDLAYOUT_NAME);
+			window.setCard(Window.MOVEMENT_TUTORIAL);
 		}
 	}
 	

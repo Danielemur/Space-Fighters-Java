@@ -58,7 +58,7 @@ public class LevelLoader implements ActionListener {
 	
 	public void startLevel() {
 		stage.pause();
-		((CardLayout)stage.getParent().getLayout()).show(stage.getParent(), Window.STORESCREEN_CARDLAYOUT_NAME);
+		((CardLayout)stage.getParent().getLayout()).show(stage.getParent(), Window.STORESCREEN);
 		Player p = stage.getPlayer();
 		p.setFullHealth();
 		p.setFullCharge();
