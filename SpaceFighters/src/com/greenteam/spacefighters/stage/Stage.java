@@ -29,12 +29,14 @@ import javax.swing.KeyStroke;
 import javax.swing.Timer;
 
 import com.greenteam.spacefighters.GUI.HUD;
+import com.greenteam.spacefighters.GUI.KeyboardInputHandler;
+import com.greenteam.spacefighters.GUI.KeyboardInputHandlerHolder;
 import com.greenteam.spacefighters.GUI.Window;
 import com.greenteam.spacefighters.common.Vec2;
 import com.greenteam.spacefighters.entity.Entity;
 import com.greenteam.spacefighters.entity.entityliving.starship.player.Player;
 
-public class Stage extends JPanel implements ActionListener, MouseListener {
+public class Stage extends JPanel implements ActionListener {
 	public static final int WIDTH = 2400;
 	public static final int HEIGHT= 2400;
 	private static final long serialVersionUID = -2937557151448523567L;
@@ -100,7 +102,7 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 		}
 		this.setPreferredSize(new Dimension(width, height));
 		this.setSize(new Dimension(width, height));
-		
+		/*
 		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("pressed UP"),MOVE_FORWARD+PRESSED);
 		this.getActionMap().put(MOVE_FORWARD+PRESSED, new MoveActionPressed(DirectionKey.FORWARD));
 		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("pressed DOWN"),MOVE_BACKWARD+PRESSED);
@@ -143,8 +145,7 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 		
 		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("pressed SPACE"),PAUSE+PRESSED);
 		this.getActionMap().put(PAUSE+PRESSED, new PauseAction());
-		
-		this.addMouseListener(this);
+		*/
 		
 		firePrimaryTimer = new Timer((int)(2000/Window.FPS), this);
 		firePrimaryTimer.setInitialDelay(0);
@@ -241,6 +242,12 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 	@Override
 	public void actionPerformed(ActionEvent ev) {
 		if (ev.getSource() == timer) {
+			Map<String, Boolean> keyMap = KeyboardInputHandlerHolder.handler.getKeys();
+			Set<String> keys = keyMap.keySet();
+			for (String k : keys) {
+				System.out.print(k+" "+keyMap.get(k)+"\t");
+			}
+			System.out.println();
 			if (mouseEnabled) {
 				Vec2 playerPos = this.getPlayerOffset();
 				Vec2 mousePos = this.convertMousePosition();
@@ -447,7 +454,7 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 		}
 	    return nearestEntity;
 	}
-	
+	/*
 	private class MoveActionPressed extends AbstractAction {
 		private static final long serialVersionUID = 481979749241664534L;
 		
@@ -681,6 +688,7 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 			}
 		}
 	}
+	*/
 	
 	public void setMouseEnabled(boolean mouseEnabled) {
 		this.mouseEnabled = mouseEnabled;

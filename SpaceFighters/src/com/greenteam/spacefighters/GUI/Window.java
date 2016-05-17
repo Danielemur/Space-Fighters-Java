@@ -37,6 +37,7 @@ public class Window extends JFrame implements WindowListener {
 		title = new TitleScreen(this);
 		
 		final JPanel contentPane = new JPanel();
+		KeyboardInputHandlerHolder.handler = new KeyboardInputHandler(contentPane);
 		contentPane.setLayout(new CardLayout());
 		contentPane.add(title, TITLE_SCREEN_CARDLAYOUT_NAME);
 		contentPane.add(stage, STAGE_CARDLAYOUT_NAME);
