@@ -30,6 +30,7 @@ public abstract class TutorialScreen extends JPanel implements ActionListener{
 		window = w;
 		this.setLayout(new BorderLayout());
 		centerGrid = new JPanel(new GridBagLayout());
+		this.add(centerGrid, BorderLayout.CENTER);
 		JPanel buttonPanel = new JPanel();
 		prevScreen = new JButton("Back");
 		nextScreen = new JButton("next");

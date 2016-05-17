@@ -24,16 +24,19 @@ public class PowerupTutorialScreen extends TutorialScreen {
 	public PowerupTutorialScreen(Window w) {
 		super(w);
 		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.anchor = GridBagConstraints.WEST;
 		for (PowerupColor color : PowerupColor.values()) {
 			if (!color.equals(PowerupColor.ORANGE)) {
 				int i = color.ordinal();
+				gbc.anchor = GridBagConstraints.CENTER;
 				gbc.gridx = 0;
 				gbc.gridy = i;
 				gbc.weightx = 1;
 				gbc.weighty = 1;
-				gbc.gridwidth = 2;
+				gbc.gridwidth = 1;
 				ImageIcon pUpIcon = new ImageIcon(PowerupContainer.getTexFromEnum(color));
 				centerGrid.add(new JLabel(pUpIcon), gbc);
+				gbc.anchor = GridBagConstraints.WEST;
 				gbc.gridx = 1;
 				centerGrid.add(new JLabel(infoText[i]), gbc);
 			}

@@ -51,14 +51,15 @@ public class Window extends JFrame implements WindowListener {
 		
 		final JPanel contentPane = new JPanel();
 		contentPane.setLayout(new CardLayout());
-		contentPane.add(title, TITLE_SCREEN);
-		contentPane.add(movementTutorial, MOVEMENT_TUTORIAL);
-		contentPane.add(projectileTutorial, PROJECTILE_TUTORIAL);
-		contentPane.add(enemyTutorial, ENEMY_TUTORIAL);
 		contentPane.add(powerupTutorial, POWERUPTUTORIAL);
+		contentPane.add(enemyTutorial, ENEMY_TUTORIAL);
+		contentPane.add(projectileTutorial, PROJECTILE_TUTORIAL);
+		contentPane.add(movementTutorial, MOVEMENT_TUTORIAL);
+		contentPane.add(title, TITLE_SCREEN);
 		contentPane.add(stage, STAGE);
 		contentPane.setBounds(new Rectangle(Window.WIDTH, Window.HEIGHT));
 		contentPane.add(store, STORESCREEN);
+		((CardLayout)contentPane.getLayout()).show(contentPane, TITLE_SCREEN);
 		
 		this.setBounds(new Rectangle(Window.WIDTH, Window.HEIGHT));
 

@@ -18,16 +18,19 @@ public class ProjectileTutorialScreen extends TutorialScreen {
 	public ProjectileTutorialScreen(Window w) {
 		super(w);
 		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.anchor = GridBagConstraints.WEST;
 		for (ProjectileColor color : ProjectileColor.values()) {
 			if (!color.equals(ProjectileColor.GREEN)) {
 				int i = color.ordinal();
+				gbc.anchor = GridBagConstraints.CENTER;
 				gbc.gridx = 0;
 				gbc.gridy = i;
 				gbc.weightx = 1;
 				gbc.weighty = 1;
-				gbc.gridwidth = 2;
-				ImageIcon pUpIcon = new ImageIcon(Projectile.getTexFromEnum(color));
-				centerGrid.add(new JLabel(pUpIcon), gbc);
+				gbc.gridwidth = 1;
+				ImageIcon projIcon = new ImageIcon(Projectile.getTexFromEnum(color));
+				centerGrid.add(new JLabel(projIcon), gbc);
+				gbc.anchor = GridBagConstraints.WEST;
 				gbc.gridx = 1;
 				centerGrid.add(new JLabel(infoText[i]), gbc);
 			}
