@@ -17,8 +17,8 @@ public class PowerupTutorialScreen extends TutorialScreen {
 	};
 	private static final String[] infoDescription = {
 		"Restores 25 health to player.",
-		"Restores 20 health to player, augmenting players health when possible.",
-		"Temporarily increases players charge level.",
+		"Restores 20 health to player, augmenting player's health when possible.",
+		"Temporarily increases player's charge level.",
 		"Creates a forcefield around the player for 10 seconds.",
 		"Seeks out and destroys nearby enemies."
 	};
