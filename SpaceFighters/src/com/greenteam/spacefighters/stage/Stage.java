@@ -244,10 +244,11 @@ public class Stage extends JPanel implements ActionListener {
 		if (ev.getSource() == timer) {
 			Map<String, Boolean> keyMap = KeyboardInputHandlerHolder.handler.getKeys();
 			Set<String> keys = keyMap.keySet();
+			/*
 			for (String k : keys) {
 				System.out.print(k+" "+keyMap.get(k)+"\t");
 			}
-			System.out.println();
+			*/
 			if (mouseEnabled) {
 				Vec2 playerPos = this.getPlayerOffset();
 				Vec2 mousePos = this.convertMousePosition();
@@ -290,6 +291,16 @@ public class Stage extends JPanel implements ActionListener {
 					rightKeyPressed = false;
 				}
 				*/
+			}
+			else { //mouse is disabled
+				leftKeyPressed = keyMap.get("LEFT");
+				rightKeyPressed = keyMap.get("RIGHT");
+				upKeyPressed = keyMap.get("UP");
+				if (upKeyPressed) doUpKey();
+				downKeyPressed = keyMap.get("DOWN");
+				if (downKeyPressed) doDownKey();
+				if (!(downKeyPressed || upKeyPressed)) player.setVelocity(Vec2.ZERO);
+				System.out.println("L "+leftKeyPressed+" R "+rightKeyPressed+" U "+upKeyPressed+" D "+downKeyPressed);
 			}
 			if (leftKeyPressed && !rightKeyPressed) {
 				player.setOrientation(player.getOrientation().rotate(Vec2.ZERO, Math.PI / 32));
