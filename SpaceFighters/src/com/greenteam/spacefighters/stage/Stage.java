@@ -36,7 +36,7 @@ import com.greenteam.spacefighters.common.Vec2;
 import com.greenteam.spacefighters.entity.Entity;
 import com.greenteam.spacefighters.entity.entityliving.starship.player.Player;
 
-public class Stage extends JPanel implements ActionListener {
+public class Stage extends JPanel implements ActionListener, MouseListener {
 	public static final int WIDTH = 2400;
 	public static final int HEIGHT= 2400;
 	private static final long serialVersionUID = -2937557151448523567L;
@@ -88,6 +88,30 @@ public class Stage extends JPanel implements ActionListener {
 		this.mouseEnabled = true;
 		this.backgroundOffsets = new double[STARFIELD_LAYERS];
 		
+		KeyboardInputHandlerHolder.handler.addPressedAction("UP", new MoveActionPressed(DirectionKey.FORWARD));
+		KeyboardInputHandlerHolder.handler.addPressedAction("DOWN", new MoveActionPressed(DirectionKey.BACK));
+		KeyboardInputHandlerHolder.handler.addPressedAction("RIGHT", new MoveActionPressed(DirectionKey.RIGHT));
+		KeyboardInputHandlerHolder.handler.addPressedAction("LEFT", new MoveActionPressed(DirectionKey.LEFT));
+		
+		KeyboardInputHandlerHolder.handler.addReleasedAction("UP", new MoveActionReleased(DirectionKey.FORWARD));
+		KeyboardInputHandlerHolder.handler.addReleasedAction("DOWN", new MoveActionReleased(DirectionKey.BACK));
+		KeyboardInputHandlerHolder.handler.addReleasedAction("RIGHT", new MoveActionReleased(DirectionKey.RIGHT));
+		KeyboardInputHandlerHolder.handler.addReleasedAction("LEFT", new MoveActionReleased(DirectionKey.LEFT));
+		
+		KeyboardInputHandlerHolder.handler.addPressedAction("SPACE", new PauseAction());
+		
+		KeyboardInputHandlerHolder.handler.addPressedAction("Z", new FireKeyPressed(FireKey.PRIMARY));
+		KeyboardInputHandlerHolder.handler.addPressedAction("X", new FireKeyPressed(FireKey.SECONDARY));
+		KeyboardInputHandlerHolder.handler.addPressedAction("C", new FireKeyPressed(FireKey.TERTIARY));
+		KeyboardInputHandlerHolder.handler.addPressedAction("F", new FireKeyPressed(FireKey.QUATERNARY));
+		KeyboardInputHandlerHolder.handler.addPressedAction("V", new FireKeyPressed(FireKey.CHAINBEAM));
+		
+		KeyboardInputHandlerHolder.handler.addReleasedAction("Z", new FireKeyReleased(FireKey.PRIMARY));
+		KeyboardInputHandlerHolder.handler.addReleasedAction("X", new FireKeyReleased(FireKey.SECONDARY));
+		KeyboardInputHandlerHolder.handler.addReleasedAction("C", new FireKeyReleased(FireKey.TERTIARY));
+		KeyboardInputHandlerHolder.handler.addReleasedAction("F", new FireKeyReleased(FireKey.QUATERNARY));
+		KeyboardInputHandlerHolder.handler.addReleasedAction("V", new FireKeyReleased(FireKey.CHAINBEAM));
+		
 		this.starfields = new BufferedImage[STARFIELD_LAYERS];
 		GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
 	    GraphicsDevice device = env.getDefaultScreenDevice();
@@ -102,50 +126,6 @@ public class Stage extends JPanel implements ActionListener {
 		}
 		this.setPreferredSize(new Dimension(width, height));
 		this.setSize(new Dimension(width, height));
-		/*
-		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("pressed UP"),MOVE_FORWARD+PRESSED);
-		this.getActionMap().put(MOVE_FORWARD+PRESSED, new MoveActionPressed(DirectionKey.FORWARD));
-		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("pressed DOWN"),MOVE_BACKWARD+PRESSED);
-		this.getActionMap().put(MOVE_BACKWARD+PRESSED, new MoveActionPressed(DirectionKey.BACK));
-		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("pressed LEFT"),MOVE_LEFT+PRESSED);
-		this.getActionMap().put(MOVE_LEFT+PRESSED, new MoveActionPressed(DirectionKey.LEFT));
-		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("pressed RIGHT"),MOVE_RIGHT+PRESSED);
-		this.getActionMap().put(MOVE_RIGHT+PRESSED, new MoveActionPressed(DirectionKey.RIGHT));
-		
-		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("released UP"),MOVE_FORWARD+RELEASED);
-		this.getActionMap().put(MOVE_FORWARD+RELEASED, new MoveActionReleased(DirectionKey.FORWARD));
-		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("released DOWN"),MOVE_BACKWARD+RELEASED);
-		this.getActionMap().put(MOVE_BACKWARD+RELEASED, new MoveActionReleased(DirectionKey.BACK));
-		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("released LEFT"),MOVE_LEFT+RELEASED);
-		this.getActionMap().put(MOVE_LEFT+RELEASED, new MoveActionReleased(DirectionKey.LEFT));
-		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("released RIGHT"),MOVE_RIGHT+RELEASED);
-		this.getActionMap().put(MOVE_RIGHT+RELEASED, new MoveActionReleased(DirectionKey.RIGHT));
-		
-		
-		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("pressed Z"),FIRE_PRIMARY+PRESSED);
-		this.getActionMap().put(FIRE_PRIMARY+PRESSED, new FireKeyPressed(FireKey.PRIMARY));
-		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("pressed X"),FIRE_SECONDARY+PRESSED);
-		this.getActionMap().put(FIRE_SECONDARY+PRESSED, new FireKeyPressed(FireKey.SECONDARY));
-		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("pressed C"),FIRE_TERTIARY+PRESSED);
-		this.getActionMap().put(FIRE_TERTIARY+PRESSED, new FireKeyPressed(FireKey.TERTIARY));
-		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("pressed F"),FIRE_QUATERNARY+PRESSED);
-		this.getActionMap().put(FIRE_QUATERNARY+PRESSED, new FireKeyPressed(FireKey.QUATERNARY));
-		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("pressed V"),FIRE_CHAIN_BEAM+PRESSED);
-		this.getActionMap().put(FIRE_CHAIN_BEAM+PRESSED, new FireKeyPressed(FireKey.CHAINBEAM));
-		
-		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("released Z"),FIRE_PRIMARY+RELEASED);
-		this.getActionMap().put(FIRE_PRIMARY+RELEASED, new FireKeyReleased(FireKey.PRIMARY));
-		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("released X"),FIRE_SECONDARY+RELEASED);
-		this.getActionMap().put(FIRE_SECONDARY+RELEASED, new FireKeyReleased(FireKey.SECONDARY));
-		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("released C"),FIRE_TERTIARY+RELEASED);
-		this.getActionMap().put(FIRE_TERTIARY+RELEASED, new FireKeyReleased(FireKey.TERTIARY));
-		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("released F"),FIRE_QUATERNARY+RELEASED);
-		this.getActionMap().put(FIRE_QUATERNARY+RELEASED, new FireKeyReleased(FireKey.QUATERNARY));
-		
-		
-		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("pressed SPACE"),PAUSE+PRESSED);
-		this.getActionMap().put(PAUSE+PRESSED, new PauseAction());
-		*/
 		
 		firePrimaryTimer = new Timer((int)(2000/Window.FPS), this);
 		firePrimaryTimer.setInitialDelay(0);
@@ -244,11 +224,7 @@ public class Stage extends JPanel implements ActionListener {
 		if (ev.getSource() == timer) {
 			Map<String, Boolean> keyMap = KeyboardInputHandlerHolder.handler.getKeys();
 			Set<String> keys = keyMap.keySet();
-			/*
-			for (String k : keys) {
-				System.out.print(k+" "+keyMap.get(k)+"\t");
-			}
-			*/
+			
 			if (mouseEnabled) {
 				Vec2 playerPos = this.getPlayerOffset();
 				Vec2 mousePos = this.convertMousePosition();
@@ -283,25 +259,14 @@ public class Stage extends JPanel implements ActionListener {
 						}
 					}
 				}
-				/*
 				else if ((mousePos == null) && (playerPos != null)) {
 					player.setVelocity(Vec2.ZERO);
 					upKeyPressed = false;
 					leftKeyPressed = false;
 					rightKeyPressed = false;
 				}
-				*/
 			}
-			else { //mouse is disabled
-				leftKeyPressed = keyMap.get("LEFT");
-				rightKeyPressed = keyMap.get("RIGHT");
-				upKeyPressed = keyMap.get("UP");
-				if (upKeyPressed) doUpKey();
-				downKeyPressed = keyMap.get("DOWN");
-				if (downKeyPressed) doDownKey();
-				if (!(downKeyPressed || upKeyPressed)) player.setVelocity(Vec2.ZERO);
-				System.out.println("L "+leftKeyPressed+" R "+rightKeyPressed+" U "+upKeyPressed+" D "+downKeyPressed);
-			}
+			
 			if (leftKeyPressed && !rightKeyPressed) {
 				player.setOrientation(player.getOrientation().rotate(Vec2.ZERO, Math.PI / 32));
 				if (upKeyPressed && !downKeyPressed) {
@@ -465,7 +430,7 @@ public class Stage extends JPanel implements ActionListener {
 		}
 	    return nearestEntity;
 	}
-	/*
+	
 	private class MoveActionPressed extends AbstractAction {
 		private static final long serialVersionUID = 481979749241664534L;
 		
@@ -638,7 +603,7 @@ public class Stage extends JPanel implements ActionListener {
 	private enum FireKey {
 		PRIMARY, SECONDARY, TERTIARY, QUATERNARY, CHAINBEAM
 	}
-
+	
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		//do nothing
@@ -699,7 +664,6 @@ public class Stage extends JPanel implements ActionListener {
 			}
 		}
 	}
-	*/
 	
 	public void setMouseEnabled(boolean mouseEnabled) {
 		this.mouseEnabled = mouseEnabled;

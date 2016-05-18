@@ -31,14 +31,16 @@ public class Window extends JFrame implements WindowListener {
 	
 	public Window() {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		final JPanel contentPane = new JPanel();
+		KeyboardInputHandlerHolder.handler = new KeyboardInputHandler(contentPane);
+		contentPane.setLayout(new CardLayout());
+		
 		loader = new LevelLoader(Window.WIDTH, Window.HEIGHT, null);
 		stage = loader.getStage();
 		store = new StoreScreen(stage);
 		title = new TitleScreen(this);
 		
-		final JPanel contentPane = new JPanel();
-		KeyboardInputHandlerHolder.handler = new KeyboardInputHandler(contentPane);
-		contentPane.setLayout(new CardLayout());
 		contentPane.add(title, TITLE_SCREEN_CARDLAYOUT_NAME);
 		contentPane.add(stage, STAGE_CARDLAYOUT_NAME);
 		contentPane.setBounds(new Rectangle(Window.WIDTH, Window.HEIGHT));
