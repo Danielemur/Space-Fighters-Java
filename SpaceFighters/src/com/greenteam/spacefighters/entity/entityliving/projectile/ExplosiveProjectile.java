@@ -16,7 +16,7 @@ import com.greenteam.spacefighters.entity.Entity;
 import com.greenteam.spacefighters.stage.Stage;
 
 public class ExplosiveProjectile extends Projectile {
-	private final static double PROJECTILERADIUS = 50.0D;
+	private final static double PROJECTILERADIUS = 40.0D;
 	private final static double BLASTRADIUS = 200.0D;
 	private final static int DAMAGE = 15;
 	private final static int COUNTDOWNTIME = 500;

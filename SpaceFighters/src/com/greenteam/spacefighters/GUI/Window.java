@@ -28,6 +28,7 @@ public class Window extends JFrame implements WindowListener {
 	public static final String PROJECTILE_TUTORIAL = "PROJECTILE";
 	public static final String ENEMY_TUTORIAL = "ENEMY";
 	public static final String POWERUPTUTORIAL = "POWERUP";
+	public static final String GAMEOVERSCREEN = "GAMEOVERSCREEN";
 	
 	private Stage stage;
 	private LevelLoader loader;
@@ -37,6 +38,7 @@ public class Window extends JFrame implements WindowListener {
 	private ProjectileTutorialScreen projectileTutorial; 
 	private EnemyTutorialScreen enemyTutorial; 
 	private PowerupTutorialScreen powerupTutorial; 
+	private GameOverScreen gameover;
 	
 	public Window() {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -53,6 +55,7 @@ public class Window extends JFrame implements WindowListener {
 		stage = loader.getStage();
 		store = new StoreScreen(stage);
 		title = new TitleScreen(this);
+		gameover = new GameOverScreen(stage, this);
 		
 		contentPane.add(powerupTutorial, POWERUPTUTORIAL);
 		contentPane.add(enemyTutorial, ENEMY_TUTORIAL);
@@ -62,7 +65,8 @@ public class Window extends JFrame implements WindowListener {
 		contentPane.add(stage, STAGE);
 		contentPane.setBounds(new Rectangle(Window.WIDTH, Window.HEIGHT));
 		contentPane.add(store, STORESCREEN);
-		((CardLayout)contentPane.getLayout()).show(contentPane, TITLE_SCREEN);
+		contentPane.add(gameover, GAMEOVERSCREEN);
+		((CardLayout)contentPane.getLayout()).show(contentPane, GAMEOVERSCREEN);
 		
 		this.setBounds(new Rectangle(Window.WIDTH, Window.HEIGHT));
 
