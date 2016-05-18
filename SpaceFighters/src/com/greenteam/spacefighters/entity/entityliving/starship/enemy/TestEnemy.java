@@ -8,7 +8,7 @@ public class TestEnemy extends Enemy {
 	
 	public TestEnemy(Stage s) {
 		super(s, 1, 1, 0, 0);
-		this.setPosition(randSpawnPos(s.getPlayer(), SPAWNDIST));
+		this.setPosition(getSafeSpawnPos(s.getPlayer(), SPAWNDIST));
 		this.setVelocity(new Vec2(-440,200));
 		
 		this.setTexture(Enemy.getTexFromEnum(EnemyShipColor.GREEN));		

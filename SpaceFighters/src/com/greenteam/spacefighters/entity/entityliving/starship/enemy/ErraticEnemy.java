@@ -10,7 +10,7 @@ public class ErraticEnemy extends Enemy {
 	public ErraticEnemy(Stage s) {
 		super(s, 1, 1, 0, 0);
 		time = 0;
-		this.setPosition(randSpawnPos(s.getPlayer(), SPAWNDIST));
+		this.setPosition(getSafeSpawnPos(s.getPlayer(), SPAWNDIST));
 		this.setVelocity(new Vec2(1000*Math.random()-500,200));
 		
 		this.setTexture(Enemy.getTexFromEnum(EnemyShipColor.BLUE));		
