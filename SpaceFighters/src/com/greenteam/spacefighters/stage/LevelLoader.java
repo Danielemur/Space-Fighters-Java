@@ -31,7 +31,7 @@ public class LevelLoader implements ActionListener {
 	private static final int POWERUP_SPAWNINTERVAL = 15000; //remove this after implementing powerup spawning in Enemy
 	private static final int POWERUP_TYPENUMBER = 5;
 	
-	private static final int LEVEL_SCORE_THRESHOLD = 1000;
+	private static final int LEVEL_SCORE_THRESHOLD = 1;
 	
 	private Stage stage;
 	private Timer timer;

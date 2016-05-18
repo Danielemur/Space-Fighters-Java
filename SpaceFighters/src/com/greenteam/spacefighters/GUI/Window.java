@@ -40,17 +40,20 @@ public class Window extends JFrame implements WindowListener {
 	
 	public Window() {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		final JPanel contentPane = new JPanel();
+		contentPane.setLayout(new CardLayout());
+		KeyboardInputHandlerHolder.handler = new KeyboardInputHandler(contentPane);
+		
 		loader = new LevelLoader(Window.WIDTH, Window.HEIGHT, null);
-		stage = loader.getStage();
-		store = new StoreScreen(stage);
-		title = new TitleScreen(this);
 		movementTutorial = new MovementTutorialScreen(this);
 		projectileTutorial = new ProjectileTutorialScreen(this); 
 		enemyTutorial = new EnemyTutorialScreen(this);
 		powerupTutorial = new PowerupTutorialScreen(this);
+		stage = loader.getStage();
+		store = new StoreScreen(stage);
+		title = new TitleScreen(this);
 		
-		final JPanel contentPane = new JPanel();
-		contentPane.setLayout(new CardLayout());
 		contentPane.add(powerupTutorial, POWERUPTUTORIAL);
 		contentPane.add(enemyTutorial, ENEMY_TUTORIAL);
 		contentPane.add(projectileTutorial, PROJECTILE_TUTORIAL);
