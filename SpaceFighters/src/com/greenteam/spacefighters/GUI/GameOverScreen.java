@@ -33,19 +33,19 @@ public class GameOverScreen extends JPanel implements ActionListener, ComponentL
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 0;
-		score = new JLabel();
+		score = new JLabel("Score: 0");
 		this.add(score, gbc);
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 1;
-		returnToMain = new JButton();
+		returnToMain = new JButton("Return to Main Menu");
 		returnToMain.addActionListener(this);
 		this.add(returnToMain, gbc);
 	}
 
 	@Override
 	public void paintComponent(Graphics g) {
-		
+		super.paintComponent(g);
 	}
 
 	@Override

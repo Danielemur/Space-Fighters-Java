@@ -3,6 +3,7 @@ package com.greenteam.spacefighters.GUI.tutorial;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
@@ -14,6 +15,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
@@ -35,18 +37,34 @@ public abstract class TutorialScreen extends JPanel implements ActionListener{
 	
 	public TutorialScreen(Window w) {
 		window = w;
+		this.setOpaque(true);
 		this.setBackground(Color.BLACK);
-		this.setLayout(new BorderLayout());
+		this.setLayout(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.weighty = 1;
+		gbc.weightx = 1;
+		gbc.anchor = GridBagConstraints.CENTER;
+		gbc.fill = GridBagConstraints.BOTH;
 		centerGrid = new JPanel(new GridBagLayout());
-		this.add(centerGrid, BorderLayout.CENTER);
+		centerGrid.setOpaque(false);
+		this.add(centerGrid, gbc);
+		
+		gbc = new GridBagConstraints();
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		gbc.weighty = 0;
 		JPanel buttonPanel = new JPanel();
 		prevScreen = new JButton("Back");
-		nextScreen = new JButton("next");
+		nextScreen = new JButton("Next");
 		prevScreen.addActionListener(this);
 		nextScreen.addActionListener(this);
 		buttonPanel.add(prevScreen);
 		buttonPanel.add(nextScreen);
-		this.add(buttonPanel, BorderLayout.SOUTH);
+		buttonPanel.setOpaque(false);
+		this.add(buttonPanel, gbc);
+		
 		xpositions = new double[TutorialScreen.NUM_STARS];
 		ypositions = new double[TutorialScreen.NUM_STARS];
 		for (int i = 0; i < TutorialScreen.NUM_STARS; ++i) {
@@ -101,7 +119,14 @@ public abstract class TutorialScreen extends JPanel implements ActionListener{
 		descriptionTextBox.setForeground(Color.LIGHT_GRAY);
 		centerGrid.add(descriptionTextBox, gbc);
 	}
-
+	/*
+	@Override
+	public Component add(Component component) {
+		if (JComponent.class.isAssignableFrom(component.getClass())) ((JComponent)component).setOpaque(false);
+		return super.add(component);
+	}
+	*/
+	
 	@Override
 	public void actionPerformed(ActionEvent ev) {
 		if (ev.getSource() == prevScreen) {
