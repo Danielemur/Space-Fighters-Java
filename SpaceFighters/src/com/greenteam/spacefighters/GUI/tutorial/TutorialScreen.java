@@ -3,13 +3,20 @@ package com.greenteam.spacefighters.GUI.tutorial;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 
+import javax.swing.Box;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
 import com.greenteam.spacefighters.GUI.Window;
 
@@ -28,6 +35,7 @@ public abstract class TutorialScreen extends JPanel implements ActionListener{
 	
 	public TutorialScreen(Window w) {
 		window = w;
+		this.setBackground(Color.BLACK);
 		this.setLayout(new BorderLayout());
 		centerGrid = new JPanel(new GridBagLayout());
 		this.add(centerGrid, BorderLayout.CENTER);
@@ -45,6 +53,53 @@ public abstract class TutorialScreen extends JPanel implements ActionListener{
 			xpositions[i] = Math.random();
 			ypositions[i] = Math.random();
 		}
+	}
+	
+	protected void addTutorialComponent(int i, BufferedImage image, String name, String description) {
+		GridBagConstraints gbc = new GridBagConstraints();
+		
+		gbc.gridx = 0;
+		gbc.gridy = i;
+		gbc.weightx = 0;
+		gbc.weighty = 1;
+		gbc.gridwidth = 1;
+		centerGrid.add(Box.createRigidArea(new Dimension(20, 0)), gbc);
+		
+		gbc.anchor = GridBagConstraints.CENTER;
+		gbc.gridx = 1;
+		gbc.weightx = 0;
+		ImageIcon icon = new ImageIcon(image);
+		centerGrid.add(new JLabel(icon), gbc);
+		
+		gbc.weightx = 0;
+		gbc.gridx = 2;
+		centerGrid.add(Box.createRigidArea(new Dimension(20, 0)), gbc);
+		
+		gbc.anchor = GridBagConstraints.WEST;
+		gbc.weightx = 1;
+		gbc.gridx = 3;
+		JTextArea nameTextBox = new JTextArea(name);
+		nameTextBox.setLineWrap(false);
+		nameTextBox.setEditable(false);
+		nameTextBox.setOpaque(false);
+		nameTextBox.setForeground(Color.LIGHT_GRAY);
+		centerGrid.add(nameTextBox, gbc);
+		
+		gbc.weightx = 0;
+		gbc.gridx = 4;
+		centerGrid.add(Box.createRigidArea(new Dimension(20, 0)), gbc);
+		
+		gbc.anchor = GridBagConstraints.WEST;
+		gbc.weightx = 1;
+		gbc.gridx = 5;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		JTextArea descriptionTextBox = new JTextArea(description);
+		descriptionTextBox.setLineWrap(true);
+		descriptionTextBox.setWrapStyleWord(true);
+		descriptionTextBox.setEditable(false);
+		descriptionTextBox.setOpaque(false);
+		descriptionTextBox.setForeground(Color.LIGHT_GRAY);
+		centerGrid.add(descriptionTextBox, gbc);
 	}
 
 	@Override
