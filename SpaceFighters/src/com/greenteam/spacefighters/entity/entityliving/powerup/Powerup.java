@@ -1,6 +1,7 @@
 package com.greenteam.spacefighters.entity.entityliving.powerup;
 
 import com.greenteam.spacefighters.common.Vec2;
+import com.greenteam.spacefighters.entity.Entity;
 import com.greenteam.spacefighters.entity.entityliving.EntityLiving;
 import com.greenteam.spacefighters.entity.entityliving.starship.player.Player;
 import com.greenteam.spacefighters.stage.Stage;
@@ -48,6 +49,11 @@ public abstract class Powerup extends EntityLiving {
 	@Override
 	public Class<?> getSourceClass() {
 		return Powerup.class;
+	}
+	
+	@Override
+	public Entity getSource() {
+		return player;
 	}
 	
 }
