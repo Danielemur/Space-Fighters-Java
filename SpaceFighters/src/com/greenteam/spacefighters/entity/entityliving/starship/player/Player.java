@@ -348,4 +348,8 @@ public class Player extends Starship {
 	public void setMoney(int money) {
 		this.money = money;
 	}
+
+	public void setLives(int lives) {
+		this.lives = lives;
+	}
 }

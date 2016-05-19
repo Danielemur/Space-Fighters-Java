@@ -31,7 +31,7 @@ public class LevelLoader implements ActionListener {
 	private static final int POWERUP_SPAWNINTERVAL = 15000; //remove this after implementing powerup spawning in Enemy
 	private static final int POWERUP_TYPENUMBER = 5;
 	
-	private static final int LEVEL_SCORE_THRESHOLD = 10000;
+	private static final int LEVEL_SCORE_THRESHOLD = 100;
 	
 	private Stage stage;
 	private Timer timer;
@@ -73,6 +73,14 @@ public class LevelLoader implements ActionListener {
 		level++;
 		startLevel();
 	}
+	
+	public void setLevel(int level) {
+		this.level = level;
+	}
+	
+	public int getLevel() {
+		return this.level;
+	}
 
 	public Stage getStage() {
 		return stage;
@@ -86,17 +94,19 @@ public class LevelLoader implements ActionListener {
 				stage.add(new TestEnemy(stage));
 			}
 			if ((time % (int)(ERRATICENEMY_SPAWNINTERVAL*LEVEL_INTERVAL_RATIOS[level])) == 0) {
-				stage.add(new ErraticEnemy(stage));
+				if (level > 0) stage.add(new ErraticEnemy(stage));
 			}
 			if ((time % (int)(SHOOTINGENEMY_SPAWNINTERVAL*LEVEL_INTERVAL_RATIOS[level])) == 0) {
-				stage.add(new ShootingEnemy(stage));
+				if (level > 1) stage.add(new ShootingEnemy(stage));
 			}
 			if ((time % (int)(TRACKERENEMY_SPAWNINTERVAL*LEVEL_INTERVAL_RATIOS[level])) == 0) {
-				stage.add(new TrackerEnemy(stage));
+				if (level > 2) stage.add(new TrackerEnemy(stage));
 			}
 			if ((time % (int)(ASTEROID_SPAWNINTERVAL*LEVEL_INTERVAL_RATIOS[level])) == 0) {
-				int size = (int)((ASTEROID_MAXSIZE - ASTEROID_MINSIZE) * Math.random()) + ASTEROID_MINSIZE;
-				stage.add(new Asteroid(stage, size));
+				if (level > 3) {
+					int size = (int)((ASTEROID_MAXSIZE - ASTEROID_MINSIZE) * Math.random()) + ASTEROID_MINSIZE;
+					stage.add(new Asteroid(stage, size));
+				}
 			}
 			if ((time % (int)(POWERUP_SPAWNINTERVAL*LEVEL_INTERVAL_RATIOS[level])) == 0) {
 				switch((int)(Math.random() * POWERUP_TYPENUMBER)) {

@@ -31,7 +31,7 @@ public class HUD {
 		
 		g.setFont(f);
 		g.drawString(String.format("Score: %d", p.getScore()), 10, 23);
-		g.drawString(String.format("Money: $%d", p.getMoney()), 10, 50);
+		g.drawString(String.format("Level: %d", stage.getLevelLoader().getLevel()+1), 10, 50);
 		String livesText = "Lives:";
 		g.drawString(livesText, 10, 77);
 		Image tex = p.getTexture();
