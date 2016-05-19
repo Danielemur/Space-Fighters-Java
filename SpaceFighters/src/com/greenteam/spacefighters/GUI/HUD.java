@@ -48,6 +48,9 @@ public class HUD {
 		if (p.hasPowerup(ChainBeamPowerup.class)) {
 			g.setColor(new Color(120, 75, 220));
 			g.fillOval(10, 104, 20, 20);
+			g.setColor(Color.WHITE);
+			g.setFont(f);
+			g.drawString("Chainbeam ready", 40, 119);
 		}
 		
 		int health = p.getHealth();
