@@ -66,7 +66,7 @@ public class Window extends JFrame implements WindowListener {
 		contentPane.setBounds(new Rectangle(Window.WIDTH, Window.HEIGHT));
 		contentPane.add(store, STORESCREEN);
 		contentPane.add(gameover, GAMEOVERSCREEN);
-		((CardLayout)contentPane.getLayout()).show(contentPane, GAMEOVERSCREEN);
+		((CardLayout)contentPane.getLayout()).show(contentPane, TITLE_SCREEN);
 		
 		this.setBounds(new Rectangle(Window.WIDTH, Window.HEIGHT));
 
