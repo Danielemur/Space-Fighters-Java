@@ -21,9 +21,9 @@ public class HomingProjectile extends Projectile {
 	private int startTrackDelay;
 	private double remainingDistance;
 	
-	public HomingProjectile(Stage s, int health, int damage, Vec2 position, Vec2 velocity, Entity source) {
+	public HomingProjectile(Stage s, int health, int damage, double maxSpeed, Vec2 position, Vec2 velocity, Entity source) {
 		super(s, health, damage, position, velocity, source);
-		speed = velocity.magnitude();
+		speed = maxSpeed;
 		target = null;
 		startTrackDelay = INIT_DELAY;
 		remainingDistance = TRAVELDISTANCE;
