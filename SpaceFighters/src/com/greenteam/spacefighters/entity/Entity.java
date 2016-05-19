@@ -49,13 +49,8 @@ public abstract class Entity {
 		return updatable;
 	}
 	
-	public Vec2 getSafeSpawnPos(Entity e, double minDist) {
-		Vec2 candidatePos = randSpawnPos(e, minDist);
-		return candidatePos.multiply(new Vec2(0.8, 0.8));
-	}
-	
 	public Vec2 randSpawnPos(Entity e, double minDist) {
-		Vec2 spawnPos = Vec2.random(Stage.WIDTH, Stage.HEIGHT);
+		Vec2 spawnPos = new Vec2(this.getRadius(), this.getRadius()).add(Vec2.random(Stage.WIDTH - 2 * this.getRadius(), Stage.HEIGHT - 2 * this.getRadius()));
 		Vec2 entityPos = e.getPosition();
 		double dist = entityPos.distance(spawnPos);
 		if (dist < minDist) {
