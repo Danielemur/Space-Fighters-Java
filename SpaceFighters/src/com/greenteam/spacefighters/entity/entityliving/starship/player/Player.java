@@ -66,6 +66,14 @@ public class Player extends Starship {
 		lives = DEFAULT_LIVES;
 	}
 	
+	public void reset() {
+		this.setFullHealth();
+		this.setFullCharge();
+		this.setPosition(new Vec2(Stage.WIDTH / 2 , Stage.HEIGHT / 2));
+		this.setOrientation(new Vec2(0,1));
+		this.removeAllPowuerups();
+	}
+	
 	public void setColor(PlayerShipColor color) {
 		this.color = color;
 		this.setTexture(Player.getTexFromEnum(color));
@@ -272,6 +280,10 @@ public class Player extends Starship {
 	public void removePowerup(Powerup p) {
 		powerups.remove(p);
 		p.remove();
+	}
+	
+	public void removeAllPowuerups() {
+		powerups.clear();
 	}
 	
 	public boolean hasPowerup(Class<?> cl) {

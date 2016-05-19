@@ -61,13 +61,10 @@ public class LevelLoader implements ActionListener {
 	public void startLevel() {
 		stage.pause();
 		Player p = stage.getPlayer();
-		p.setFullHealth();
-		p.setFullCharge();
 		for (CopyOnWriteArrayList<Entity> array : stage.getEntities().values())
 			array.clear();
 		stage.add(p);
-		p.setPosition(new Vec2(Stage.WIDTH / 2 , Stage.HEIGHT / 2));
-		p.setOrientation(new Vec2(0,1));
+		p.reset();
 	}
 	
 	private void nextLevel() {
