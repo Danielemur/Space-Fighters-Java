@@ -36,7 +36,6 @@ public class Window extends JFrame implements WindowListener {
 	private Stage stage;
 	private LevelLoader loader;
 	private TitleScreen title;
-	private StoreScreen store;
 	private InputTutorialScreen movementTutorial; 
 	private ProjectileTutorialScreen projectileTutorial; 
 	private EnemyTutorialScreen enemyTutorial; 
@@ -60,7 +59,6 @@ public class Window extends JFrame implements WindowListener {
 		enemyTutorial = new EnemyTutorialScreen(this);
 		powerupTutorial = new PowerupTutorialScreen(this);
 		stage = loader.getStage();
-		store = new StoreScreen(stage);
 		title = new TitleScreen(this);
 		gameover = new GameOverScreen(stage, this);
 		levelscreen = new LevelIncrementScreen(stage);
@@ -74,7 +72,6 @@ public class Window extends JFrame implements WindowListener {
 		contentPane.add(title, TITLE_SCREEN);
 		contentPane.add(stage, STAGE);
 		contentPane.setBounds(new Rectangle(Window.WIDTH, Window.HEIGHT));
-		contentPane.add(store, STORESCREEN);
 		contentPane.add(gameover, GAMEOVERSCREEN);
 		contentPane.add(levelscreen, LEVELINCREMENTSCREEN);
 		contentPane.add(deathscreen, DEATHSCREEN);
@@ -148,9 +145,5 @@ public class Window extends JFrame implements WindowListener {
 	
 	public TitleScreen getTitleScreen() {
 		return title;
-	}
-	
-	public StoreScreen getStoreScreen() {
-		return store;
 	}
 }

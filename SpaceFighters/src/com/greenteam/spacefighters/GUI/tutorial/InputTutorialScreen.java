@@ -5,6 +5,7 @@ import javax.imageio.ImageIO;
 import com.greenteam.spacefighters.GUI.Window;
 
 public class InputTutorialScreen extends TutorialScreen {
+	private static final long serialVersionUID = -5026032644278835727L;
 	private static final String[] infoName = {
 			"Movement Keys-",
 			"Weapon Keys-",

@@ -1,6 +1,5 @@
 package com.greenteam.spacefighters.stage;
 
-import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -239,8 +238,8 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 	@Override
 	public void actionPerformed(ActionEvent ev) {
 		if (ev.getSource() == timer) {
-			Map<String, Boolean> keyMap = KeyboardInputHandlerHolder.handler.getKeys();
-			Set<String> keys = keyMap.keySet();
+			//Map<String, Boolean> keyMap = KeyboardInputHandlerHolder.handler.getKeys();
+			//Set<String> keys = keyMap.keySet();
 			
 			if (mouseEnabled) {
 				Vec2 playerPos = this.getPlayerOffset();

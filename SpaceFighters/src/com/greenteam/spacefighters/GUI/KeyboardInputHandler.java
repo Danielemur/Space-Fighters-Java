@@ -10,8 +10,6 @@ import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 import javax.swing.KeyStroke;
 
-import com.greenteam.spacefighters.stage.Stage;
-
 public class KeyboardInputHandler {
 	private static final String PRESSED = "pressed ";
 	private static final String RELEASED = "released ";
