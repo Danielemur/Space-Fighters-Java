@@ -23,12 +23,12 @@ public class LevelLoader implements ActionListener {
 	private static final int ASTEROID_COUNT = 50;
 	private static final int ASTEROID_MAXSIZE = 50;
 	private static final int ASTEROID_MINSIZE = 20;
-	private static final int TESTENEMY_SPAWNINTERVAL = 800;
-	private static final int ERRATICENEMY_SPAWNINTERVAL = 1040;
-	private static final int SHOOTINGENEMY_SPAWNINTERVAL = 1080;
-	private static final int TRACKERENEMY_SPAWNINTERVAL = 1400;
+	private static final int TESTENEMY_SPAWNINTERVAL = 600;
+	private static final int ERRATICENEMY_SPAWNINTERVAL = 840;
+	private static final int SHOOTINGENEMY_SPAWNINTERVAL = 880;
+	private static final int TRACKERENEMY_SPAWNINTERVAL = 1000;
 	private static final int ASTEROID_SPAWNINTERVAL = 1600;
-	private static final int POWERUP_SPAWNINTERVAL = 15000; //remove this after implementing powerup spawning in Enemy
+	private static final int POWERUP_SPAWNINTERVAL = 4000; //remove this after implementing powerup spawning in Enemy
 	private static final int POWERUP_TYPENUMBER = 5;
 	private static final String[] LEVEL_DESCRIPTIONS = {
 			"The first level.",
