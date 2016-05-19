@@ -24,10 +24,10 @@ public class LevelLoader implements ActionListener {
 	private static final int ASTEROID_MAXSIZE = 50;
 	private static final int ASTEROID_MINSIZE = 20;
 	private static final int TESTENEMY_SPAWNINTERVAL = 600;
-	private static final int ERRATICENEMY_SPAWNINTERVAL = 840;
-	private static final int SHOOTINGENEMY_SPAWNINTERVAL = 880;
-	private static final int TRACKERENEMY_SPAWNINTERVAL = 1000;
-	private static final int ASTEROID_SPAWNINTERVAL = 1600;
+	private static final int ERRATICENEMY_SPAWNINTERVAL = 640;
+	private static final int SHOOTINGENEMY_SPAWNINTERVAL = 680;
+	private static final int TRACKERENEMY_SPAWNINTERVAL = 740;
+	private static final int ASTEROID_SPAWNINTERVAL = 1000;
 	private static final int POWERUP_SPAWNINTERVAL = 4000; //remove this after implementing powerup spawning in Enemy
 	private static final int POWERUP_TYPENUMBER = 5;
 	private static final String[] LEVEL_DESCRIPTIONS = {
@@ -37,7 +37,7 @@ public class LevelLoader implements ActionListener {
 			"Kamikaze spirit has been instilled in the enemy.",
 			"New production advances have allowed the enemy to produce significantly more spaceships than before."
 		};
-	private static final int[] LEVEL_SCORE_THRESHOLDS = {2000, 7000, 14000, 22000};
+	private static final int[] LEVEL_SCORE_THRESHOLDS = {500, 1200, 2000, 3000};
 	
 	private Stage stage;
 	private Timer timer;
