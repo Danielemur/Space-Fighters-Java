@@ -1,9 +1,7 @@
 package com.greenteam.spacefighters.stage;
 
 import java.awt.CardLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
@@ -24,13 +22,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.swing.AbstractAction;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
-import javax.swing.KeyStroke;
 import javax.swing.Timer;
 
 import com.greenteam.spacefighters.GUI.HUD;
-import com.greenteam.spacefighters.GUI.KeyboardInputHandler;
 import com.greenteam.spacefighters.GUI.KeyboardInputHandlerHolder;
 import com.greenteam.spacefighters.GUI.Window;
 import com.greenteam.spacefighters.common.Vec2;
@@ -72,7 +67,7 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 		this.entities = new ConcurrentHashMap<Integer, CopyOnWriteArrayList<Entity>>();
 		this.hud = null;
 		this.loader = levelLoader;
-		this.mouseEnabled = true;
+		this.mouseEnabled = false;
 		this.backgroundOffsets = new double[STARFIELD_LAYERS];
 		
 		KeyboardInputHandlerHolder.handler.addPressedAction("UP", new MoveActionPressed(DirectionKey.FORWARD));

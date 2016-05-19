@@ -29,6 +29,7 @@ public class Window extends JFrame implements WindowListener {
 	public static final String ENEMY_TUTORIAL = "ENEMY";
 	public static final String POWERUPTUTORIAL = "POWERUP";
 	public static final String GAMEOVERSCREEN = "GAMEOVERSCREEN";
+	public static final String SETTINGSSCREEN = "SETTINGSSCREEN";
 	
 	private Stage stage;
 	private LevelLoader loader;
@@ -39,6 +40,8 @@ public class Window extends JFrame implements WindowListener {
 	private EnemyTutorialScreen enemyTutorial; 
 	private PowerupTutorialScreen powerupTutorial; 
 	private GameOverScreen gameover;
+	private SettingsScreen settings;
+	private boolean mouseInput;
 	
 	public Window() {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -56,6 +59,7 @@ public class Window extends JFrame implements WindowListener {
 		store = new StoreScreen(stage);
 		title = new TitleScreen(this);
 		gameover = new GameOverScreen(stage, this);
+		settings = new SettingsScreen(this);
 		
 		contentPane.add(powerupTutorial, POWERUPTUTORIAL);
 		contentPane.add(enemyTutorial, ENEMY_TUTORIAL);
@@ -66,6 +70,7 @@ public class Window extends JFrame implements WindowListener {
 		contentPane.setBounds(new Rectangle(Window.WIDTH, Window.HEIGHT));
 		contentPane.add(store, STORESCREEN);
 		contentPane.add(gameover, GAMEOVERSCREEN);
+		contentPane.add(settings, SETTINGSSCREEN);
 		((CardLayout)contentPane.getLayout()).show(contentPane, TITLE_SCREEN);
 		
 		this.setBounds(new Rectangle(Window.WIDTH, Window.HEIGHT));
@@ -102,6 +107,16 @@ public class Window extends JFrame implements WindowListener {
 
 	@Override
 	public void windowOpened(WindowEvent arg0) {}
+	
+	public void setMouseInput(boolean value) {
+		mouseInput = value;
+		stage.setMouseEnabled(value);
+		title.updateInstructions();
+	}
+	
+	public boolean useMouseInput() {
+		return mouseInput;
+	}
 	
 	public void setCard(String card) {
 		if (card.equals(STAGE)) {

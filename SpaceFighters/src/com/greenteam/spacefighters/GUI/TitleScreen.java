@@ -26,8 +26,9 @@ public class TitleScreen extends JPanel implements ActionListener {
 	
 	private JLabel title;
 	private JButton startButtonKeyboardInput;
-	private JButton startButtonMouseInput;
+	private JButton settingsButton;
 	private JButton tutorialButton;
+	private JTextArea basicInstructions;
 	private Window window;
 
 	private double[] xpositions;
@@ -64,49 +65,39 @@ public class TitleScreen extends JPanel implements ActionListener {
 		gbc.gridy = 1;
 		gbc.weightx = 1;
 		gbc.weighty = 1;
-		gbc.insets = new Insets(10, 10, 10, 10);
+		gbc.gridwidth = 2;
+		gbc.anchor = GridBagConstraints.CENTER;
+		gbc.insets = new Insets(10, 60, 10, 10);
 		gbc.fill = GridBagConstraints.HORIZONTAL;
-		JTextArea keyboardInstructions = new JTextArea("Use arrow keys to move, and use Z, X, C, V, and F to fire. Use Space to pause.");
-		keyboardInstructions.setLineWrap(true);
-		keyboardInstructions.setWrapStyleWord(true);
-		keyboardInstructions.setEditable(false);
-		keyboardInstructions.setOpaque(false);
-		keyboardInstructions.setForeground(Color.LIGHT_GRAY);
-		this.add(keyboardInstructions, gbc);
+		if (!window.useMouseInput())
+			basicInstructions = new JTextArea("Use arrow keys to move, and use Z, X, C, V, and F to fire. Use Space to pause.");
+		else
+			basicInstructions = new JTextArea("Move mouse to move, use mouse buttons to fire, use Space to pause.");
+		basicInstructions.setLineWrap(true);
+		basicInstructions.setWrapStyleWord(true);
+		basicInstructions.setEditable(false);
+		basicInstructions.setOpaque(false);
+		basicInstructions.setForeground(Color.LIGHT_GRAY);
+		this.add(basicInstructions, gbc);
 		
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 2;
 		gbc.weightx = 1;
 		gbc.weighty = 1;
-		startButtonKeyboardInput = new JButton("Start (Keyboard input)");
+		gbc.gridwidth = 2;
+		startButtonKeyboardInput = new JButton("Start");
 		startButtonKeyboardInput.addActionListener(this);
 		this.add(startButtonKeyboardInput, gbc);
 		
-		
 		gbc = new GridBagConstraints();
-		gbc.gridx = 1;
-		gbc.gridy = 1;
+		gbc.gridx = 0;
+		gbc.gridy = 3;
 		gbc.weightx = 1;
 		gbc.weighty = 1;
-		gbc.insets = new Insets(10, 10, 10, 10);
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		JTextArea mouseInstructions = new JTextArea("Move mouse to move, use mouse buttons to fire, use Space to pause.");
-		mouseInstructions.setLineWrap(true);
-		mouseInstructions.setWrapStyleWord(true);
-		mouseInstructions.setEditable(false);
-		mouseInstructions.setOpaque(false);
-		mouseInstructions.setForeground(Color.LIGHT_GRAY);
-		this.add(mouseInstructions, gbc);
-		
-		gbc = new GridBagConstraints();
-		gbc.gridx = 1;
-		gbc.gridy = 2;
-		gbc.weightx = 1;
-		gbc.weighty = 1;
-		startButtonMouseInput = new JButton("Start (Mouse Input)");
-		startButtonMouseInput.addActionListener(this);
-		this.add(startButtonMouseInput, gbc);
+		settingsButton = new JButton("Settings");
+		settingsButton.addActionListener(this);
+		this.add(settingsButton, gbc);
 		
 		gbc = new GridBagConstraints();
 		gbc.gridx = 1;
@@ -128,17 +119,22 @@ public class TitleScreen extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent ev) {
 		if (ev.getSource() == startButtonKeyboardInput) {
-			window.getStage().setMouseEnabled(false);
 			window.setCard(Window.STAGE);
 		}
 		else if (ev.getSource() == tutorialButton) {
-			window.getStage().setMouseEnabled(true);
 			window.setCard(Window.MOVEMENT_TUTORIAL);
 		}
-		else if (ev.getSource() == startButtonMouseInput) {
-			window.getStage().setMouseEnabled(true);
-			window.setCard(Window.STAGE);
+		else if (ev.getSource() == settingsButton) {
+			window.setCard(Window.SETTINGSSCREEN);
 		}
+	}
+	
+	public void updateInstructions() {
+		if (!window.useMouseInput())
+			basicInstructions.setText("Use arrow keys to move, and use Z, X, C, V, and F to fire. Use Space to pause.");
+		else
+			basicInstructions.setText("Move mouse to move, use mouse buttons to fire, use Space to pause.");
+		
 	}
 	
 	@Override

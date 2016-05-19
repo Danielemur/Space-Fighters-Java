@@ -45,7 +45,7 @@ public class Player extends Starship {
 	private int width;
 	private int height;
 	private boolean couldLoadImage;
-	private java.awt.Color noTexColor;
+	private PlayerShipColor color;
 	private int maxHealth;
 	private int time;
 	private int score;
@@ -60,6 +60,14 @@ public class Player extends Starship {
 		timetofiremissile = GUN_TO_MISSILE_RATIO;
 		money = 0;
 		score = 0;
+		this.setColor(color);
+		chargeLevel = FULLCHARGE;
+		powerups = new HashSet<Powerup>();
+		lives = DEFAULT_LIVES;
+	}
+	
+	public void setColor(PlayerShipColor color) {
+		this.color = color;
 		this.setTexture(Player.getTexFromEnum(color));
 		if (this.getTexture() != null) {
 			this.width = this.getTexture().getWidth(null);
@@ -69,11 +77,11 @@ public class Player extends Starship {
 			couldLoadImage = false;
 			this.width = 20;
 			this.height = 30;
-			noTexColor = noTextureColor(color);
 		}
-		chargeLevel = FULLCHARGE;
-		powerups = new HashSet<Powerup>();
-		lives = DEFAULT_LIVES;
+	}
+	
+	public PlayerShipColor getColor() {
+		return color;
 	}
 	
 	public void setCharge(int charge) {
@@ -104,7 +112,7 @@ public class Player extends Starship {
 			g.drawImage(op.filter((BufferedImage)this.getTexture(), null), (int)(pos.getX()-imagemidx), (int)(pos.getY()-imagemidy), null);
 		}
 		else {
-			g.setColor(noTexColor);
+			g.setColor(noTextureColor(color));
 			g.fillRect((int)pos.getX(), (int)pos.getY(), width, height);
 		}
 	}
