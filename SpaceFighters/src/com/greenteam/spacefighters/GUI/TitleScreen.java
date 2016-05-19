@@ -5,10 +5,14 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -40,7 +44,16 @@ public class TitleScreen extends JPanel implements ActionListener {
 		gbc.weightx = 1;
 		gbc.weighty = 1;
 		gbc.gridwidth = 2;
-		title = new JLabel("SpaceFighters");
+		ImageIcon titleIcon = null;
+		try {
+			Image img = ImageIO.read(TitleScreen.class.getResource("/com/greenteam/spacefighters/assets/title-0.png"));
+			titleIcon = new ImageIcon(img.getScaledInstance(4 * img.getWidth(null) / 5, 4 * img.getHeight(null) / 5, Image.SCALE_SMOOTH));
+		} catch (IOException e) {}
+		if (titleIcon != null) {
+			title = new JLabel(titleIcon);
+		} else {
+			title = new JLabel("SpaceFighters");
+		}
 		title.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 36));
 		title.setForeground(Color.LIGHT_GRAY);
 		this.add(title, gbc);

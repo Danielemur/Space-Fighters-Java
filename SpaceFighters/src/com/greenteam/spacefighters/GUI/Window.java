@@ -34,7 +34,7 @@ public class Window extends JFrame implements WindowListener {
 	private LevelLoader loader;
 	private TitleScreen title;
 	private StoreScreen store;
-	private MovementTutorialScreen movementTutorial; 
+	private InputTutorialScreen movementTutorial; 
 	private ProjectileTutorialScreen projectileTutorial; 
 	private EnemyTutorialScreen enemyTutorial; 
 	private PowerupTutorialScreen powerupTutorial; 
@@ -48,7 +48,7 @@ public class Window extends JFrame implements WindowListener {
 		KeyboardInputHandlerHolder.handler = new KeyboardInputHandler(contentPane);
 		
 		loader = new LevelLoader(Window.WIDTH, Window.HEIGHT, null);
-		movementTutorial = new MovementTutorialScreen(this);
+		movementTutorial = new InputTutorialScreen(this);
 		projectileTutorial = new ProjectileTutorialScreen(this); 
 		enemyTutorial = new EnemyTutorialScreen(this);
 		powerupTutorial = new PowerupTutorialScreen(this);

@@ -1,21 +1,17 @@
 package com.greenteam.spacefighters.GUI.tutorial;
 
-import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
@@ -73,7 +69,7 @@ public abstract class TutorialScreen extends JPanel implements ActionListener{
 		}
 	}
 	
-	protected void addTutorialComponent(int i, BufferedImage image, String name, String description) {
+	protected void addTutorialComponent(int i, Image image, String name, String description) {
 		GridBagConstraints gbc = new GridBagConstraints();
 		
 		gbc.gridx = 0;
