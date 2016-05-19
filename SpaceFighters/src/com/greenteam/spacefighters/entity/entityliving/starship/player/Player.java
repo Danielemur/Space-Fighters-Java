@@ -247,7 +247,7 @@ public class Player extends Starship {
 			stage.gameOver();
 			super.uponDeath();
 		} else {
-			stage.getLevelLoader().startLevel();
+			stage.getLevelLoader().handleDeath();
 		}
 	}
 	

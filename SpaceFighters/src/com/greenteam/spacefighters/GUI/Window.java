@@ -30,6 +30,8 @@ public class Window extends JFrame implements WindowListener {
 	public static final String POWERUPTUTORIAL = "POWERUP";
 	public static final String GAMEOVERSCREEN = "GAMEOVERSCREEN";
 	public static final String SETTINGSSCREEN = "SETTINGSSCREEN";
+	public static final String LEVELINCREMENTSCREEN = "LEVELINCREMENTSCREEN";
+	public static final String DEATHSCREEN = "DEATHSCREEN";
 	
 	private Stage stage;
 	private LevelLoader loader;
@@ -40,6 +42,8 @@ public class Window extends JFrame implements WindowListener {
 	private EnemyTutorialScreen enemyTutorial; 
 	private PowerupTutorialScreen powerupTutorial; 
 	private GameOverScreen gameover;
+	private LevelIncrementScreen levelscreen;
+	private DeathScreen deathscreen;
 	private SettingsScreen settings;
 	private boolean mouseInput;
 	
@@ -59,6 +63,8 @@ public class Window extends JFrame implements WindowListener {
 		store = new StoreScreen(stage);
 		title = new TitleScreen(this);
 		gameover = new GameOverScreen(stage, this);
+		levelscreen = new LevelIncrementScreen(stage);
+		deathscreen = new DeathScreen(stage);
 		settings = new SettingsScreen(this);
 		
 		contentPane.add(powerupTutorial, POWERUPTUTORIAL);
@@ -70,6 +76,8 @@ public class Window extends JFrame implements WindowListener {
 		contentPane.setBounds(new Rectangle(Window.WIDTH, Window.HEIGHT));
 		contentPane.add(store, STORESCREEN);
 		contentPane.add(gameover, GAMEOVERSCREEN);
+		contentPane.add(levelscreen, LEVELINCREMENTSCREEN);
+		contentPane.add(deathscreen, DEATHSCREEN);
 		contentPane.add(settings, SETTINGSSCREEN);
 		((CardLayout)contentPane.getLayout()).show(contentPane, TITLE_SCREEN);
 		
