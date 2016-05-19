@@ -274,7 +274,7 @@ public class Player extends Starship {
 		p.remove();
 	}
 	
-	private boolean hasPowerup(Class<?> cl) {
+	public boolean hasPowerup(Class<?> cl) {
 		return getPowerup(cl) != null;
 	}
 	
