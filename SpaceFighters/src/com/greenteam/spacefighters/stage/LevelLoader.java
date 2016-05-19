@@ -94,16 +94,16 @@ public class LevelLoader implements ActionListener {
 				stage.add(new TestEnemy(stage));
 			}
 			if ((time % (int)(ERRATICENEMY_SPAWNINTERVAL*LEVEL_INTERVAL_RATIOS[level])) == 0) {
-				if (level > 0) stage.add(new ErraticEnemy(stage));
+				if (level > 0) stage.add(new ErraticEnemy(stage)); else stage.add(new TestEnemy(stage));
 			}
 			if ((time % (int)(SHOOTINGENEMY_SPAWNINTERVAL*LEVEL_INTERVAL_RATIOS[level])) == 0) {
-				if (level > 1) stage.add(new ShootingEnemy(stage));
+				if (level > 1) stage.add(new ShootingEnemy(stage)); else if (level > 0) stage.add(new ErraticEnemy(stage));
 			}
 			if ((time % (int)(TRACKERENEMY_SPAWNINTERVAL*LEVEL_INTERVAL_RATIOS[level])) == 0) {
-				if (level > 2) stage.add(new TrackerEnemy(stage));
+				if (level > 2) stage.add(new TrackerEnemy(stage)); else if (level > 1) stage.add(new ShootingEnemy(stage));
 			}
 			if ((time % (int)(ASTEROID_SPAWNINTERVAL*LEVEL_INTERVAL_RATIOS[level])) == 0) {
-				if (level > 3) {
+				if (level > 1) {
 					int size = (int)((ASTEROID_MAXSIZE - ASTEROID_MINSIZE) * Math.random()) + ASTEROID_MINSIZE;
 					stage.add(new Asteroid(stage, size));
 				}

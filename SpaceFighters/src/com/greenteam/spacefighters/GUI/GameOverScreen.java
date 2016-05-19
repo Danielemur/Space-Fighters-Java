@@ -59,6 +59,7 @@ public class GameOverScreen extends JPanel implements ActionListener, ComponentL
 		gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 2;
+		gbc.insets = new Insets(20, 20, 20, 20);
 		returnToMain = new JButton("Return to Main Menu");
 		returnToMain.addActionListener(this);
 		this.add(returnToMain, gbc);

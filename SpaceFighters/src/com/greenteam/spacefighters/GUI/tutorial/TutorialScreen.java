@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Box;
@@ -58,6 +59,7 @@ public abstract class TutorialScreen extends JPanel implements ActionListener{
 		gbc.weightx = 1;
 		gbc.anchor = GridBagConstraints.CENTER;
 		gbc.fill = GridBagConstraints.BOTH;
+		gbc.insets = new Insets(20, 20, 20, 20);
 		centerGrid = new JPanel(new GridBagLayout());
 		centerGrid.setOpaque(false);
 		this.add(centerGrid, gbc);
@@ -66,6 +68,7 @@ public abstract class TutorialScreen extends JPanel implements ActionListener{
 		gbc.gridx = 0;
 		gbc.gridy = 2;
 		gbc.weighty = 0;
+		gbc.insets = new Insets(20, 20, 20, 20);
 		JPanel buttonPanel = new JPanel();
 		prevScreen = new JButton("Back");
 		nextScreen = new JButton("Next");
