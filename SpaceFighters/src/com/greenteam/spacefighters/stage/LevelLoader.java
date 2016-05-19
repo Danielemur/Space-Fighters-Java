@@ -37,12 +37,18 @@ public class LevelLoader implements ActionListener {
 			"Kamikaze spirit has been instilled in the enemy.",
 			"New production advances have allowed the enemy to produce significantly more spaceships than before."
 		};
-	private static final int[] LEVEL_SCORE_THRESHOLDS = {500, 1200, 2000, 3000};
+	private int[][] LEVEL_SCORE_THRESHOLD_TEMPALTES = {
+			{500, 1200, 2000, 3000},
+			{2000, 7000, 14000, 22000}
+		};
+	
+	private int[] levelScoreThresholds;
 	
 	private Stage stage;
 	private Timer timer;
 	private int time;
 	private int level;
+	private Difficulty difficulty;
 	
 	public LevelLoader(Window window, int width, int height, File f) {
 		stage = new Stage(window, width, height, this);
@@ -51,6 +57,8 @@ public class LevelLoader implements ActionListener {
 		timer = stage.getTimer();
 		timer.addActionListener(this);
 		level = 0;
+		difficulty = Difficulty.HARD;
+		this.setDifficulty(difficulty);
 		
 		Player player = new Player(stage, 100, 100, PlayerShipColor.RED);
 		player.setPosition(new Vec2(Stage.WIDTH / 2 , Stage.HEIGHT / 2));
@@ -136,7 +144,7 @@ public class LevelLoader implements ActionListener {
 				}
 			}
 		}
-		if ((level < LEVEL_SCORE_THRESHOLDS.length) && (stage.getPlayer().getScore() >= LEVEL_SCORE_THRESHOLDS[level])) {
+		if ((level < levelScoreThresholds.length) && (stage.getPlayer().getScore() >= levelScoreThresholds[level])) {
 			nextLevel();
 		}
 	}
@@ -148,5 +156,33 @@ public class LevelLoader implements ActionListener {
 	public void handleDeath() {
 		startLevel();
 		((CardLayout)stage.getParent().getLayout()).show(stage.getParent(), Window.DEATHSCREEN);
+	}
+	
+	public void setDifficulty(Difficulty difficulty) {
+		switch (difficulty) {
+		case EASY:
+			levelScoreThresholds = LEVEL_SCORE_THRESHOLD_TEMPALTES[0];
+			break;
+		case HARD:
+			levelScoreThresholds = LEVEL_SCORE_THRESHOLD_TEMPALTES[1];
+			break;
+		default:
+			levelScoreThresholds = LEVEL_SCORE_THRESHOLD_TEMPALTES[0];
+			break;
+		}
+		this.difficulty = difficulty;
+	}
+	
+	public enum Difficulty {
+		EASY, HARD
+	}
+	
+	public void setEasyMode(boolean easy) {
+		if (easy) setDifficulty(Difficulty.EASY);
+		else setDifficulty(Difficulty.HARD);
+	}
+	
+	public boolean isInEasyMode() {
+		return difficulty == Difficulty.EASY;
 	}
 }
