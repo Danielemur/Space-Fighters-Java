@@ -26,6 +26,7 @@ public class TitleScreen extends JPanel implements ActionListener {
 	
 	private JLabel title;
 	private JButton startButtonKeyboardInput;
+	private JButton startButtonMouseInput;
 	private JButton tutorialButton;
 	private Window window;
 
@@ -103,6 +104,15 @@ public class TitleScreen extends JPanel implements ActionListener {
 		gbc.gridy = 2;
 		gbc.weightx = 1;
 		gbc.weighty = 1;
+		startButtonMouseInput = new JButton("Start (Mouse Input)");
+		startButtonMouseInput.addActionListener(this);
+		this.add(startButtonMouseInput, gbc);
+		
+		gbc = new GridBagConstraints();
+		gbc.gridx = 1;
+		gbc.gridy = 3;
+		gbc.weightx = 1;
+		gbc.weighty = 1;
 		tutorialButton = new JButton("Tutorial");
 		tutorialButton.addActionListener(this);
 		this.add(tutorialButton, gbc);
@@ -124,6 +134,10 @@ public class TitleScreen extends JPanel implements ActionListener {
 		else if (ev.getSource() == tutorialButton) {
 			window.getStage().setMouseEnabled(true);
 			window.setCard(Window.MOVEMENT_TUTORIAL);
+		}
+		else if (ev.getSource() == startButtonMouseInput) {
+			window.getStage().setMouseEnabled(true);
+			window.setCard(Window.STAGE);
 		}
 	}
 	

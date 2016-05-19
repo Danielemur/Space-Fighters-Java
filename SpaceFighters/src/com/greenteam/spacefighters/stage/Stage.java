@@ -1,5 +1,6 @@
 package com.greenteam.spacefighters.stage;
 
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -44,20 +45,6 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 	private static final double BACKGROUND_SCROLL_SPEED = 2.5;
 	private static final int BACKGROUND_OVERSIZE_RATIO = 5;
 	private static final int STARFIELD_LAYERS = 3;
-	
-	private static final String MOVE_FORWARD = "FORWARD";
-	private static final String MOVE_BACKWARD = "BACKWARD";
-	private static final String MOVE_LEFT = "LEFT";
-	private static final String MOVE_RIGHT = "RIGHT";
-	private static final String FIRE_PRIMARY = "FIREPRIMARY";
-	private static final String FIRE_SECONDARY = "FIRESECONDARY";
-	private static final String FIRE_TERTIARY = "FIRETERTIARY";
-	private static final String FIRE_QUATERNARY = "FIREQUATERNARY";
-	private static final String FIRE_CHAIN_BEAM = "FIRECHAINBEAM";
-	private static final String PAUSE = "PAUSE";
-	
-	private static final String PRESSED = " pressed";
-	private static final String RELEASED = " released";
 	
 	private static final double ALL_MOVEMENT_DEAD_ZONE = 20;
 	private static final double LINEAR_MOVEMENT_DEAD_ZONE = 120;
@@ -124,6 +111,7 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 				g.fillRect((int)(WIDTH * Math.random()), (int)(HEIGHT * Math.random()), 1, 1);
 			}
 		}
+		this.addMouseListener(this);
 		this.setPreferredSize(new Dimension(width, height));
 		this.setSize(new Dimension(width, height));
 		
@@ -259,12 +247,15 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 						}
 					}
 				}
+				/*
+				//makes control very annoying as player stops when the mouse exits screen for any reason
 				else if ((mousePos == null) && (playerPos != null)) {
 					player.setVelocity(Vec2.ZERO);
 					upKeyPressed = false;
 					leftKeyPressed = false;
 					rightKeyPressed = false;
 				}
+				*/
 			}
 			
 			if (leftKeyPressed && !rightKeyPressed) {
@@ -337,8 +328,11 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 	}
 	
 	public void gameOver() {
+		/*
 		hud.setGameOver(true);
 		this.pause();
+		*/
+		((CardLayout)this.getParent().getLayout()).show(this.getParent(), Window.GAMEOVERSCREEN);
 	}
 	
 	public void pause() {
