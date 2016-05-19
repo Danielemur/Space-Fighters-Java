@@ -46,6 +46,7 @@ public abstract class TutorialScreen extends JPanel implements ActionListener{
 		gbc.weightx = 0;
 		gbc.gridwidth = 2;
 		gbc.anchor = GridBagConstraints.CENTER;
+		gbc.insets = new Insets(20, 20, 20, 20);
 		title = new JLabel("Tutorial");
 		title.setOpaque(false);
 		title.setForeground(Color.LIGHT_GRAY);
