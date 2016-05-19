@@ -19,7 +19,7 @@ import com.greenteam.spacefighters.entity.entityliving.starship.player.Player;
 import com.greenteam.spacefighters.entity.entityliving.starship.player.Player.PlayerShipColor;
 
 public class LevelLoader implements ActionListener {
-	private static final double[] LEVEL_INTERVAL_RATIOS = {1.0, 0.9, 0.8, 0.6, 0.5};
+	private static final double[] LEVEL_INTERVAL_RATIOS = {1.0, 0.95, 0.9, 0.8, 0.5};
 	private static final int ASTEROID_COUNT = 50;
 	private static final int ASTEROID_MAXSIZE = 50;
 	private static final int ASTEROID_MINSIZE = 20;
@@ -37,8 +37,7 @@ public class LevelLoader implements ActionListener {
 			"Kamikaze spirit has been instilled in the enemy.",
 			"New production advances have allowed the enemy to produce significantly more spaceships than before."
 		};
-	
-	private static final int LEVEL_SCORE_THRESHOLD = 100;
+	private static final int[] LEVEL_SCORE_THRESHOLDS = {2000, 7000, 14000, 22000};
 	
 	private Stage stage;
 	private Timer timer;
@@ -57,10 +56,6 @@ public class LevelLoader implements ActionListener {
 		player.setPosition(new Vec2(Stage.WIDTH / 2 , Stage.HEIGHT / 2));
 		stage.setPlayer(player);
 		stage.setHUD(new HUD(stage));
-		for (int i = 0; i < ASTEROID_COUNT; i++) {
-			int size = (int)((ASTEROID_MAXSIZE - ASTEROID_MINSIZE) * Math.random()) + ASTEROID_MINSIZE;
-			stage.add(new Asteroid(stage, size));
-		}
 	}
 	
 	public void startLevel() {
@@ -78,6 +73,12 @@ public class LevelLoader implements ActionListener {
 	private void nextLevel() {
 		level++;
 		startLevel();
+		if (level == 2) {
+			for (int i = 0; i < ASTEROID_COUNT; i++) {
+				int size = (int)((ASTEROID_MAXSIZE - ASTEROID_MINSIZE) * Math.random()) + ASTEROID_MINSIZE;
+				stage.add(new Asteroid(stage, size));
+			}
+		}
 		((CardLayout)stage.getParent().getLayout()).show(stage.getParent(), Window.LEVELINCREMENTSCREEN);
 	}
 	
@@ -101,16 +102,16 @@ public class LevelLoader implements ActionListener {
 				stage.add(new TestEnemy(stage));
 			}
 			if ((time % (int)(ERRATICENEMY_SPAWNINTERVAL*LEVEL_INTERVAL_RATIOS[level])) == 0) {
-				if (level > 0) stage.add(new ErraticEnemy(stage)); else stage.add(new TestEnemy(stage));
+				if (level >= 1) stage.add(new ErraticEnemy(stage)); else stage.add(new TestEnemy(stage));
 			}
 			if ((time % (int)(SHOOTINGENEMY_SPAWNINTERVAL*LEVEL_INTERVAL_RATIOS[level])) == 0) {
-				if (level > 1) stage.add(new ShootingEnemy(stage)); else if (level > 0) stage.add(new ErraticEnemy(stage));
+				if (level >= 2) stage.add(new ShootingEnemy(stage)); else if (level >= 1) stage.add(new ErraticEnemy(stage));
 			}
 			if ((time % (int)(TRACKERENEMY_SPAWNINTERVAL*LEVEL_INTERVAL_RATIOS[level])) == 0) {
-				if (level > 2) stage.add(new TrackerEnemy(stage)); else if (level > 1) stage.add(new ShootingEnemy(stage));
+				if (level >= 3) stage.add(new TrackerEnemy(stage)); else if (level >= 2) stage.add(new ShootingEnemy(stage));
 			}
 			if ((time % (int)(ASTEROID_SPAWNINTERVAL*LEVEL_INTERVAL_RATIOS[level])) == 0) {
-				if (level > 1) {
+				if (level >= 2) {
 					int size = (int)((ASTEROID_MAXSIZE - ASTEROID_MINSIZE) * Math.random()) + ASTEROID_MINSIZE;
 					stage.add(new Asteroid(stage, size));
 				}
@@ -138,14 +139,17 @@ public class LevelLoader implements ActionListener {
 				}
 			}
 		}
-		if (stage.getPlayer().getScore() >= LEVEL_SCORE_THRESHOLD*(level+1)) {
-			if (level < LEVEL_INTERVAL_RATIOS.length-1) {
-				nextLevel();
-			}
+		if ((level < LEVEL_SCORE_THRESHOLDS.length) && (stage.getPlayer().getScore() >= LEVEL_SCORE_THRESHOLDS[level])) {
+			nextLevel();
 		}
 	}
 	
 	public String getLevelBlurb() {
 		return LEVEL_DESCRIPTIONS[level];
+	}
+	
+	public void handleDeath() {
+		startLevel();
+		((CardLayout)stage.getParent().getLayout()).show(stage.getParent(), Window.DEATHSCREEN);
 	}
 }
