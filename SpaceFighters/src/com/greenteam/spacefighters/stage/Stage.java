@@ -317,16 +317,16 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 			}
 			this.repaint();
 		}
-		else if (ev.getSource() == firePrimaryTimer) {
+		else if ((ev.getSource() == firePrimaryTimer) && (!this.isPaused())) {
 			player.fire(0);
 		}
-		else if (ev.getSource() == fireSecondaryTimer) {
+		else if ((ev.getSource() == fireSecondaryTimer) && (!this.isPaused())) {
 			player.fire(1);
 		}
-		else if (ev.getSource() == fireTertiaryTimer) {
+		else if ((ev.getSource() == fireTertiaryTimer) && (!this.isPaused())) {
 			player.fire(2);
 		}
-		else if (ev.getSource() == fireQuaternaryTimer) {
+		else if ((ev.getSource() == fireQuaternaryTimer) && (!this.isPaused())) {
 			player.fire(3);
 		}
 		else if (ev.getSource() == returnToTitle) {
