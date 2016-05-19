@@ -8,7 +8,7 @@ public class TestEnemy extends Enemy {
 	
 	public TestEnemy(Stage s) {
 		super(s, 1, 1, 0, 0);
-		this.setPosition(getSafeSpawnPos(s.getPlayer(), SPAWNDIST));
+		this.setPosition(randSpawnPos(s.getPlayer(), SPAWNDIST));
 		this.setVelocity(new Vec2(-440,200));
 		
 		this.setTexture(Enemy.getTexFromEnum(EnemyShipColor.GREEN));		
@@ -32,10 +32,16 @@ public class TestEnemy extends Enemy {
 	public void update(int ms) {
 		super.update(ms);
 		this.setOrientation(this.getVelocity());
-		if ((this.getPosition().getX() + width * 2 > Stage.WIDTH) || (this.getPosition().getX() < 0)) {
-			this.getVelocity().setX(this.getVelocity().getX()*-1);
-		}
-		if ((this.getPosition().getY() + height * 2 > Stage.HEIGHT) || (this.getPosition().getY() < 0)) {
+		if ((this.getPosition().getX() + this.getRadius() >= Stage.WIDTH &&
+				 this.getVelocity().getX() > 0) ||
+				(this.getPosition().getX() - this.getRadius() < 0) &&
+				 this.getVelocity().getX() < 0){
+				this.getVelocity().setX(this.getVelocity().getX() * -1);
+			}
+		if ((this.getPosition().getY() + this.getRadius() >= Stage.HEIGHT &&
+			 this.getVelocity().getY() > 0) ||
+			(this.getPosition().getY() - this.getRadius() < 0) &&
+		 	 this.getVelocity().getY() < 0){
 			this.getVelocity().setY(this.getVelocity().getY() * -1);
 		}
 	}
