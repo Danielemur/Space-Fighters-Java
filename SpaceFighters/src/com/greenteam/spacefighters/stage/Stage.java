@@ -1,5 +1,6 @@
 package com.greenteam.spacefighters.stage;
 
+import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -7,7 +8,10 @@ import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
@@ -22,6 +26,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.swing.AbstractAction;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -62,13 +68,41 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 	private boolean leftKeyPressed;
 	private boolean rightKeyPressed;
 	private boolean mouseEnabled;
+	private JButton returnToTitle;
+	private GridBagConstraints returnToTitleGridBagConstraints;
+	private Window window;
+	private JButton resumeButton;
+	private GridBagConstraints resumeButtonGridBagConstraints;
 	
-	public Stage(int width, int height, LevelLoader levelLoader) {
+	public Stage(Window window, int width, int height, LevelLoader levelLoader) {
+		this.window = window;
 		this.entities = new ConcurrentHashMap<Integer, CopyOnWriteArrayList<Entity>>();
 		this.hud = null;
 		this.loader = levelLoader;
 		this.mouseEnabled = false;
 		this.backgroundOffsets = new double[STARFIELD_LAYERS];
+		
+		this.returnToTitleGridBagConstraints = new GridBagConstraints();
+		returnToTitleGridBagConstraints.gridx = 0;
+		returnToTitleGridBagConstraints.gridy = 0;
+		returnToTitleGridBagConstraints.weightx = 1;
+		returnToTitleGridBagConstraints.weighty = 1;
+		returnToTitleGridBagConstraints.insets = new Insets(20, 20, 20, 20);
+		returnToTitleGridBagConstraints.anchor = GridBagConstraints.PAGE_END;
+		this.returnToTitle = new JButton("Return to Title");
+		this.returnToTitle.addActionListener(this);
+		
+		this.resumeButtonGridBagConstraints = new GridBagConstraints();
+		resumeButtonGridBagConstraints.gridx = 1;
+		resumeButtonGridBagConstraints.gridy = 0;
+		resumeButtonGridBagConstraints.weightx = 1;
+		resumeButtonGridBagConstraints.weighty = 1;
+		resumeButtonGridBagConstraints.insets = new Insets(20, 20, 20, 20);
+		resumeButtonGridBagConstraints.anchor = GridBagConstraints.PAGE_END;
+		this.resumeButton = new JButton("Resume");
+		this.resumeButton.addActionListener(this);
+		
+		this.setLayout(new GridBagLayout());
 		
 		KeyboardInputHandlerHolder.handler.addPressedAction("UP", new MoveActionPressed(DirectionKey.FORWARD));
 		KeyboardInputHandlerHolder.handler.addPressedAction("DOWN", new MoveActionPressed(DirectionKey.BACK));
@@ -295,6 +329,16 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 		else if (ev.getSource() == fireQuaternaryTimer) {
 			player.fire(3);
 		}
+		else if (ev.getSource() == returnToTitle) {
+			int prompt = 0;
+			prompt = JOptionPane.showConfirmDialog(window, "Are you sure you want to return to the main menu?", "Confirmation", JOptionPane.YES_NO_OPTION);
+			if (prompt == JOptionPane.YES_OPTION) {
+				window.setCard(Window.TITLE_SCREEN);
+			}
+		}
+		else if (ev.getSource() == resumeButton) {
+			this.resume();
+		}
 	}
 
 	public void remove(Entity entity) {
@@ -332,11 +376,16 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 	
 	public void pause() {
 		timer.stop();
+		this.add(returnToTitle, returnToTitleGridBagConstraints);
+		this.add(resumeButton, resumeButtonGridBagConstraints);
+		this.revalidate();
 		this.repaint();
 	}
 	
 	public void resume() {
 		timer.start();
+		this.remove(returnToTitle);
+		this.remove(resumeButton);
 	}
 	
 	public boolean isPaused() {

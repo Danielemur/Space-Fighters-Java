@@ -54,7 +54,7 @@ public class Window extends JFrame implements WindowListener {
 		contentPane.setLayout(new CardLayout());
 		KeyboardInputHandlerHolder.handler = new KeyboardInputHandler(contentPane);
 		
-		loader = new LevelLoader(Window.WIDTH, Window.HEIGHT, null);
+		loader = new LevelLoader(this, Window.WIDTH, Window.HEIGHT, null);
 		movementTutorial = new InputTutorialScreen(this);
 		projectileTutorial = new ProjectileTutorialScreen(this); 
 		enemyTutorial = new EnemyTutorialScreen(this);

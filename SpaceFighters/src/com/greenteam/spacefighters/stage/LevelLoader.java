@@ -44,8 +44,8 @@ public class LevelLoader implements ActionListener {
 	private int time;
 	private int level;
 	
-	public LevelLoader(int width, int height, File f) {
-		stage = new Stage(width, height, this);
+	public LevelLoader(Window window, int width, int height, File f) {
+		stage = new Stage(window, width, height, this);
 		for (CopyOnWriteArrayList<Entity> array : stage.getEntities().values())
 			array.clear();
 		timer = stage.getTimer();
