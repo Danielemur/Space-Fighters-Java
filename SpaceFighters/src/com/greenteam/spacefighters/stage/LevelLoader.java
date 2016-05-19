@@ -30,6 +30,13 @@ public class LevelLoader implements ActionListener {
 	private static final int ASTEROID_SPAWNINTERVAL = 1600;
 	private static final int POWERUP_SPAWNINTERVAL = 15000; //remove this after implementing powerup spawning in Enemy
 	private static final int POWERUP_TYPENUMBER = 5;
+	private static final String[] LEVEL_DESCRIPTIONS = {
+			"The first level.",
+			"You'll see some new enemies soon, but they aren't very smart.",
+			"The enemy is tired of getting shot at. Now they can shoot back. You are also an entering an asteroid field.",
+			"Kamikaze spirit has been instilled in the enemy.",
+			"New production advances have allowed the enemy to produce significantly more spaceships than before."
+		};
 	
 	private static final int LEVEL_SCORE_THRESHOLD = 100;
 	
@@ -58,7 +65,6 @@ public class LevelLoader implements ActionListener {
 	
 	public void startLevel() {
 		stage.pause();
-		((CardLayout)stage.getParent().getLayout()).show(stage.getParent(), Window.STORESCREEN);
 		Player p = stage.getPlayer();
 		p.setFullHealth();
 		p.setFullCharge();
@@ -72,6 +78,7 @@ public class LevelLoader implements ActionListener {
 	private void nextLevel() {
 		level++;
 		startLevel();
+		((CardLayout)stage.getParent().getLayout()).show(stage.getParent(), Window.LEVELINCREMENTSCREEN);
 	}
 	
 	public void setLevel(int level) {
@@ -136,5 +143,9 @@ public class LevelLoader implements ActionListener {
 				nextLevel();
 			}
 		}
+	}
+	
+	public String getLevelBlurb() {
+		return LEVEL_DESCRIPTIONS[level];
 	}
 }
