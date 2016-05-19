@@ -71,8 +71,7 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 	private JButton returnToTitle;
 	private GridBagConstraints returnToTitleGridBagConstraints;
 	private Window window;
-	private JButton resumeButton;
-	private GridBagConstraints resumeButtonGridBagConstraints;
+	private JButton pauseResumeButton;
 	
 	public Stage(Window window, int width, int height, LevelLoader levelLoader) {
 		this.window = window;
@@ -81,10 +80,11 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 		this.loader = levelLoader;
 		this.mouseEnabled = false;
 		this.backgroundOffsets = new double[STARFIELD_LAYERS];
+		this.setLayout(new GridBagLayout());
 		
 		this.returnToTitleGridBagConstraints = new GridBagConstraints();
 		returnToTitleGridBagConstraints.gridx = 0;
-		returnToTitleGridBagConstraints.gridy = 0;
+		returnToTitleGridBagConstraints.gridy = 1;
 		returnToTitleGridBagConstraints.weightx = 1;
 		returnToTitleGridBagConstraints.weighty = 1;
 		returnToTitleGridBagConstraints.insets = new Insets(20, 20, 20, 20);
@@ -92,17 +92,16 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 		this.returnToTitle = new JButton("Return to Title");
 		this.returnToTitle.addActionListener(this);
 		
-		this.resumeButtonGridBagConstraints = new GridBagConstraints();
-		resumeButtonGridBagConstraints.gridx = 1;
-		resumeButtonGridBagConstraints.gridy = 0;
-		resumeButtonGridBagConstraints.weightx = 1;
-		resumeButtonGridBagConstraints.weighty = 1;
-		resumeButtonGridBagConstraints.insets = new Insets(20, 20, 20, 20);
-		resumeButtonGridBagConstraints.anchor = GridBagConstraints.PAGE_END;
-		this.resumeButton = new JButton("Resume");
-		this.resumeButton.addActionListener(this);
-		
-		this.setLayout(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.weightx = 1;
+		gbc.weighty = 1;
+		gbc.insets = new Insets(20, 20, 20, 20);
+		gbc.anchor = GridBagConstraints.FIRST_LINE_END;
+		this.pauseResumeButton = new JButton("Resume");
+		this.pauseResumeButton.addActionListener(this);
+		this.add(pauseResumeButton, gbc);
 		
 		KeyboardInputHandlerHolder.handler.addPressedAction("UP", new MoveActionPressed(DirectionKey.FORWARD));
 		KeyboardInputHandlerHolder.handler.addPressedAction("DOWN", new MoveActionPressed(DirectionKey.BACK));
@@ -336,8 +335,13 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 				window.setCard(Window.TITLE_SCREEN);
 			}
 		}
-		else if (ev.getSource() == resumeButton) {
-			this.resume();
+		else if (ev.getSource() == pauseResumeButton) {
+			if (this.isPaused()) {
+				this.resume();
+			}
+			else {
+				this.pause();
+			}
 		}
 	}
 
@@ -377,7 +381,7 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 	public void pause() {
 		timer.stop();
 		this.add(returnToTitle, returnToTitleGridBagConstraints);
-		this.add(resumeButton, resumeButtonGridBagConstraints);
+		pauseResumeButton.setText("Resume");
 		this.revalidate();
 		this.repaint();
 	}
@@ -385,7 +389,7 @@ public class Stage extends JPanel implements ActionListener, MouseListener {
 	public void resume() {
 		timer.start();
 		this.remove(returnToTitle);
-		this.remove(resumeButton);
+		pauseResumeButton.setText("Pause");
 	}
 	
 	public boolean isPaused() {
