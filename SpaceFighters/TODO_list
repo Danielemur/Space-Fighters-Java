@@ -1,18 +1,8 @@
-Pause screen
-Title screen
-Game Over screen
 Bosses
 Weapons upgrades
 Hull upgrades
 Scoreboard for high scores
-Add asteroids
-levels
-lives
 max enemy count
 stun weapon
-remove/reduce health regen?
-hud for forcefield timer
-Implement rendering layers
 make faster
-create explosion graphic
-problem with charge boost?
+Separate movement and collision computation
